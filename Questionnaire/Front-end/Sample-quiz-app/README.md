@@ -12,8 +12,10 @@ $ npm -v
 ```bash
 npm create vite@latest
 ```
+- Use a suitable name for the app (Here it's `quiz-app` ) 
 - Select `react`
 - Select `Javascript`
+- Copy and Replace All the files here
 
 ```bash
 cd quiz-app/
