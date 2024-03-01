@@ -1,9 +1,11 @@
 import React from 'react'
 import './Quiz.css'
 import { data } from '../../assets/data';
+import { useNavigate } from 'react-router-dom';
 
 const Quiz = () => {
 
+    const navigate = useNavigate();
     let [index, setIndex] = React.useState(0);
     let [question, setQuestion] = React.useState(data[index]);
     let [lock, setLock] = React.useState(false);
@@ -51,7 +53,10 @@ const Quiz = () => {
     }
 
     const toGame = () => {
-        // Redirect to the game
+        setTimeout(() => {
+            window.location.href = `http://127.0.0.1:5000/game?score=${score}`;
+        }, 2000);
+
         return null;
     }
 

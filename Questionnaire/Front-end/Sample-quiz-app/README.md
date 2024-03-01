@@ -20,5 +20,6 @@ npm create vite@latest
 ```bash
 cd quiz-app/
 npm install
+npm install react-router-dom
 npm run dev
 ```
