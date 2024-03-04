@@ -25,21 +25,55 @@ const Quiz = () => {
 
     let option_array = [Option1, Option2, Option3, Option4];
 
-    const checkAns = (e, ans) => {
-        if (lock === false) {
-            if (question.ans === ans) {
-                e.target.classList.add('correct');
-                setLock(true);
-                setScore(prev => prev + 1);
-            }
-            else {
-                e.target.classList.add('wrong');
-                setLock(true);
-                option_array[question.ans - 1].current.classList.add('correct');
+    const checkAns = async (e, ans, question_id) => {
+        if (!lock) {
+            try {
+                const response = await fetch(`http://127.0.0.1:5000/get-answer/${question_id}`);
+                const data = await response.json();
+                const fetchedAnswer = data['answer'];
+
+                if (fetchedAnswer === ans) {
+                    e.target.classList.add('correct');
+                    setLock(true);
+                    setScore(prev => prev + 1);
+                } else {
+                    e.target.classList.add('wrong');
+                    setLock(true);
+                    option_array[fetchedAnswer - 1].current.classList.add('correct');
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
             }
         }
+    };
 
-    }
+    // const checkAns = (e, ans, question_id) => {
+    //     if (lock === false) {
+    //         const fetchData = async () => {
+    //             try {
+    //                 const response = await fetch(`http://127.0.0.1:5000/get-answer/${question_id}`);
+    //                 const data = await response.json();
+    //                 return (data['answer'], 10)
+    //             } catch (error) {
+    //                 console.error('Error fetching data:', error);
+    //             }
+    //         };
+
+    //         answer = fetchData();
+
+    //         if (answer === ans) {
+    //             e.target.classList.add('correct');
+    //             setLock(true);
+    //             setScore(prev => prev + 1);
+    //         }
+    //         else {
+    //             e.target.classList.add('wrong');
+    //             setLock(true);
+    //             option_array[question.ans - 1].current.classList.add('correct');
+    //         }
+    //     }
+
+    // }
 
     const next = () => {
         if (lock === true) {
@@ -74,10 +108,10 @@ const Quiz = () => {
             {result ? <></> : <>
                 <h2>{index + 1}. {question.question}</h2>
                 <ul>
-                    <li ref={Option1} onClick={(e) => { checkAns(e, 1) }}>{question.option1}</li>
-                    <li ref={Option2} onClick={(e) => { checkAns(e, 2) }}>{question.option2}</li>
-                    <li ref={Option3} onClick={(e) => { checkAns(e, 3) }}>{question.option3}</li>
-                    <li ref={Option4} onClick={(e) => { checkAns(e, 4) }}>{question.option4}</li>
+                    <li ref={Option1} onClick={(e) => { checkAns(e, 1, index + 1) }}>{question.option1}</li>
+                    <li ref={Option2} onClick={(e) => { checkAns(e, 2, index + 1) }}>{question.option2}</li>
+                    <li ref={Option3} onClick={(e) => { checkAns(e, 3, index + 1) }}>{question.option3}</li>
+                    <li ref={Option4} onClick={(e) => { checkAns(e, 4, index + 1) }}>{question.option4}</li>
                 </ul>
                 <button onClick={next}>Next</button>
                 <div className="index">{index + 1} of {data.length} questions</div>

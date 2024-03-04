@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, redirect
+from flask_cors import CORS
 
 
 answers = {
@@ -10,6 +11,7 @@ answers = {
 }
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/')
 def home():
@@ -24,6 +26,13 @@ user_data = {
         "email": "Admin@example.com"
     }
 }
+
+@app.route('/get-answer/<int:question_id>')
+def get_answer(question_id):
+    try:
+        return jsonify({"answer": answers[question_id]}), 200
+    except KeyError:
+        return jsonify({"error": f"Question with question_id:{question_id} not found"}), 404
 
 @app.route('/get-user/<int:user_id>')
 def get_user(user_id):
