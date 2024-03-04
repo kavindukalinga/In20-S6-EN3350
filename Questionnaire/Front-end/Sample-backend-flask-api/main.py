@@ -1,5 +1,14 @@
 from flask import Flask, request, jsonify, redirect
 
+
+answers = {
+    1: 1,
+    2: 4,
+    3: 1,
+    4: 3,
+    5: 2,
+}
+
 app = Flask(__name__)
 
 @app.route('/')

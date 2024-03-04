@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './Quiz.css'
 import { data } from '../../assets/data';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,12 @@ const Quiz = () => {
     let [lock, setLock] = React.useState(false);
     let [score, setScore] = React.useState(0);
     let [result, setResult] = React.useState(false);
+
+    // useEffect(() => {
+    //     console.log("Quiz22");
+
+    //     setQuestion(data[index]);
+    // }, []);
 
     let Option1 = React.useRef(null);
     let Option2 = React.useRef(null);
