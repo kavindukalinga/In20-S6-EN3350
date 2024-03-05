@@ -5,7 +5,7 @@ export const data = [
       option2: "Router",
       option3: "LAN Cable",
       option4: "Pen Drive",
-      ans: 1,
+      // ans: 1,
     },
     {
       question: "Which continent has the highest number of countries?",
@@ -13,7 +13,7 @@ export const data = [
       option2: "Europe",
       option3: "North America",
       option4: "Africa",
-      ans: 4,
+      // ans: 4,
     },
     {
       question: "Junk e-mail is also called?",
@@ -21,7 +21,7 @@ export const data = [
       option2: "Fake",
       option3: "Archived",
       option4: "Bin",
-      ans: 1,
+      // ans: 1,
     },
     {
       question: "A computer cannot BOOT if it does not have the?",
@@ -29,7 +29,7 @@ export const data = [
       option2: "Internet",
       option3: "Operating System",
       option4: "Mouse",
-      ans: 3,
+      // ans: 3,
     },
     {
       question: "First page of Website is termed as?",
@@ -37,6 +37,6 @@ export const data = [
       option2: "Homepage",
       option3: "Sitemap",
       option4: "Pen Drive",
-      ans: 2,
+      // ans: 2,
     },
   ];
