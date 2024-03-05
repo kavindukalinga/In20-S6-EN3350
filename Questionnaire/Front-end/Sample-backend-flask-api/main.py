@@ -1,7 +1,14 @@
 from flask import Flask, request, jsonify, redirect
 from flask_cors import CORS
 
+# Need to add a database to store the data
+'''
+There should be 3 coloumns in questions Table:
+id(primary key - int), the right answer(int), whether the question is answered or not(boolean - default value is False)
 
+And there is 2 cloumns and 1 row in isAccessed Table:
+id(primary key - int), isAccessed(boolean) 
+'''
 answers = {
     1: 1,
     2: 4,
