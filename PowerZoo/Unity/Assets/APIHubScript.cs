@@ -9,6 +9,7 @@ public class APIHubScript : MonoBehaviour
     public PostMethod postMethod;
     public string API_KEY = "NjVjNjA0MGY0Njc3MGQ1YzY2MTcyMmM2OjY1YzYwNDBmNDY3NzBkNWM2NjE3MjJiYw";
     public string JWT_TOKEN;
+    public string Response;
     private string Auth_API = "http://20.15.114.131:8080/api/login";
     private string ViewProfile_API = "http://20.15.114.131:8080/api/user/profile/view";
     private string ViewPlayerList_API = "http://20.15.114.131:8080/api/user/profile/list";
@@ -49,12 +50,13 @@ public class APIHubScript : MonoBehaviour
     }
 
 
-    IEnumerator get_request(string url)
+    public IEnumerator get_request(string url)
     {
         if (string.IsNullOrEmpty(JWT_TOKEN))
         {
             yield return StartCoroutine(player_authenticate());
         }
+        Response = "";
         postMethod.outputArea.text = "Getting Player Details...";
 
         using (UnityWebRequest request = new UnityWebRequest(url, "GET"))
@@ -70,11 +72,13 @@ public class APIHubScript : MonoBehaviour
             {
                 string playerProfile = request.downloadHandler.text;
                 postMethod.outputArea.text = playerProfile;
+                Response = playerProfile;
 
-                Debug.Log("Response: " + request.downloadHandler.text);
+                Debug.Log("Response: " + Response);
             }
         }
     }
+
 }
 
 [System.Serializable]
