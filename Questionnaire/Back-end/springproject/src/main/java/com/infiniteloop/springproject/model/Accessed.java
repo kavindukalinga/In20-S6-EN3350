@@ -5,12 +5,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Player {
+public class Accessed {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    String name;
+    Boolean isAnswered;
 
     public Integer getId() {
         return id;
@@ -20,13 +20,12 @@ public class Player {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Boolean getIsAnswered() {
+        return isAnswered;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setIsAnswered(Boolean isAnswered) {
+        this.isAnswered = isAnswered;
     }
+    
 }
-
-
