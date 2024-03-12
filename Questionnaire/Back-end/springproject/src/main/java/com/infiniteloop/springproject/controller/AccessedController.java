@@ -26,22 +26,23 @@ public class AccessedController {
          return accessed;
     }
 
-    @GetMapping("/{id}/isAnswered")
-    public ResponseEntity<Boolean> isAnswered(@PathVariable Integer id) {
+    @GetMapping(value = "/{id}/isAnswered", produces = "application/json")
+    public ResponseEntity<String> isAnswered(@PathVariable Integer id) {
         // Retrieve Accessed entity by ID
         Accessed accessed = accessedRepo.findById(id).orElse(null);
         
         // Check if the accessed entity exists
         if (accessed != null) {
             // Return the value of isAnswered field
-            return ResponseEntity.ok(accessed.getIsAnswered());
+            boolean result = accessed.getIsAnswered();
+            return ResponseEntity.ok("{\"isAnswered\": " + result + "}");
         } else {
             // If the entity doesn't exist, return 404 Not Found
             return ResponseEntity.notFound().build();
         }
     }
 
-    @GetMapping("/{id}/markAnswered")
+    @GetMapping(value = "/{id}/markAnswered", produces = "application/json" )
     public ResponseEntity<?> markAnswered(@PathVariable Integer id) {
         // Retrieve Accessed entity by ID
         Accessed accessed = accessedRepo.findById(id).orElse(null);

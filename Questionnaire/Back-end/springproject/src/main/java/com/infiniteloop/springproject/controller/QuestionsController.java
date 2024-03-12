@@ -33,7 +33,7 @@ public class QuestionsController {
         return questions;
     }
 
-    @GetMapping("/{id}/correctAnswer") 
+    @GetMapping(value="/{id}/correctAnswer",produces="application/json") 
     ResponseEntity<String> getCorrectAnswerById(@PathVariable Integer id) {
         Optional<Questions> optionalQuestion = questionRepo.findById(id);
         if (optionalQuestion.isPresent()) {
@@ -49,11 +49,12 @@ public class QuestionsController {
     }
 
 
-    @GetMapping("/progress")
-    ResponseEntity<Integer> getMaxCompletedQuestionId() {
+    @GetMapping(value="/progress", produces="application/json")
+    ResponseEntity<String> getMaxCompletedQuestionId() {
         Integer maxCompletedId = questionRepo.findMaxCompletedQuestionId();
         if (maxCompletedId != null) {
-            return ResponseEntity.ok(maxCompletedId);
+            String jsonResponse = "{\"maxCompletedId\": " + maxCompletedId + "}";
+            return ResponseEntity.ok(jsonResponse);
         } else {
             return ResponseEntity.notFound().build();
         }
