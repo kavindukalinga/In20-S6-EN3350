@@ -27,6 +27,11 @@ This repository contains the work done for In20-S6-EN3350
 
 <p align="left"> <b>Team Member : Nuwan Kannangra </b>
 <a href="https://www.linkedin.com/in/Nuwan Kannangra" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="NuwanKannangra" height="15" width="20" /></a>
+<a href="https://twitter.com/kannangaranv" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/twitter.svg" alt="kavindukalinga" height="15" width="20" /></a>
+<a href="https://stackoverflow.com/users/23588925/nuwan-kannangara" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/stack-overflow.svg" alt="kavindu-kalinga" height="15" width="20" /></a>
+<a href="https://www.facebook.com/nuwan.kannangara.35" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/facebook.svg" alt="kavindu.kalinga" height="15" width="20" /></a>
+<a href="https://www.instagram.com/__nvk____/" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg" alt="kavindu_kalinga" height="15" width="20" /></a>
+<a href="https://discord.gg/i_hvnt_discord_acc" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/discord.svg" alt="CrazzyHawK#8536" height="15" width="20" /></a>
 </p>
 
 <p align="left"> <b> Team Member : Ruwani Prabuddhika</b>
