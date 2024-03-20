@@ -14,7 +14,7 @@ public class PostMethod : MonoBehaviour
     {
         outputArea = GameObject.Find("OutputArea").GetComponent<InputField>();
         playerProfile.GetPlayerProfile();
-        // GameObject.Find("PostButton").GetComponent<Button>().onClick.AddListener(APIHub.Authenticate);
+        GameObject.Find("PostButton").GetComponent<Button>().onClick.AddListener(playerProfile.UpdateProfile);
         // APIHub.ViewProfile();
     }
 

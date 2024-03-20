@@ -22,7 +22,7 @@ public class APIHubScript : MonoBehaviour
     public void Authenticate() => StartCoroutine(player_authenticate());
     public void ViewProfile() => StartCoroutine(get_request(ViewProfile_API));
 
-    IEnumerator player_authenticate() {
+    public IEnumerator player_authenticate() {
         postMethod.outputArea.text = "Authenticating...";
         string url = Auth_API;
 
