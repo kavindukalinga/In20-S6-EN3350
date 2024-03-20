@@ -8,86 +8,16 @@ public class PostMethod : MonoBehaviour
 {
     public InputField outputArea;
     public APIHubScript APIHub;
-    // public string API_KEY = "NjVjNjA0MGY0Njc3MGQ1YzY2MTcyMmM2OjY1YzYwNDBmNDY3NzBkNWM2NjE3MjJiYw";
-    // public string JWT_TOKEN;
-    // private string Auth_API = "http://20.15.114.131:8080/api/login";
-    // private string ViewProfile_API = "http://20.15.114.131:8080/api/user/profile/view";
-    // private string ViewPlayerList API = "http://20.15.114.131:8080/api/user/profile/list";
-    // private string ViewYearlyPowerConsumption_API = "http://20.15.114.131:8080/api/power-consumption/yearly/view";
-    // private string ViewSpecificMonthConsumption_API = "http://20.15.114.131:8080/api/power-consumption/month/view";
-    // private string ViewCurrentMonthConsumption_API = "http://20.15.114.131:8080/api/power-consumption/current-month/view";
-    // private string ViewDailyConsumptionSpecificMonth_API = "http://20.15.114.131:8080/api/power-consumption/month/daily/view";
-    // private string ViewDailyConsumptionCurrentMonth_API = "http://20.15.114.131:8080/api/power-consumption/current-month/daily/view";
+    public PlayerProfileScript playerProfile;
 
     void Start()
     {
         outputArea = GameObject.Find("OutputArea").GetComponent<InputField>();
-        // GameObject.Find("PostButton").GetComponent<Button>().onClick.AddListener(APIHub.Authenticate);
-        APIHub.ViewProfile();
+        playerProfile.GetPlayerProfile();
+        GameObject.Find("PostButton").GetComponent<Button>().onClick.AddListener(playerProfile.UpdateProfile);
+        // APIHub.ViewProfile();
     }
 
-    // void Authenticate() => StartCoroutine(player_authenticate());
-    // void ViewProfile() => StartCoroutine(get_request(ViewProfile_API));
-
-    // IEnumerator player_authenticate() {
-    //     outputArea.text = "Authenticating...";
-    //     string url = Auth_API;
-
-    //     // Create a JSON object representing your data
-    //     string jsonData = "{\"apiKey\": \"" + API_KEY + "\"}";
-
-    //     // Set the content type header to indicate JSON data
-    //     byte[] postData = System.Text.Encoding.UTF8.GetBytes(jsonData);
-    //     using (UnityWebRequest request = new UnityWebRequest(url, "POST")) {
-    //         request.uploadHandler = new UploadHandlerRaw(postData);
-    //         request.downloadHandler = new DownloadHandlerBuffer();
-    //         request.SetRequestHeader("Content-Type", "application/json");
-
-    //         yield return request.SendWebRequest();
-
-    //         if (request.isNetworkError || request.isHttpError) {
-    //             outputArea.text = request.error;
-    //         } else {
-    //             string jsonResponse = request.downloadHandler.text;
-    //             // outputArea.text = jsonResponse;
-    //             TokenResponse tokenResponse = JsonUtility.FromJson<TokenResponse>(jsonResponse);
-    //             JWT_TOKEN = tokenResponse.token;
-    //         }
-    //     }
-    // }
-
-    // IEnumerator get_request(string url)
-    // {
-    //     if (string.IsNullOrEmpty(JWT_TOKEN))
-    //     {
-    //         yield return StartCoroutine(player_authenticate());
-    //     }
-    //     outputArea.text = "Getting Player Details...";
-
-    //     using (UnityWebRequest request = new UnityWebRequest(url, "GET"))
-    //     {
-    //         request.downloadHandler = new DownloadHandlerBuffer();
-    //         request.SetRequestHeader("Authorization", "Bearer " + JWT_TOKEN);
-    //         yield return request.SendWebRequest();
-    //         if (request.result != UnityWebRequest.Result.Success)
-    //         {
-    //             outputArea.text = request.error;
-    //         }
-    //         else
-    //         {
-    //             string playerProfile = request.downloadHandler.text;
-    //             outputArea.text = playerProfile;
-
-    //             Debug.Log("Response: " + request.downloadHandler.text);
-    //         }
-    //     }
-    // }
 
 }
-
-// [System.Serializable]
-// public class TokenResponse
-// {
-//     public string token;
-// }
 
