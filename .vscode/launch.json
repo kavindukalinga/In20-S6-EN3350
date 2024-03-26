@@ -25,6 +25,16 @@
             "projectName": "springprojectmongodb",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-SpringprojectmongodbApplication<springprojectmongodb>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.infiniteloop.springprojectmongodb.SpringprojectmongodbApplication",
+            "projectName": "springprojectmongodb",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
