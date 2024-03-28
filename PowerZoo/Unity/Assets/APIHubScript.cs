@@ -6,7 +6,6 @@ using UnityEngine.Networking;
 
 public class APIHubScript : MonoBehaviour
 {
-    public PostMethod postMethod;
     public string API_KEY = "NjVjNjA0MGY0Njc3MGQ1YzY2MTcyMmM2OjY1YzYwNDBmNDY3NzBkNWM2NjE3MjJiYw";
     public string JWT_TOKEN;
     public string Response;
@@ -21,9 +20,14 @@ public class APIHubScript : MonoBehaviour
 
     public void Authenticate() => StartCoroutine(player_authenticate());
     public void ViewProfile() => StartCoroutine(get_request(ViewProfile_API));
+    public void ViewPlayerList() => StartCoroutine(get_request(ViewPlayerList_API));
+    public void ViewYearlyPowerConsumption() => StartCoroutine(get_request(ViewYearlyPowerConsumption_API));
+    public void ViewSpecificMonthConsumption() => StartCoroutine(get_request(ViewSpecificMonthConsumption_API));
+    public void ViewCurrentMonthConsumption() => StartCoroutine(get_request(ViewCurrentMonthConsumption_API));
+    public void ViewDailyConsumptionSpecificMonth() => StartCoroutine(get_request(ViewDailyConsumptionSpecificMonth_API));
+    public void ViewDailyConsumptionCurrentMonth() => StartCoroutine(get_request(ViewDailyConsumptionCurrentMonth_API));
 
-    public IEnumerator player_authenticate() {
-        postMethod.outputArea.text = "Authenticating...";
+    public IEnumerator player_authenticate() { // POST request
         string url = Auth_API;
 
         // Create a JSON object representing your data
@@ -39,10 +43,9 @@ public class APIHubScript : MonoBehaviour
             yield return request.SendWebRequest();
 
             if (request.isNetworkError || request.isHttpError) {
-                postMethod.outputArea.text = request.error;
+                Debug.LogError(request.error);
             } else {
                 string jsonResponse = request.downloadHandler.text;
-                // postMethod.outputArea.text = jsonResponse;
                 TokenResponse tokenResponse = JsonUtility.FromJson<TokenResponse>(jsonResponse);
                 JWT_TOKEN = tokenResponse.token;
             }
@@ -57,7 +60,6 @@ public class APIHubScript : MonoBehaviour
             yield return StartCoroutine(player_authenticate());
         }
         Response = "";
-        postMethod.outputArea.text = "Getting Player Details...";
 
         using (UnityWebRequest request = new UnityWebRequest(url, "GET"))
         {
@@ -66,14 +68,11 @@ public class APIHubScript : MonoBehaviour
             yield return request.SendWebRequest();
             if (request.result != UnityWebRequest.Result.Success)
             {
-                postMethod.outputArea.text = request.error;
+                Debug.LogError(request.error);
             }
             else
             {
-                string playerProfile = request.downloadHandler.text;
-                postMethod.outputArea.text = playerProfile;
-                Response = playerProfile;
-
+                Response = request.downloadHandler.text;
                 Debug.Log("Response: " + Response);
             }
         }

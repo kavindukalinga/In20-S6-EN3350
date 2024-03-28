@@ -4,18 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using SimpleJSON;
 using UnityEngine.Networking;
+using TMPro;
 
 public class PlayerProfileScript : MonoBehaviour
 {
     public APIHubScript APIHub;
     private PlayerData playerData;
-    public InputField outputArea;
-    public InputField lastName;
-    public InputField userName;
-    public InputField nic;
-    public InputField phoneNumber;
-    public InputField email;
-    public InputField profilePictureURL;
+    public TMP_InputField firstName;
+    public TMP_InputField lastName;
+    public TMP_InputField userName;
+    public TMP_InputField nic;
+    public TMP_InputField phoneNumber;
+    public TMP_InputField email;
+    public TMP_InputField profilePictureURL;
     private string ViewProfile_API = "http://20.15.114.131:8080/api/user/profile/view";
     private string UpdateProfile_API = "http://20.15.114.131:8080/api/user/profile/update";
 
@@ -32,6 +33,7 @@ public class PlayerProfileScript : MonoBehaviour
         if (APIHub.Response != null)
         {
             playerData = JsonUtility.FromJson<PlayerData>(APIHub.Response);
+            Debug.Log(playerData);
             Debug.Log("Player details: " + playerData.user.firstname + " " + playerData.user.lastname);
             load_data_to_UI();
         }
@@ -43,15 +45,16 @@ public class PlayerProfileScript : MonoBehaviour
 
     private void load_data_to_UI()
     {
-        outputArea = GameObject.Find("OutputArea").GetComponent<InputField>();
-        lastName = GameObject.Find("LastName").GetComponent<InputField>();
-        userName = GameObject.Find("UserName").GetComponent<InputField>();
-        nic = GameObject.Find("NIC").GetComponent<InputField>();
-        phoneNumber = GameObject.Find("PhoneNumber").GetComponent<InputField>();
-        email = GameObject.Find("Email").GetComponent<InputField>();
-        profilePictureURL = GameObject.Find("ProfilePictureURL").GetComponent<InputField>();
+        // firstName = GameObject.Find("FirstName").GetComponent<TMP_InputField>();
+        // lastName = GameObject.Find("LastName").GetComponent<TMP_InputField>();
+        // userName = GameObject.Find("UserName").GetComponent<TMP_InputField>();
+        // nic = GameObject.Find("NIC").GetComponent<TMP_InputField>();
+        // phoneNumber = GameObject.Find("PhoneNumber").GetComponent<TMP_InputField>();
+        // email = GameObject.Find("Email").GetComponent<TMP_InputField>();
+        // profilePictureURL = GameObject.Find("ProfilePictureURL").GetComponent<TMP_InputField>();
 
-        outputArea.text = playerData.user.firstname;
+        Debug.Log("Player details: " + playerData.user.firstname + " " + playerData.user.lastname);
+        firstName.text = playerData.user.firstname;
         lastName.text = playerData.user.lastname;
         userName.text = playerData.user.username;
         nic.text = playerData.user.nic;
@@ -65,7 +68,7 @@ public class PlayerProfileScript : MonoBehaviour
 
     private void update_profile()
     {
-        playerData.user.firstname = outputArea.text;
+        playerData.user.firstname = firstName.text;
         playerData.user.lastname = lastName.text;
         playerData.user.username = null;
         playerData.user.nic = nic.text;
@@ -88,7 +91,7 @@ public class PlayerProfileScript : MonoBehaviour
             yield return request.SendWebRequest();
             if (request.result != UnityWebRequest.Result.Success)
             {
-                outputArea.text = request.error;
+                firstName.text = request.error;
             }
             else
             {
