@@ -17,6 +17,9 @@ answers = {
     5: 2,
 }
 
+available_question = {'available_question':0}
+userAnswers={}
+
 app = Flask(__name__)
 CORS(app)
 
@@ -24,6 +27,10 @@ CORS(app)
 def home():
     button_html = '<form action="/quiz" method="get"><button type="submit">Go to Quiz</button></form>'
     return button_html
+
+@app.route('/useranswers')
+def user_answers():
+    return jsonify(userAnswers)
 
 user_data = {
     8888: {
@@ -33,6 +40,13 @@ user_data = {
         "email": "Admin@example.com"
     }
 }
+@app.route('/get-current-question')
+def get_current_question():
+    try:
+        return jsonify(available_question), 200
+    except KeyError:
+        return jsonify({"error": "Available question not found"}), 404
+
 
 @app.route('/get-answer/<int:question_id>')
 def get_answer(question_id):
@@ -66,6 +80,23 @@ def quiz():
 def game():
     score = request.args.get('score')
     return "Game Menu with score: " + score
+
+@app.route('/api/data', methods=['POST'])
+def receive_data():
+    data = request.json
+    ans = data.get('ans')
+    question_id = data.get('question_id')
+    userAnswers[question_id] = ans
+    if available_question['available_question'] <=4:
+        available_question['available_question'] = available_question['available_question']+1
+    else:
+        available_question['available_question'] = 0
+    # Do something with the received data, such as checking the answer
+    # Return appropriate response
+    return jsonify({'answer': 'your_answer'})
+
+## Need to get score like this as well
+
 
 if __name__ == '__main__':
     app.run(debug=True)
