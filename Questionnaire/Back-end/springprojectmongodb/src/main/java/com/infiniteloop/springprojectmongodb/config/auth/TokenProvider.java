@@ -16,9 +16,11 @@ import java.time.ZoneOffset;
 
 @Service
 public class TokenProvider {
+  // Secret key for generating and validating tokens
   @Value("${security.jwt.token.secret-key}")
   private String JWT_SECRET;
 
+  // Generate access token for user
   public String generateAccessToken(User user) throws JWTCreationException{
     try {
       Algorithm algorithm = Algorithm.HMAC256(JWT_SECRET);
@@ -32,6 +34,7 @@ public class TokenProvider {
     }
   }
 
+  // Validate access token
   public String validateToken(String token) throws BadCredentialsException{
     try {
       Algorithm algorithm = Algorithm.HMAC256(JWT_SECRET);
@@ -44,8 +47,8 @@ public class TokenProvider {
     }
   }
 
+  // Generate expiration date for access token
   private Instant genAccessExpirationDate() {
     return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
   }
 }
-

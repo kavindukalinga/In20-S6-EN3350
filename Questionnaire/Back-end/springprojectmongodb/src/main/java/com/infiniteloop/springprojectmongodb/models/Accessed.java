@@ -3,15 +3,17 @@ package com.infiniteloop.springprojectmongodb.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "accessed") // Specify the MongoDB collection name
+// Annotated with @Document to specify MongoDB collection name
+@Document(collection = "accessed")
 public class Accessed {
     @Id
-    String id; // Change the type to String for MongoDB ObjectId
+    String id; // MongoDB ObjectId, stored as String
 
-    Boolean isAnswered;
+    Boolean isAnswered; 
 
     // Constructors, getters, and setters
 
+    // Constructor with isAnswered parameter
     public Accessed(Boolean isAnswered) {
         this.isAnswered = isAnswered;
     }

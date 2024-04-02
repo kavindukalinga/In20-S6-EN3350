@@ -17,23 +17,28 @@ public class AuthService implements UserDetailsService {
   @Autowired
   UserRepo repository;
 
+  // Method to load user by username (used by Spring Security)
   @Override
   public UserDetails loadUserByUsername(String username) {
     var user = repository.findByLogin(username);
     return user;
   }
 
+  // Method to register a new user
   public UserDetails signUp(SignUpDto data) throws InvalidJwtException {
 
+    // Check if username already exists
     if (repository.findByLogin(data.login()) != null) {
       throw new InvalidJwtException("Username already exists");
     }
 
+    // Encrypt password
     String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
 
+    // Create new user
     User newUser = new User(data.login(), encryptedPassword, data.role());
 
+    // Save the new user
     return repository.save(newUser);
-
   }
 }

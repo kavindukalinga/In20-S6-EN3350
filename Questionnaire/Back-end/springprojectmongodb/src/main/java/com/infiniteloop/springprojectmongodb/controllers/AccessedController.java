@@ -1,6 +1,5 @@
 package com.infiniteloop.springprojectmongodb.controllers;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
 import com.infiniteloop.springprojectmongodb.repositories.AccessedRepo;
 import com.infiniteloop.springprojectmongodb.models.Accessed;
 
@@ -21,12 +19,14 @@ public class AccessedController {
     @Autowired
     AccessedRepo accessedRepo;
 
+    // Endpoint to add Accessed record
     @PostMapping("/add")
     Accessed addAccessed(@RequestBody Accessed accessed) {
         accessedRepo.save(accessed);
         return accessed;
     }
 
+    // Endpoint to check if Accessed record is answered
     @GetMapping(value = "/{id}/isAnswered", produces = "application/json")
     public ResponseEntity<String> isAnswered(@PathVariable String id) {
         Accessed accessed = accessedRepo.findById(id).orElse(null);
@@ -39,6 +39,7 @@ public class AccessedController {
         }
     }
 
+    // Endpoint to mark Accessed record as answered
     @PostMapping(value = "/{id}/markAnswered", produces = "application/json" )
     public ResponseEntity<?> markAnswered(@PathVariable String id) {
         Accessed accessed = accessedRepo.findById(id).orElse(null);
@@ -52,5 +53,3 @@ public class AccessedController {
         }
     }
 }
-
-

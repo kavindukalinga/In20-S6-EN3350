@@ -31,42 +31,50 @@ public class User implements UserDetails {
 
     private UserRole role;
 
+    // Constructors, getters, and setters
+
+    // Constructor with all parameters
     public User(String login, String password, UserRole role) {
         this.login = login;
         this.password = password;
         this.role = role;
     }
 
+    // Method to retrieve user authorities
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (this.role == UserRole.ADMIN) {
+            // If user is admin, grant both admin and user roles
             return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
         }
+        // Otherwise, grant only user role
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
+    // Method to retrieve username
     @Override
     public String getUsername() {
         return login;
     }
 
+    // Methods representing account status
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return true; // Account never expires
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return true; // Account never gets locked
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return true; // Credentials never expire
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return true; // Account is always enabled
     }
 }

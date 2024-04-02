@@ -19,9 +19,11 @@ import com.infiniteloop.springprojectmongodb.config.auth.SecurityFilter;
 @Configuration
 @EnableWebSecurity
 public class AuthConfig {
+  // Autowire SecurityFilter
   @Autowired
   SecurityFilter securityFilter;
 
+  // Define Security Filter Chain
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
     return httpSecurity
@@ -34,15 +36,16 @@ public class AuthConfig {
         .build();
   }
 
+  // Define Authentication Manager
   @Bean
   AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
       throws Exception {
     return authenticationConfiguration.getAuthenticationManager();
   }
 
+  // Define Password Encoder
   @Bean
   PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
 }
-

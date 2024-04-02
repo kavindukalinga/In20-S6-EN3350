@@ -1,6 +1,5 @@
 package com.infiniteloop.springprojectmongodb.controllers;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,18 +20,21 @@ public class QuestionsController {
     @Autowired
     QuestionsRepo questionRepo;
 
+    // Endpoint to add a question
     @PostMapping("/add")
     Questions addQuestion(@RequestBody Questions question) {
          questionRepo.save(question);
          return question;
     }
 
+    // Endpoint to get all questions
     @GetMapping("/getall")
     List<Questions> getAllQuestions() {
         List<Questions> questions = questionRepo.findAll();
         return questions;
     }
 
+    // Endpoint to get correct answer by question id
     @GetMapping(value = "/{id}/correctAnswer", produces = "application/json")
     public ResponseEntity<String> getCorrectAnswerById(@PathVariable String id) {
         try {
@@ -52,6 +54,7 @@ public class QuestionsController {
         }
     }
 
+    // Endpoint to get maximum completed question id
     @GetMapping("/progress")
     ResponseEntity<String> getMaxCompletedQuestionId() {
         try {
@@ -68,10 +71,10 @@ public class QuestionsController {
         }
     }
 
+    // Exception handler for handling all exceptions
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception ex) {
         String errorMessage = "{\"error\": \"" + ex.getMessage() + "\"}";
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
     }
 }
-
