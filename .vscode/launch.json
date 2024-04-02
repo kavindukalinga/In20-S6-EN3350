@@ -2,6 +2,12 @@
     "configurations": [
         {
             "type": "java",
+            "name": "SpringprojectmongodbApplication",
+            "request": "launch",
+            "mainClass": "com.infiniteloop.springprojectmongodb.SpringprojectmongodbApplication"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-SpringprojectApplication<springproject>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
@@ -9,6 +15,27 @@
             "projectName": "springproject",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-SpringprojectApplication<springprojectmongodb>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.infiniteloop.springprojectmongodb.SpringprojectApplication",
+            "projectName": "springprojectmongodb",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-SpringprojectmongodbApplication<springprojectmongodb>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.infiniteloop.springprojectmongodb.SpringprojectmongodbApplication",
+            "projectName": "springprojectmongodb",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
+
