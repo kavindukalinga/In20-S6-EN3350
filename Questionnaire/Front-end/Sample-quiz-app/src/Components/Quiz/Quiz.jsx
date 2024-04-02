@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Quiz.css'
 import { data } from '../../assets/data';
 import { useNavigate } from 'react-router-dom';
@@ -12,11 +12,34 @@ const Quiz = () => {
     let [score, setScore] = React.useState(0);
     let [result, setResult] = React.useState(false);
 
-    // useEffect(() => {
-    //     console.log("Quiz22");
 
-    //     setQuestion(data[index]);
-    // }, []);
+
+    const currentQuestion = async () => {
+        try {
+            const response = await fetch(`http://127.0.0.1:5000/get-current-question`);
+            const data2 = await response.json();
+            const fetchedAnswer = data2['available_question'];
+            // console.log("fetchedAnswer", fetchedAnswer);
+            setIndex(fetchedAnswer);
+            // console.log("index", index);
+            //console.log("data", data[fetchedAnswer]);
+            if (fetchedAnswer < data.length) {
+                setQuestion(data[fetchedAnswer]);
+            }
+            else {
+                setResult(true);
+            }
+            // setQuestion(data[fetchedAnswer]);
+            // return fetchedAnswer;
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    useEffect(() => {
+        currentQuestion();
+    }, []);
 
     let Option1 = React.useRef(null);
     let Option2 = React.useRef(null);
@@ -31,6 +54,14 @@ const Quiz = () => {
                 const response = await fetch(`http://127.0.0.1:5000/get-answer/${question_id}`);
                 const data = await response.json();
                 const fetchedAnswer = data['answer'];
+
+                const userAnswers = await fetch(`http://127.0.0.1:5000/api/data`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ ans, question_id }),
+                });
 
                 if (fetchedAnswer === ans) {
                     e.target.classList.add('correct');
