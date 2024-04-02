@@ -1,6 +1,6 @@
-package com.infiniteloop.springprojectmongodb.repository;
+package com.infiniteloop.springprojectmongodb.repositories;
 
-import com.infiniteloop.springprojectmongodb.model.Questions;
+import com.infiniteloop.springprojectmongodb.models.Questions;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 

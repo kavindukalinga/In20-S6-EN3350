@@ -1,4 +1,4 @@
-package com.infiniteloop.springprojectmongodb.controller;
+package com.infiniteloop.springprojectmongodb.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.infiniteloop.springprojectmongodb.repository.AccessedRepo;
-import com.infiniteloop.springprojectmongodb.model.Accessed;
+import com.infiniteloop.springprojectmongodb.repositories.AccessedRepo;
+import com.infiniteloop.springprojectmongodb.models.Accessed;
 
 @RestController
 @RequestMapping(value = "/accessed")

@@ -1,4 +1,4 @@
-package com.infiniteloop.springprojectmongodb.model;
+package com.infiniteloop.springprojectmongodb.models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
