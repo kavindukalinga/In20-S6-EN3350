@@ -26,9 +26,11 @@ public class Questions {
 
     private String playerAnswer;
 
+    private Integer score;
+
     // Constructors, getters, and setters
 
-    public Questions(String questionId, String correctAnswer, Boolean isCompleted, String question, Map<String, String> answers, String generalFeedback, Map<String, String> specificFeedback, String playerAnswer, Integer sortKey) {
+    public Questions(String questionId, String correctAnswer, Boolean isCompleted, String question, Map<String, String> answers, String generalFeedback, Map<String, String> specificFeedback, String playerAnswer, Integer sortKey, Integer score) {
         this.questionId = questionId;
         this.correctAnswer = correctAnswer;
         this.isCompleted = isCompleted;
@@ -37,7 +39,8 @@ public class Questions {
         this.generalFeedback = generalFeedback;
         this.specificFeedback = specificFeedback;
         this.playerAnswer = playerAnswer;
-        this.sortKey = sortKey; // Set sortKey to ASCII value of the first character of questionId
+        this.sortKey = sortKey; 
+        this.score = score;
         
     }
 
@@ -127,5 +130,14 @@ public class Questions {
 
     public void setSortKey(Integer sortKey) {
         this.sortKey = sortKey;
+    }
+
+    // Getter and setter for score
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
     }
 }

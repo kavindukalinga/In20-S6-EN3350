@@ -11,7 +11,7 @@ public class Accessed {
 
     Boolean isAnswered;
     
-    String score;
+    Integer score;
 
     // Constructors, getters, and setters
 
@@ -43,11 +43,11 @@ public class Accessed {
     }
 
     // Getter and setter for score
-    public String getScore() {
+    public Integer getScore() {
         return score;
     }
 
-    public void setScore(String score) {
+    public void setScore(Integer score) {
         this.score = score;
     }
 }

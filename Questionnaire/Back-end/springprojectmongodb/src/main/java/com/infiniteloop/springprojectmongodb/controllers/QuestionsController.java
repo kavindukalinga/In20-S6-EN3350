@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+
+
 @RestController
 public class QuestionsController {
     @Autowired
@@ -34,8 +36,8 @@ public class QuestionsController {
          return question;
     }
 
-    @GetMapping("/getall-questions/{id}/{score}")
-    public ResponseEntity<?> getAllQuestions(@PathVariable String id, @PathVariable String score) {
+    @GetMapping("/getall-questions/{id}")
+    public ResponseEntity<?> getAllQuestions(@PathVariable String id) {
         try {
             Questions maxCompletedQuestion = questionRepo.findFirstByIsCompletedOrderBySortKeyDesc(true);
             if (Integer.parseInt(maxCompletedQuestion.getQuestionId()) == 10) {
@@ -55,7 +57,6 @@ public class QuestionsController {
                 Accessed accessed = accessedRepo.findById(id).orElse(null);
                 if (accessed != null) {
                     accessed.setIsAnswered(true);
-                    accessed.setScore(score);
                     accessedRepo.save(accessed);
                 }
                 return ResponseEntity.ok(questionDTOs);
@@ -66,7 +67,8 @@ public class QuestionsController {
             return ResponseEntity.ok("{\"error\": \"complete the questionnaire first!!!\"}");
         }
     }
-    
+
+
 
     // Endpoint to get correct answer by question id
     @GetMapping(value = "/get-answer/{id}/{answer}", produces = "application/json")
@@ -91,6 +93,13 @@ public class QuestionsController {
                                 question.setPlayerAnswer(answer);
                                 questionRepo.save(question);
                                 String correctAnswer = question.getCorrectAnswer();
+                                String playerAnswer = question.getPlayerAnswer();
+                                if (correctAnswer.equals(playerAnswer)) {
+                                    question.setScore(1);
+                                } else {
+                                    question.setScore(0);
+                                }
+                                questionRepo.save(question);
                                 Map<String, String> specificFeedback = question.getSpecificFeedback();
                                 String playerSpecificFeedback = specificFeedback.get(answer);
                                 ObjectMapper objectMapper = new ObjectMapper();
@@ -108,6 +117,26 @@ public class QuestionsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
         }
     }
+
+    @GetMapping(value = "/get-score", produces = "application/json")
+    public ResponseEntity<?> getScore()  {
+        try {
+            Questions maxCompletedQuestion = questionRepo.findFirstByIsCompletedOrderBySortKeyDesc(true);
+            Integer maxCompltedQuestionId = Integer.parseInt(maxCompletedQuestion.getQuestionId());
+            int score = 0;
+            for (int i = 1; i <= maxCompltedQuestionId; i++) {
+                Questions question = questionRepo.findById(String.valueOf(i)).orElse(null);
+                if (question != null) {
+                    score += question.getScore();
+                }
+            }
+            return ResponseEntity.ok("{\"score\": " + score + "}");
+        } catch (Exception e) {
+            String errorMessage = "{\"error\": \"Error occurred while retrieving score\"}";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        }
+    }
+    
 
     @GetMapping(value = "/get-question/{id}", produces = "application/json")
     public ResponseEntity<?> getQuestionById(@PathVariable String id) {
