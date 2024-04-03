@@ -166,7 +166,18 @@ questionsforall= [
 ]
 
 available_question = {'available_question':0}
-userAnswers={}
+userAnswers={
+  1: 0,
+  2: 0,
+  3: 0,
+  4: 0,
+  5: 0,
+  6: 0,
+  7: 0,
+  8: 0,
+  9: 0,
+  10: 0
+}
 
 app = Flask(__name__)
 CORS(app)
@@ -241,7 +252,7 @@ def receive_data():
     data = request.json
     ans = data.get('ans')
     question_id = data.get('question_id')
-    userAnswers[question_id] = ans
+    userAnswers[int(question_id)] = ans
     if available_question['available_question'] <=9:
         available_question['available_question'] = available_question['available_question']+1
     else:
@@ -251,6 +262,14 @@ def receive_data():
     return jsonify({'answer': 'your_answer'})
 
 ## Need to get score like this as well
+
+@app.route('/get-score')
+def get_score():
+    score = 0
+    for key in userAnswers:
+        if userAnswers[key] == answers[key]:
+            score = score + 1
+    return jsonify({'score': score})
 
 
 if __name__ == '__main__':

@@ -47,6 +47,13 @@
     font-weight: 500;
     color: #262626;
 }
+.container .currentscore{
+    margin: auto;
+    font-size: 18px;
+    font-weight: 500;
+    color: #262626;
+}
+
 .container .correct{
     background: #dffff2;
     border-color: #00d397;

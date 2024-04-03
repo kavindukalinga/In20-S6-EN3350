@@ -24,6 +24,12 @@ const Quiz = () => {
             setIndex(currentQuestionId);
             // console.log("index", index);
             //console.log("data", data[currentQuestionId]);
+
+            // Getting score:
+            const response3 = await fetch(`http://127.0.0.1:5000/get-score`);
+            const response3_in_json = await response3.json();
+            setScore(response3_in_json['score']);
+
             if (currentQuestionId < 10) {
                 const response2 = await fetch(`http://127.0.0.1:5000/get-question/${currentQuestionId}`);
                 const response2_in_json = await response2.json();
@@ -151,6 +157,7 @@ const Quiz = () => {
                 </ul>
                 <button onClick={next}>Next</button>
                 <div className="index">{index + 1} of {10} questions</div>
+                <div className="currentscore">{score} of {index + 1} are Correct</div>
             </>}
             {result ? <>
                 <h2>You got {score} answers correct out of {10} questions</h2>
