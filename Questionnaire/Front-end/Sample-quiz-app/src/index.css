@@ -1,9 +1,16 @@
-*{
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
 }
-body{
-  height: 100vh;
-  background-image: linear-gradient(120deg, #b48e12 0%, #fda085 100%);
-  font-family: 'poppins';
+
+body {
+  height: 100vh; /* Ensure body takes up the full viewport height */
+  background-image: url("../src/assets/background-zoo-img.png");
+  background-size: cover; /* Scale the background image to cover the entire background area */
+  background-attachment: fixed; /* Ensure the background image remains fixed while content scrolls */
+  font-family: 'Poppins', sans-serif; /* Use Poppins font */
+  display: flex; /* Use flexbox for layout */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
 }

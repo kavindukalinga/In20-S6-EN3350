@@ -7,7 +7,7 @@ const Quiz = () => {
 
     const navigate = useNavigate();
     let [index, setIndex] = React.useState(0);
-    let [question, setQuestion] = React.useState(data[index]);
+    let [question, setQuestion] = React.useState(data[0]);
     let [lock, setLock] = React.useState(false);
     let [score, setScore] = React.useState(0);
     let [result, setResult] = React.useState(false);
@@ -17,20 +17,30 @@ const Quiz = () => {
     const currentQuestion = async () => {
         try {
             const response = await fetch(`http://127.0.0.1:5000/get-current-question`);
-            const data2 = await response.json();
-            const fetchedAnswer = data2['available_question'];
-            // console.log("fetchedAnswer", fetchedAnswer);
-            setIndex(fetchedAnswer);
+            const response_in_json = await response.json();
+            const currentQuestionId = response_in_json['available_question'];
+
+            // console.log("currentQuestionId", currentQuestionId);
+            setIndex(currentQuestionId);
             // console.log("index", index);
-            //console.log("data", data[fetchedAnswer]);
-            if (fetchedAnswer < data.length) {
-                setQuestion(data[fetchedAnswer]);
+            //console.log("data", data[currentQuestionId]);
+
+            // Getting score:
+            const response3 = await fetch(`http://127.0.0.1:5000/get-score`);
+            const response3_in_json = await response3.json();
+            setScore(response3_in_json['score']);
+
+            if (currentQuestionId < 10) {
+                const response2 = await fetch(`http://127.0.0.1:5000/get-question/${currentQuestionId}`);
+                const response2_in_json = await response2.json();
+                // console.log("response2_in_json", response2_in_json);
+                setQuestion(response2_in_json);
             }
             else {
                 setResult(true);
             }
-            // setQuestion(data[fetchedAnswer]);
-            // return fetchedAnswer;
+            // setQuestion(data[currentQuestionId]);
+            // return currentQuestionId;
 
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -108,12 +118,13 @@ const Quiz = () => {
 
     const next = () => {
         if (lock === true) {
-            if (index === data.length - 1) {
+            if (index === 10 - 1) {
                 setResult(true);
                 return 0;
             }
             setIndex(++index);
-            setQuestion(data[index]);
+            currentQuestion();
+            // setQuestion(data[index]);
             setLock(false);
             option_array.map((option) => {
                 option.current.classList.remove('wrong');
@@ -137,18 +148,28 @@ const Quiz = () => {
             <h1>Questionnaire</h1>
             <hr />
             {result ? <></> : <>
-                <h2>{index + 1}. {question.question}</h2>
+                <h2>{index + 1}. {question?.question}</h2>
                 <ul>
-                    <li ref={Option1} onClick={(e) => { checkAns(e, 1, index + 1) }}>{question.option1}</li>
-                    <li ref={Option2} onClick={(e) => { checkAns(e, 2, index + 1) }}>{question.option2}</li>
-                    <li ref={Option3} onClick={(e) => { checkAns(e, 3, index + 1) }}>{question.option3}</li>
-                    <li ref={Option4} onClick={(e) => { checkAns(e, 4, index + 1) }}>{question.option4}</li>
+                    <li ref={Option1} onClick={(e) => { checkAns(e, 1, index + 1) }}>{question?.answers?.A}</li>
+                    <li ref={Option2} onClick={(e) => { checkAns(e, 2, index + 1) }}>{question?.answers?.B}</li>
+                    <li ref={Option3} onClick={(e) => { checkAns(e, 3, index + 1) }}>{question?.answers?.C}</li>
+                    <li ref={Option4} onClick={(e) => { checkAns(e, 4, index + 1) }}>{question?.answers?.D}</li>
                 </ul>
-                <button onClick={next}>Next</button>
-                <div className="index">{index + 1} of {data.length} questions</div>
+                <button onClick={next} className={lock ? "lock" : ""}>Next</button>
+                <div className="index">{index + 1} of {10} questions</div>
+                <div className="currentscore">{score} of {index + 1} answers are Correct</div>
+
+                {lock ? <>
+                    <hr />
+                    <h2>Feedback </h2>
+                    <li>{question?.generalFeedback}</li>
+                    <li>{question?.specificFeedback}</li>
+                </> : <></>}
             </>}
+
+
             {result ? <>
-                <h2>You got {score} answers correct out of {data.length} questions</h2>
+                <h2>You got {score} answers correct out of {10} questions</h2>
                 <button onClick={toGame}> Go to the Game! </button>
             </> : <></>}
 

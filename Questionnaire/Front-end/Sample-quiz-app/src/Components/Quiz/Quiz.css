@@ -2,7 +2,7 @@
     width: 640px;
     margin: auto;
     margin-top: 150px;
-    background: white;
+    background: linear-gradient(120deg, #faebb0 0%, #ffc1b1 80%);
     color: #262626;
     display: flex;
     flex-direction: column;
@@ -29,8 +29,24 @@
     margin-bottom: 20px;
     font-size: 20px;
     cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
 }
+.container ul li:hover {
+    background: #b9ddff;
+}
+
 .container button{
+    margin: auto;
+    width: 250px;
+    height: 65px;
+    background: #553f9a;
+    color: white;
+    font-size: 25px;
+    font-weight: 500;
+    border-radius: 8px;
+}
+
+.container button.lock{
     margin: auto;
     width: 250px;
     height: 65px;
@@ -41,17 +57,39 @@
     border-radius: 8px;
     cursor: pointer;
 }
+
+.container button.lock:hover {
+    background: #3a296b;
+  }
+
 .container .index{
     margin: auto;
     font-size: 18px;
     font-weight: 500;
     color: #262626;
 }
+.container .currentscore{
+    margin: auto;
+    font-size: 18px;
+    font-weight: 500;
+    color: #262626;
+}
+
 .container .correct{
     background: #dffff2;
     border-color: #00d397;
 }
+
+.container .correct:hover{
+    background: #74ffc7;
+    border-color: #008861;
+}
 .container .wrong{
     background: #ffebeb;
     border-color: #ff4a4a;
+}
+
+.container .wrong:hover{
+    background: #ffb3b3;
+    border-color: #f82828;
 }
