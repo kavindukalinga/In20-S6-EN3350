@@ -9,12 +9,14 @@ public class Accessed {
     @Id
     String id; // MongoDB ObjectId, stored as String
 
-    Boolean isAnswered; 
+    Boolean isAnswered;
+    
+    String score;
 
     // Constructors, getters, and setters
 
     // Constructor with isAnswered parameter
-    public Accessed(Boolean isAnswered) {
+    public Accessed(Boolean isAnswered, String score) {
         this.isAnswered = isAnswered;
     }
 
@@ -38,5 +40,14 @@ public class Accessed {
 
     public void setIsAnswered(Boolean isAnswered) {
         this.isAnswered = isAnswered;
+    }
+
+    // Getter and setter for score
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
     }
 }

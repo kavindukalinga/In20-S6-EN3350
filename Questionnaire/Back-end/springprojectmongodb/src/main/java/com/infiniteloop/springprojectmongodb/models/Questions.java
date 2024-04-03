@@ -8,25 +8,27 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "questionnaire") // Specify the MongoDB collection name
 public class Questions {
     @Id
-    String questionId; // Change the type to String for MongoDB ObjectId
+    private String questionId; // Change the type to String for MongoDB ObjectId
 
-    String correctAnswer;
+    private String correctAnswer;
+    
+    private Boolean isCompleted;
 
-    Boolean isCompleted;
+    private String question;
+    
+    private Integer sortKey; 
+    
+    private Map<String, String> answers;
 
-    String question; 
+    private String generalFeedback;
 
-    Map<String, String> answers;
+    private Map<String, String> specificFeedback;
 
-    String generalFeedback;
-
-    Map<String, String> specificFeedback;
-
-    String playerAnswer;
+    private String playerAnswer;
 
     // Constructors, getters, and setters
 
-    public Questions(String questionId, String correctAnswer, Boolean isCompleted, String question, Map<String, String> answers, String generalFeedback, Map<String, String> specificFeedback, String playerAnswer) {
+    public Questions(String questionId, String correctAnswer, Boolean isCompleted, String question, Map<String, String> answers, String generalFeedback, Map<String, String> specificFeedback, String playerAnswer, Integer sortKey) {
         this.questionId = questionId;
         this.correctAnswer = correctAnswer;
         this.isCompleted = isCompleted;
@@ -35,6 +37,8 @@ public class Questions {
         this.generalFeedback = generalFeedback;
         this.specificFeedback = specificFeedback;
         this.playerAnswer = playerAnswer;
+        this.sortKey = sortKey; // Set sortKey to ASCII value of the first character of questionId
+        
     }
 
     // No-argument constructor required by Spring Data MongoDB
@@ -48,6 +52,9 @@ public class Questions {
 
     public void setQuestionId(String questionId) {
         this.questionId = questionId;
+        if (questionId != null && !questionId.isEmpty()) {
+            this.sortKey = (int) questionId.charAt(0); // Update sortKey when questionId is set
+        }
     }
 
     // Getter and setter for correctAnswer
@@ -58,7 +65,7 @@ public class Questions {
     public void setCorrectAnswer(String correctAnswer) {
         this.correctAnswer = correctAnswer;
     }
-
+    
     // Getter and setter for isCompleted
     public Boolean getIsCompleted() {
         return isCompleted;
@@ -111,5 +118,14 @@ public class Questions {
 
     public void setPlayerAnswer(String playerAnswer) {
         this.playerAnswer = playerAnswer;
+    }
+
+    // Getter and setter for sortKey
+    public Integer getSortKey() {
+        return sortKey;
+    }
+
+    public void setSortKey(Integer sortKey) {
+        this.sortKey = sortKey;
     }
 }
