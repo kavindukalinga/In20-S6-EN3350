@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import com.infiniteloop.springprojectmongodb.repositories.AccessedRepo;
 import com.infiniteloop.springprojectmongodb.models.Accessed;
+import com.infiniteloop.springprojectmongodb.repositories.QuestionsRepo;
 
 @RestController
 @RequestMapping(value = "/accessed")
@@ -18,6 +19,9 @@ public class AccessedController {
 
     @Autowired
     AccessedRepo accessedRepo;
+
+    @Autowired
+    QuestionsRepo questionsRepo;
 
     // Endpoint to add Accessed record
     @PostMapping("/add")
@@ -29,27 +33,36 @@ public class AccessedController {
     // Endpoint to check if Accessed record is answered
     @GetMapping(value = "/{id}/isAnswered", produces = "application/json")
     public ResponseEntity<String> isAnswered(@PathVariable String id) {
-        Accessed accessed = accessedRepo.findById(id).orElse(null);
+        try {
+            Accessed accessed = accessedRepo.findById(id).orElse(null);
 
-        if (accessed != null) {
-            boolean result = accessed.getIsAnswered();
-            return ResponseEntity.ok("{\"isAnswered\": " + result + "}");
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\": \"No resource Found\"}");
+            if (accessed != null) {
+                boolean result = accessed.getIsAnswered();
+                return ResponseEntity.ok("{\"isAnswered\": " + result + "}");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\": \"No resource Found\"}");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\": \"An error occurred while processing the request\"}");
         }
     }
 
     // Endpoint to mark Accessed record as answered
-    @PostMapping(value = "/{id}/markAnswered", produces = "application/json" )
+    @PostMapping(value = "/{id}/markAnswered", produces = "application/json")
     public ResponseEntity<?> markAnswered(@PathVariable String id) {
-        Accessed accessed = accessedRepo.findById(id).orElse(null);
-
-        if (accessed != null) {
-            accessed.setIsAnswered(true);
-            accessedRepo.save(accessed);
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\": \"No resource Found\"}");
+        try {
+            Accessed accessed = accessedRepo.findById(id).orElse(null);
+            
+            if (accessed != null) {
+                accessed.setIsAnswered(true);
+                accessedRepo.save(accessed);
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\": \"No resource Found\"}");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\": \"An error occurred while processing the request\"}");
         }
     }
+
 }

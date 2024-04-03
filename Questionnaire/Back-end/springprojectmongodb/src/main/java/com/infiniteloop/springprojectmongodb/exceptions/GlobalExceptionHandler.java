@@ -8,6 +8,7 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -36,12 +37,19 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorsMap(errors));
   }
 
+  @ExceptionHandler(InternalAuthenticationServiceException.class)
+  public ResponseEntity<Map<String, List<String>>> handleInternalAuthenticationServiceException(InternalAuthenticationServiceException ex) {
+    List<String> errors = List.of("Invalid username or password");
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorsMap(errors));
+  }
+
   // Exception handler for bad credentials exceptions
   @ExceptionHandler(BadCredentialsException.class)
   public ResponseEntity<Map<String, List<String>>> handleBadCredentialsError(BadCredentialsException ex) {
-    List<String> errors = List.of(ex.getMessage());
+    List<String> errors = List.of("Invalid username or password");
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorsMap(errors));
   }
+
 
   // Exception handler for not found exceptions
   @ExceptionHandler(NotFoundException.class)

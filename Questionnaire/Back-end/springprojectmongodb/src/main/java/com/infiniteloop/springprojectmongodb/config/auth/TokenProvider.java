@@ -6,7 +6,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.infiniteloop.springprojectmongodb.models.User;
 
-import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +17,7 @@ import java.time.ZoneOffset;
 @Service
 public class TokenProvider {
   // Secret key for generating and validating tokens
-  @Value("${security.jwt.token.secret-key}")
-  private String JWT_SECRET;
+  private String JWT_SECRET = "infiniteloopSecretKey";
 
   // Generate access token for user
   public String generateAccessToken(User user) throws JWTCreationException{
