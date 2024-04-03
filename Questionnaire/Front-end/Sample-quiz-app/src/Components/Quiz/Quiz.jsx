@@ -155,10 +155,19 @@ const Quiz = () => {
                     <li ref={Option3} onClick={(e) => { checkAns(e, 3, index + 1) }}>{question?.answers?.C}</li>
                     <li ref={Option4} onClick={(e) => { checkAns(e, 4, index + 1) }}>{question?.answers?.D}</li>
                 </ul>
-                <button onClick={next}>Next</button>
+                <button onClick={next} className={lock ? "lock" : ""}>Next</button>
                 <div className="index">{index + 1} of {10} questions</div>
-                <div className="currentscore">{score} of {index + 1} are Correct</div>
+                <div className="currentscore">{score} of {index + 1} answers are Correct</div>
+
+                {lock ? <>
+                    <hr />
+                    <h2>Feedback </h2>
+                    <li>{question?.generalFeedback}</li>
+                    <li>{question?.specificFeedback}</li>
+                </> : <></>}
             </>}
+
+
             {result ? <>
                 <h2>You got {score} answers correct out of {10} questions</h2>
                 <button onClick={toGame}> Go to the Game! </button>
