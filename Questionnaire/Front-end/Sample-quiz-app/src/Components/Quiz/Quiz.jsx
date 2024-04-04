@@ -12,11 +12,21 @@ const Quiz = () => {
     let [score, setScore] = React.useState(0);
     let [result, setResult] = React.useState(false);
 
+    if (localStorage.getItem('accesstoken') === null) {
+        const accessTokenStore = "your_access_token_here"; // Example data
+        localStorage.setItem('accesstoken', accessTokenStore);
+    }
 
+    const accessToken = localStorage.getItem('accesstoken');
+    console.log("Hello World");
 
     const currentQuestion = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:5000/get-current-question`);
+            const response = await fetch(`http://127.0.0.1:5000/get-current-question`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            });
             const response_in_json = await response.json();
             const currentQuestionId = response_in_json['available_question'];
 
@@ -26,12 +36,20 @@ const Quiz = () => {
             //console.log("data", data[currentQuestionId]);
 
             // Getting score:
-            const response3 = await fetch(`http://127.0.0.1:5000/get-score`);
+            const response3 = await fetch(`http://127.0.0.1:5000/get-score`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            });
             const response3_in_json = await response3.json();
             setScore(response3_in_json['score']);
 
             if (currentQuestionId < 10) {
-                const response2 = await fetch(`http://127.0.0.1:5000/get-question/${currentQuestionId}`);
+                const response2 = await fetch(`http://127.0.0.1:5000/get-question/${currentQuestionId}`, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
                 const response2_in_json = await response2.json();
                 // console.log("response2_in_json", response2_in_json);
                 setQuestion(response2_in_json);
@@ -61,7 +79,11 @@ const Quiz = () => {
     const checkAns = async (e, ans, question_id) => {
         if (!lock) {
             try {
-                const response = await fetch(`http://127.0.0.1:5000/get-answer/${question_id}`);
+                const response = await fetch(`http://127.0.0.1:5000/get-answer/${question_id}`, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
                 const data = await response.json();
                 const fetchedAnswer = data['answer'];
 
@@ -69,6 +91,7 @@ const Quiz = () => {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        Authorization: `Bearer ${accessToken}`
                     },
                     body: JSON.stringify({ ans, question_id }),
                 });
