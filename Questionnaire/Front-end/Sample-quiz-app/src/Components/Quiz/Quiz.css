@@ -32,7 +32,9 @@
     transition: background-color 0.3s, border-color 0.3s;
 }
 .container ul li:hover {
-    background: #b9ddff;
+    /* background: #b9ddff; */
+    /* font-size: 21px; */
+    border: 2px solid #686868;
 }
 
 .container button{
