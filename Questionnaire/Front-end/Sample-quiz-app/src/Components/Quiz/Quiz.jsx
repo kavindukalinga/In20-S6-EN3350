@@ -12,8 +12,13 @@ const Quiz = () => {
     let [score, setScore] = React.useState(0);
     let [result, setResult] = React.useState(false);
 
-    const accessToken = "your_access_token_here"; // Replace "your_access_token_here" with your actual access token
+    if (localStorage.getItem('accesstoken') === null) {
+        const accessTokenStore = "your_access_token_here"; // Example data
+        localStorage.setItem('accesstoken', accessTokenStore);
+    }
 
+    const accessToken = localStorage.getItem('accesstoken');
+    console.log("Hello World");
 
     const currentQuestion = async () => {
         try {
