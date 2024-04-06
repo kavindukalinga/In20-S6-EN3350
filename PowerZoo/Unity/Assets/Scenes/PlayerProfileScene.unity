@@ -201,7 +201,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter text...
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c73164233f68bb24880f3c0a53f8fa34, type: 2}
   m_sharedMaterial: {fileID: -9014350205467878560, guid: c73164233f68bb24880f3c0a53f8fa34, type: 2}
@@ -464,6 +464,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 82707675}
   m_CullTransparentMesh: 1
+--- !u!1 &177723769
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 177723772}
+  - component: {fileID: 177723771}
+  - component: {fileID: 177723770}
+  m_Layer: 0
+  m_Name: PlayerProfileScript
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &177723770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 177723769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fb1f2dfb45d0214dba1e0c7c7af6804, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  APIHub: {fileID: 2065559251}
+  firstName: {fileID: 729189108}
+  lastName: {fileID: 969166171}
+  userName: {fileID: 1127335417}
+  nic: {fileID: 1655104296}
+  phoneNumber: {fileID: 685655236}
+  email: {fileID: 623447122}
+--- !u!114 &177723771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 177723769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37668a7e58fe13844b36ec1af9e069dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  saveButton: {fileID: 520618973}
+--- !u!4 &177723772
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 177723769}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 905.34174, y: 570.14764, z: -13.778138}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &318109634
 GameObject:
   m_ObjectHideFlags: 0
@@ -1425,7 +1490,7 @@ GameObject:
   - component: {fileID: 623447123}
   - component: {fileID: 623447122}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: Email (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1734,7 +1799,7 @@ GameObject:
   - component: {fileID: 685655237}
   - component: {fileID: 685655236}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: MobileNo (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2036,7 +2101,7 @@ GameObject:
   - component: {fileID: 729189109}
   - component: {fileID: 729189108}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: FirstName (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2344,7 +2409,7 @@ GameObject:
   - component: {fileID: 796707677}
   - component: {fileID: 796707676}
   m_Layer: 5
-  m_Name: last name
+  m_Name: Last name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2480,7 +2545,7 @@ GameObject:
   - component: {fileID: 969166172}
   - component: {fileID: 969166171}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: LastName (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2707,7 +2772,7 @@ GameObject:
   - component: {fileID: 1127335418}
   - component: {fileID: 1127335417}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: Username (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3296,7 +3361,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter text...
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c73164233f68bb24880f3c0a53f8fa34, type: 2}
   m_sharedMaterial: {fileID: -9014350205467878560, guid: c73164233f68bb24880f3c0a53f8fa34, type: 2}
@@ -3865,7 +3930,7 @@ GameObject:
   - component: {fileID: 1442476803}
   - component: {fileID: 1442476802}
   m_Layer: 5
-  m_Name: first name
+  m_Name: First name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4066,7 +4131,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter text...
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c73164233f68bb24880f3c0a53f8fa34, type: 2}
   m_sharedMaterial: {fileID: -9014350205467878560, guid: c73164233f68bb24880f3c0a53f8fa34, type: 2}
@@ -4273,7 +4338,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter text...
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c73164233f68bb24880f3c0a53f8fa34, type: 2}
   m_sharedMaterial: {fileID: -9014350205467878560, guid: c73164233f68bb24880f3c0a53f8fa34, type: 2}
@@ -4654,7 +4719,7 @@ GameObject:
   - component: {fileID: 1655104297}
   - component: {fileID: 1655104296}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: NIC (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4894,7 +4959,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter text...
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c73164233f68bb24880f3c0a53f8fa34, type: 2}
   m_sharedMaterial: {fileID: -9014350205467878560, guid: c73164233f68bb24880f3c0a53f8fa34, type: 2}
@@ -5973,7 +6038,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter text...
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c73164233f68bb24880f3c0a53f8fa34, type: 2}
   m_sharedMaterial: {fileID: -9014350205467878560, guid: c73164233f68bb24880f3c0a53f8fa34, type: 2}
@@ -6199,7 +6264,7 @@ GameObject:
   - component: {fileID: 1948658573}
   - component: {fileID: 1948658572}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: MemberStatus (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6641,7 +6706,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter text...
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c73164233f68bb24880f3c0a53f8fa34, type: 2}
   m_sharedMaterial: {fileID: -9014350205467878560, guid: c73164233f68bb24880f3c0a53f8fa34, type: 2}
@@ -6793,6 +6858,74 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2036384413}
   m_CullTransparentMesh: 1
+--- !u!1001 &2065559250
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 147615739752265766, guid: 86545b4f76399c5478bded31b8d379c9, type: 3}
+      propertyPath: m_Name
+      value: APIHub
+      objectReference: {fileID: 0}
+    - target: {fileID: 6556113164358669138, guid: 86545b4f76399c5478bded31b8d379c9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1163.133
+      objectReference: {fileID: 0}
+    - target: {fileID: 6556113164358669138, guid: 86545b4f76399c5478bded31b8d379c9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 468.39417
+      objectReference: {fileID: 0}
+    - target: {fileID: 6556113164358669138, guid: 86545b4f76399c5478bded31b8d379c9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -6.898145
+      objectReference: {fileID: 0}
+    - target: {fileID: 6556113164358669138, guid: 86545b4f76399c5478bded31b8d379c9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6556113164358669138, guid: 86545b4f76399c5478bded31b8d379c9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6556113164358669138, guid: 86545b4f76399c5478bded31b8d379c9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6556113164358669138, guid: 86545b4f76399c5478bded31b8d379c9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6556113164358669138, guid: 86545b4f76399c5478bded31b8d379c9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6556113164358669138, guid: 86545b4f76399c5478bded31b8d379c9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6556113164358669138, guid: 86545b4f76399c5478bded31b8d379c9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 86545b4f76399c5478bded31b8d379c9, type: 3}
+--- !u!114 &2065559251 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 994320000570089682, guid: 86545b4f76399c5478bded31b8d379c9, type: 3}
+  m_PrefabInstance: {fileID: 2065559250}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8414272439f7d1a41a273d6001593bbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2095769791
 GameObject:
   m_ObjectHideFlags: 0
@@ -6950,3 +7083,5 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 592223623}
   - {fileID: 2027717621}
+  - {fileID: 177723772}
+  - {fileID: 2065559250}

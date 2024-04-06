@@ -16,7 +16,7 @@ public class PlayerProfileScript : MonoBehaviour
     public TMP_InputField nic;
     public TMP_InputField phoneNumber;
     public TMP_InputField email;
-    public TMP_InputField profilePictureURL;
+    // public TMP_InputField profilePictureURL;
     private string ViewProfile_API = "http://20.15.114.131:8080/api/user/profile/view";
     private string UpdateProfile_API = "http://20.15.114.131:8080/api/user/profile/update";
 
@@ -63,7 +63,7 @@ public class PlayerProfileScript : MonoBehaviour
         // if (playerData.user.ProfilePictureUrl != null) {
         //     profilePictureUrl.text = playerData.user.ProfilePictureUrl;
         // }
-        profilePictureURL.text = playerData.user.profilePictureUrl;
+        // profilePictureURL.text = playerData.user.profilePictureUrl;
     }
 
     private void update_profile()
@@ -74,7 +74,7 @@ public class PlayerProfileScript : MonoBehaviour
         playerData.user.nic = nic.text;
         playerData.user.phoneNumber = phoneNumber.text;
         playerData.user.email = email.text;
-        playerData.user.profilePictureUrl = profilePictureURL.text;
+        // playerData.user.profilePictureUrl = profilePictureURL.text;
     }
 
     private IEnumerator put_request(string url, PlayerData playerData) {
@@ -117,7 +117,7 @@ public class PlayerProfileScript : MonoBehaviour
         public string nic;
         public string phoneNumber;
         public string email;
-        public string profilePictureUrl;
+        // public string profilePictureUrl;
     }
 
 }
