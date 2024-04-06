@@ -11,14 +11,36 @@ const Quiz = () => {
     let [lock, setLock] = React.useState(false);
     let [score, setScore] = React.useState(0);
     let [result, setResult] = React.useState(false);
+    let [feedback, setFeedback] = React.useState(data[0]);
 
-    if (localStorage.getItem('accesstoken') === null) {
-        const accessTokenStore = "your_access_token_here"; // Example data
-        localStorage.setItem('accesstoken', accessTokenStore);
-    }
+    const isAuth = async () => {
+        try {
+            if (localStorage.getItem('accesstoken') === null) {
+                const response = await fetch(`http://127.0.0.1:9000/auth/signin`, {
+                    body: {
+                        'login': 'nuwan',
+                        'password': '1234'
+                    }
+                });
+                const response_in_json = await response.json();
+                console.log("response_in_json", response_in_json);
+                const accessTokenStore = response_in_json?.accessToken;
+                localStorage.setItem('accesstoken', accessTokenStore);
+            }
+            const accessToken = localStorage.getItem('accesstoken');
+            console.log("Hello World");
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
 
-    const accessToken = localStorage.getItem('accesstoken');
-    console.log("Hello World");
+    // if (localStorage.getItem('accesstoken') === null) {
+    //     const accessTokenStore = "your_access_token_here"; // Example data
+    //     localStorage.setItem('accesstoken', accessTokenStore);
+    // }
+
+    // const accessToken = localStorage.getItem('accesstoken');
+    // console.log("Hello World");
 
     const currentQuestion = async () => {
         try {
@@ -67,6 +89,7 @@ const Quiz = () => {
 
     useEffect(() => {
         currentQuestion();
+        isAuth();
     }, []);
 
     let Option1 = React.useRef(null);
@@ -82,19 +105,25 @@ const Quiz = () => {
                 const response = await fetch(`http://127.0.0.1:9000/get-answer/${question_id}`, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`
+                    },
+                    body: {
+                        'question_id': question_id,
+                        'player_answer': ans
                     }
                 });
-                const data = await response.json();
-                const fetchedAnswer = data['answer'];
+                const data5 = await response.json();
+                const fetchedAnswer = data5?.correctAnswer;
 
-                const userAnswers = await fetch(`http://127.0.0.1:9000/api/data`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${accessToken}`
-                    },
-                    body: JSON.stringify({ ans, question_id }),
-                });
+                setFeedback(data5);
+
+                // const userAnswers = await fetch(`http://127.0.0.1:9000/api/data`, {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //         Authorization: `Bearer ${accessToken}`
+                //     },
+                //     body: JSON.stringify({ ans, question_id }),
+                // });
 
                 if (fetchedAnswer === ans) {
                     e.target.classList.add('correct');
@@ -145,10 +174,10 @@ const Quiz = () => {
             {result ? <></> : <>
                 <h2>{index + 1}. {question?.question}</h2>
                 <ul>
-                    <li ref={Option1} onClick={(e) => { checkAns(e, 1, index + 1) }}>{question?.answers?.A}</li>
-                    <li ref={Option2} onClick={(e) => { checkAns(e, 2, index + 1) }}>{question?.answers?.B}</li>
-                    <li ref={Option3} onClick={(e) => { checkAns(e, 3, index + 1) }}>{question?.answers?.C}</li>
-                    <li ref={Option4} onClick={(e) => { checkAns(e, 4, index + 1) }}>{question?.answers?.D}</li>
+                    <li ref={Option1} onClick={(e) => { checkAns(e, 'A', index + 1) }}>{question?.answers?.A}</li>
+                    <li ref={Option2} onClick={(e) => { checkAns(e, 'B', index + 1) }}>{question?.answers?.B}</li>
+                    <li ref={Option3} onClick={(e) => { checkAns(e, 'C', index + 1) }}>{question?.answers?.C}</li>
+                    <li ref={Option4} onClick={(e) => { checkAns(e, 'D', index + 1) }}>{question?.answers?.D}</li>
                 </ul>
                 <button onClick={next} className={lock ? "lock" : ""}>Next</button>
                 <div className="index">{index + 1} of {10} questions</div>
@@ -157,8 +186,8 @@ const Quiz = () => {
                 {lock ? <>
                     <hr />
                     <h2>Feedback </h2>
-                    <li>{question?.generalFeedback}</li>
-                    <li>{question?.specificFeedback}</li>
+                    <li>{feedback?.generalFeedback}</li>
+                    <li>{feedback?.specificFeedback}</li>
                 </> : <></>}
             </>}
 
@@ -166,6 +195,11 @@ const Quiz = () => {
             {result ? <>
                 <h2>You got {score} answers correct out of {10} questions</h2>
                 <button onClick={toGame}> Go to the Game! </button>
+                <hr />
+                <h2>Summary </h2>
+                summary will be there.
+                {/* <li>{feedback?.generalFeedback}</li>
+                <li>{feedback?.specificFeedback}</li> */}
             </> : <></>}
 
         </div>
