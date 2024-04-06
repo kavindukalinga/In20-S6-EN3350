@@ -145,7 +145,7 @@ const Quiz = () => {
 
     const next = () => {
         if (lock === true) {
-            if (index === 10) {
+            if (index === 11) {
                 setResult(true);
                 return 0;
             }
@@ -175,16 +175,16 @@ const Quiz = () => {
             <h1>Questionnaire</h1>
             <hr />
             {result ? <></> : <>
-                <h2>{index + 1}. {question?.question}</h2>
+                <h2>{index}. {question?.question}</h2>
                 <ul>
-                    <li ref={Option1} onClick={(e) => { checkAns(e, 'A', index + 1) }}>{question?.answers?.A}</li>
-                    <li ref={Option2} onClick={(e) => { checkAns(e, 'B', index + 1) }}>{question?.answers?.B}</li>
-                    <li ref={Option3} onClick={(e) => { checkAns(e, 'C', index + 1) }}>{question?.answers?.C}</li>
-                    <li ref={Option4} onClick={(e) => { checkAns(e, 'D', index + 1) }}>{question?.answers?.D}</li>
+                    <li ref={Option1} onClick={(e) => { checkAns(e, 'A', index) }}>{question?.answers?.A}</li>
+                    <li ref={Option2} onClick={(e) => { checkAns(e, 'B', index) }}>{question?.answers?.B}</li>
+                    <li ref={Option3} onClick={(e) => { checkAns(e, 'C', index) }}>{question?.answers?.C}</li>
+                    <li ref={Option4} onClick={(e) => { checkAns(e, 'D', index) }}>{question?.answers?.D}</li>
                 </ul>
                 <button onClick={next} className={lock ? "lock" : ""}>Next</button>
-                <div className="index">{index + 1} of {10} questions</div>
-                <div className="currentscore">{score} of {index + 1} answers are Correct</div>
+                <div className="index">{index} of {10} questions</div>
+                <div className="currentscore">{score} of {index} answers are Correct</div>
 
                 {lock ? <>
                     <hr />
