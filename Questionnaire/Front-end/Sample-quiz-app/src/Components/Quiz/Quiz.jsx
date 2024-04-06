@@ -107,17 +107,15 @@ const Quiz = () => {
     const checkAns = async (e, ans, question_id) => {
         if (!lock) {
             try {
-                const response = await fetch(`http://127.0.0.1:9000/get-answer/${question_id}`, {
+                const response = await fetch(`http://127.0.0.1:9000/get-answer/${question_id-1}/${ans}`, {
                     headers: {
                         "Authorization": `Bearer ${accessToken}`
-                    },
-                    body: {
-                        'question_id': question_id,
-                        'player_answer': ans
                     }
                 });
                 const data5 = await response.json();
+                console.log("data5", data5);
                 const fetchedAnswer = data5?.correctAnswer;
+                console.log("fetchedAnswer", fetchedAnswer);
 
                 setFeedback(data5);
 

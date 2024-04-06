@@ -165,7 +165,7 @@ public class QuestionsController {
                                 Map<String, String> answers = question.getAnswers();
                                 ObjectMapper objectMapper = new ObjectMapper();
                                 String jsonString = objectMapper.writeValueAsString(answers);
-                                return ResponseEntity.ok("{\"question\": \"" + Question + "\", \"answers\": " + jsonString +"\"}");
+                                return ResponseEntity.ok("{\"question\": \"" + Question + "\", \"answers\": " + jsonString +"}");
                             }
                         }
                     } else {
