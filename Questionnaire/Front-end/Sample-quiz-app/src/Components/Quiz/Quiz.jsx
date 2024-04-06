@@ -88,8 +88,9 @@ const Quiz = () => {
     };
 
     useEffect(() => {
-        currentQuestion();
         isAuth();
+        currentQuestion();
+
     }, []);
 
     let Option1 = React.useRef(null);
