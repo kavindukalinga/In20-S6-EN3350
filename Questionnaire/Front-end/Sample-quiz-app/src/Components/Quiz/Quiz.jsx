@@ -22,7 +22,7 @@ const Quiz = () => {
 
     const currentQuestion = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:5000/get-current-question`, {
+            const response = await fetch(`http://127.0.0.1:9000/get-current-question`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }
@@ -36,7 +36,7 @@ const Quiz = () => {
             //console.log("data", data[currentQuestionId]);
 
             // Getting score:
-            const response3 = await fetch(`http://127.0.0.1:5000/get-score`, {
+            const response3 = await fetch(`http://127.0.0.1:9000/get-score`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }
@@ -45,7 +45,7 @@ const Quiz = () => {
             setScore(response3_in_json['score']);
 
             if (currentQuestionId < 10) {
-                const response2 = await fetch(`http://127.0.0.1:5000/get-question/${currentQuestionId}`, {
+                const response2 = await fetch(`http://127.0.0.1:9000/get-question/${currentQuestionId}`, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`
                     }
@@ -79,7 +79,7 @@ const Quiz = () => {
     const checkAns = async (e, ans, question_id) => {
         if (!lock) {
             try {
-                const response = await fetch(`http://127.0.0.1:5000/get-answer/${question_id}`, {
+                const response = await fetch(`http://127.0.0.1:9000/get-answer/${question_id}`, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`
                     }
@@ -87,7 +87,7 @@ const Quiz = () => {
                 const data = await response.json();
                 const fetchedAnswer = data['answer'];
 
-                const userAnswers = await fetch(`http://127.0.0.1:5000/api/data`, {
+                const userAnswers = await fetch(`http://127.0.0.1:9000/api/data`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -111,34 +111,6 @@ const Quiz = () => {
         }
     };
 
-    // const checkAns = (e, ans, question_id) => {
-    //     if (lock === false) {
-    //         const fetchData = async () => {
-    //             try {
-    //                 const response = await fetch(`http://127.0.0.1:5000/get-answer/${question_id}`);
-    //                 const data = await response.json();
-    //                 return (data['answer'], 10)
-    //             } catch (error) {
-    //                 console.error('Error fetching data:', error);
-    //             }
-    //         };
-
-    //         answer = fetchData();
-
-    //         if (answer === ans) {
-    //             e.target.classList.add('correct');
-    //             setLock(true);
-    //             setScore(prev => prev + 1);
-    //         }
-    //         else {
-    //             e.target.classList.add('wrong');
-    //             setLock(true);
-    //             option_array[question.ans - 1].current.classList.add('correct');
-    //         }
-    //     }
-
-    // }
-
     const next = () => {
         if (lock === true) {
             if (index === 10 - 1) {
@@ -159,7 +131,7 @@ const Quiz = () => {
 
     const toGame = () => {
         setTimeout(() => {
-            window.location.href = `http://127.0.0.1:5000/game?score=${score}`;
+            window.location.href = `http://127.0.0.1:9000/game?score=${score}`;
         }, 2000);
 
         return null;
