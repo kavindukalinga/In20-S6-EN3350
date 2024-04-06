@@ -13,10 +13,12 @@ public class Accessed {
     
     Integer score;
 
+    String accessToken;
+
     // Constructors, getters, and setters
 
     // Constructor with isAnswered parameter
-    public Accessed(Boolean isAnswered, String score) {
+    public Accessed(Boolean isAnswered, String score, String accessToken) {
         this.isAnswered = isAnswered;
     }
 
@@ -49,5 +51,13 @@ public class Accessed {
 
     public void setScore(Integer score) {
         this.score = score;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 }
