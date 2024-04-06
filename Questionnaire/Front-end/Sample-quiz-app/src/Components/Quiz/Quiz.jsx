@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const Quiz = () => {
 
     const navigate = useNavigate();
-    let [index, setIndex] = React.useState(0);
+    let [index, setIndex] = React.useState(1);
     let [question, setQuestion] = React.useState(data[0]);
     let [lock, setLock] = React.useState(false);
     let [score, setScore] = React.useState(0);
@@ -69,7 +69,7 @@ const Quiz = () => {
             const response3_in_json = await response3.json();
             console.log("response3_in_json", response3_in_json['score']);
             setScore(response3_in_json['score']);
-            
+
             if (currentQuestionId < 10) {
                 const response2 = await fetch(`http://127.0.0.1:9000/get-question/${currentQuestionId}`, {
                     headers: {
@@ -107,7 +107,7 @@ const Quiz = () => {
     const checkAns = async (e, ans, question_id) => {
         if (!lock) {
             try {
-                const response = await fetch(`http://127.0.0.1:9000/get-answer/${question_id-1}/${ans}`, {
+                const response = await fetch(`http://127.0.0.1:9000/get-answer/${question_id}/${ans}`, {
                     headers: {
                         "Authorization": `Bearer ${accessToken}`
                     }
@@ -145,7 +145,7 @@ const Quiz = () => {
 
     const next = () => {
         if (lock === true) {
-            if (index === 10 - 1) {
+            if (index === 10) {
                 setResult(true);
                 return 0;
             }
