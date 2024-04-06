@@ -12,23 +12,24 @@ const Quiz = () => {
     let [score, setScore] = React.useState(0);
     let [result, setResult] = React.useState(false);
     let [feedback, setFeedback] = React.useState(data[0]);
+    let [accessToken, setAccessToken] = React.useState(null);
 
     const isAuth = async () => {
         try {
             if (localStorage.getItem('accesstoken') === null) {
                 const response = await fetch(`http://127.0.0.1:9000/auth/signin`, {
                     method: 'POST',
-                    body: {
+                    body: JSON.stringify({
                         'login': 'nuwan',
                         'password': '1234'
-                    }
+                    })
                 });
                 const response_in_json = await response.json();
                 console.log("response_in_json", response_in_json);
                 const accessTokenStore = response_in_json?.accessToken;
                 localStorage.setItem('accesstoken', accessTokenStore);
             }
-            const accessToken = localStorage.getItem('accesstoken');
+            setAccessToken = localStorage.getItem('accesstoken');
             console.log("Hello World");
         } catch (error) {
             console.error('Error fetching data:', error);
