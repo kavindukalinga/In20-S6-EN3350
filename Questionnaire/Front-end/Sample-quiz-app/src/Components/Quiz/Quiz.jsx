@@ -70,7 +70,7 @@ const Quiz = () => {
             console.log("response3_in_json", response3_in_json['score']);
             setScore(response3_in_json['score']);
 
-            if (currentQuestionId < 10) {
+            if (currentQuestionId <= 10) {
                 const response2 = await fetch(`http://127.0.0.1:9000/get-question/${currentQuestionId}`, {
                     headers: {
                         "Authorization": `Bearer ${accessToken}`
@@ -135,7 +135,7 @@ const Quiz = () => {
                 } else {
                     e.target.classList.add('wrong');
                     setLock(true);
-                    option_array[fetchedAnswer - 1].current.classList.add('correct');
+                    // option_array[fetchedAnswer - 1].current.classList.add('correct');
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);

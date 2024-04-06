@@ -127,6 +127,9 @@ public class QuestionsController {
     public ResponseEntity<?> getScore()  {
         try {
             Questions maxCompletedQuestion = questionRepo.findFirstByIsCompletedOrderBySortKeyDesc(true);
+            if (maxCompletedQuestion == null) {
+                return ResponseEntity.ok("{\"score\": 0}");
+            }else{
             Integer maxCompltedQuestionId = Integer.parseInt(maxCompletedQuestion.getQuestionId());
             int score = 0;
             for (int i = 1; i <= maxCompltedQuestionId; i++) {
@@ -136,6 +139,7 @@ public class QuestionsController {
                 }
             }
             return ResponseEntity.ok("{\"score\": " + score + "}");
+        }
         } catch (Exception e) {
             String errorMessage = "{\"error\": \"Error occurred while retrieving score\"}";
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
