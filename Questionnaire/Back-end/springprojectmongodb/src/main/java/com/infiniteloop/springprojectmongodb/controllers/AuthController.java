@@ -37,7 +37,7 @@ public class AuthController {
   private AccessedRepo accessedRepo;
 
   // Endpoint for user sign-up
-  @CrossOrigin(origins = "http://localhost:3000")
+  @CrossOrigin(origins = "http://localhost:5173")
   @PostMapping("/signup")
   public ResponseEntity<?> signUp(@RequestBody @Valid SignUpDto data) {
     service.signUp(data);
@@ -45,7 +45,7 @@ public class AuthController {
   }
 
   // Endpoint for user sign-in
-  @CrossOrigin(origins = "http://localhost:3000")
+  @CrossOrigin(origins = "http://localhost:5173")
   @PostMapping("/signin")
   public ResponseEntity<JwtDto> signIn(@RequestBody @Valid SignInDto data) {
     // Authenticate user
@@ -64,7 +64,7 @@ public class AuthController {
 
 
 
-  @CrossOrigin(origins = "http://localhost:3000")
+  @CrossOrigin(origins = "http://localhost:5173")
   @GetMapping(value = "/accessToken", produces = "application/json")
   public ResponseEntity<String> getAccessToken() {
     try {

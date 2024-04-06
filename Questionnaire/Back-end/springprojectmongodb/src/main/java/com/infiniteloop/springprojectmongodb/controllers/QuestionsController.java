@@ -38,7 +38,7 @@ public class QuestionsController {
          return question;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/getall-questions/{id}")
     public ResponseEntity<?> getAllQuestions(@PathVariable String id) {
         try {
@@ -74,7 +74,7 @@ public class QuestionsController {
 
 
     // Endpoint to get correct answer by question id
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping(value = "/get-answer/{id}/{answer}", produces = "application/json")
     public ResponseEntity<?> getCorrectAnswerById(@PathVariable String id, @PathVariable String answer) {
                 try {
@@ -122,7 +122,7 @@ public class QuestionsController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping(value = "/get-score", produces = "application/json")
     public ResponseEntity<?> getScore()  {
         try {
@@ -142,7 +142,7 @@ public class QuestionsController {
         }
     }
     
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping(value = "/get-question/{id}", produces = "application/json")
     public ResponseEntity<?> getQuestionById(@PathVariable String id) {
                 try {
@@ -179,7 +179,7 @@ public class QuestionsController {
     }
 
     // Endpoint to get maximum completed question id
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/get-current-question")
     ResponseEntity<String> getMaxCompletedQuestionId() {
         try {
