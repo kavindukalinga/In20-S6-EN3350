@@ -10,6 +10,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infiniteloop.springprojectmongodb.payloads.QuestionsDto;
 import com.infiniteloop.springprojectmongodb.models.Accessed;
 import com.infiniteloop.springprojectmongodb.models.Questions;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +38,7 @@ public class QuestionsController {
          return question;
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/getall-questions/{id}")
     public ResponseEntity<?> getAllQuestions(@PathVariable String id) {
         try {
@@ -71,6 +74,7 @@ public class QuestionsController {
 
 
     // Endpoint to get correct answer by question id
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(value = "/get-answer/{id}/{answer}", produces = "application/json")
     public ResponseEntity<?> getCorrectAnswerById(@PathVariable String id, @PathVariable String answer) {
                 try {
@@ -118,6 +122,7 @@ public class QuestionsController {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(value = "/get-score", produces = "application/json")
     public ResponseEntity<?> getScore()  {
         try {
@@ -137,7 +142,7 @@ public class QuestionsController {
         }
     }
     
-
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(value = "/get-question/{id}", produces = "application/json")
     public ResponseEntity<?> getQuestionById(@PathVariable String id) {
                 try {
@@ -174,6 +179,7 @@ public class QuestionsController {
     }
 
     // Endpoint to get maximum completed question id
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/get-current-question")
     ResponseEntity<String> getMaxCompletedQuestionId() {
         try {

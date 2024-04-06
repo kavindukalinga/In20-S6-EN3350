@@ -48,6 +48,6 @@ public class TokenProvider {
 
   // Generate expiration date for access token
   private Instant genAccessExpirationDate() {
-    return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+    return LocalDateTime.now().plusHours(5).toInstant(ZoneOffset.of("-03:00"));
   }
 }
