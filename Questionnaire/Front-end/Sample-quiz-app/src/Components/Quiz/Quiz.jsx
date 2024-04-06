@@ -17,6 +17,7 @@ const Quiz = () => {
         try {
             if (localStorage.getItem('accesstoken') === null) {
                 const response = await fetch(`http://127.0.0.1:9000/auth/signin`, {
+                    method: 'POST',
                     body: {
                         'login': 'nuwan',
                         'password': '1234'
