@@ -6,10 +6,10 @@ using UnityEngine.Networking;
 
 public class APIHubScript : MonoBehaviour
 {
-    public PostMethod postMethod;
     public string API_KEY = "NjVjNjA0MGY0Njc3MGQ1YzY2MTcyMmM2OjY1YzYwNDBmNDY3NzBkNWM2NjE3MjJiYw";
     public string JWT_TOKEN;
     public string Response;
+    public QuizResponse quizResponse;
     private string Auth_API = "http://20.15.114.131:8080/api/login";
     private string ViewProfile_API = "http://20.15.114.131:8080/api/user/profile/view";
     private string ViewPlayerList_API = "http://20.15.114.131:8080/api/user/profile/list";
@@ -18,12 +18,28 @@ public class APIHubScript : MonoBehaviour
     private string ViewCurrentMonthConsumption_API = "http://20.15.114.131:8080/api/power-consumption/current-month/view";
     private string ViewDailyConsumptionSpecificMonth_API = "http://20.15.114.131:8080/api/power-consumption/month/daily/view";
     private string ViewDailyConsumptionCurrentMonth_API = "http://20.15.114.131:8080/api/power-consumption/current-month/daily/view";
+    private string isQuizCompleted_API = "http://localhost:9000/api/quiz/iscompleted";
 
     public void Authenticate() => StartCoroutine(player_authenticate());
     public void ViewProfile() => StartCoroutine(get_request(ViewProfile_API));
+    public void ViewPlayerList() => StartCoroutine(get_request(ViewPlayerList_API));
+    public void ViewYearlyPowerConsumption() => StartCoroutine(get_request(ViewYearlyPowerConsumption_API));
+    public void ViewSpecificMonthConsumption() => StartCoroutine(get_request(ViewSpecificMonthConsumption_API));
+    public void ViewCurrentMonthConsumption() => StartCoroutine(get_request(ViewCurrentMonthConsumption_API));
+    public void ViewDailyConsumptionSpecificMonth() => StartCoroutine(get_request(ViewDailyConsumptionSpecificMonth_API));
+    public void ViewDailyConsumptionCurrentMonth() => StartCoroutine(get_request(ViewDailyConsumptionCurrentMonth_API));
+    public void CheckQuizCompleted() => StartCoroutine(check_quiz_completed());
+    public void RedirectQuiz() => StartCoroutine(redirectQuiz());
 
-    public IEnumerator player_authenticate() {
-        postMethod.outputArea.text = "Authenticating...";
+    public IEnumerator check_quiz_completed()
+    {
+        yield return StartCoroutine(get_request(ViewDailyConsumptionCurrentMonth_API));
+        // quizResponse = JsonUtility.FromJson<QuizResponse>(APIHub.Response);
+        // return (QuizResponse.quizCompleted)
+        quizResponse.quizCompleted = true;
+    }
+
+    public IEnumerator player_authenticate() { // POST request
         string url = Auth_API;
 
         // Create a JSON object representing your data
@@ -39,10 +55,9 @@ public class APIHubScript : MonoBehaviour
             yield return request.SendWebRequest();
 
             if (request.isNetworkError || request.isHttpError) {
-                postMethod.outputArea.text = request.error;
+                Debug.LogError(request.error);
             } else {
                 string jsonResponse = request.downloadHandler.text;
-                // postMethod.outputArea.text = jsonResponse;
                 TokenResponse tokenResponse = JsonUtility.FromJson<TokenResponse>(jsonResponse);
                 JWT_TOKEN = tokenResponse.token;
             }
@@ -57,7 +72,6 @@ public class APIHubScript : MonoBehaviour
             yield return StartCoroutine(player_authenticate());
         }
         Response = "";
-        postMethod.outputArea.text = "Getting Player Details...";
 
         using (UnityWebRequest request = new UnityWebRequest(url, "GET"))
         {
@@ -66,17 +80,19 @@ public class APIHubScript : MonoBehaviour
             yield return request.SendWebRequest();
             if (request.result != UnityWebRequest.Result.Success)
             {
-                postMethod.outputArea.text = request.error;
+                Debug.LogError(request.error);
             }
             else
             {
-                string playerProfile = request.downloadHandler.text;
-                postMethod.outputArea.text = playerProfile;
-                Response = playerProfile;
-
+                Response = request.downloadHandler.text;
                 Debug.Log("Response: " + Response);
             }
         }
+    }
+
+    public IEnumerator redirectQuiz() {
+        Application.OpenURL("http://localhost:9000/quiz");
+        yield return null;
     }
 
 }
@@ -85,4 +101,10 @@ public class APIHubScript : MonoBehaviour
 public class TokenResponse
 {
     public string token;
+}
+
+[System.Serializable]
+public class QuizResponse
+{
+    public bool quizCompleted;
 }
