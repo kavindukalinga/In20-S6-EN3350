@@ -4,19 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class menuLoaderScript : MonoBehaviour
+public class sceneLoaderScript : MonoBehaviour
 {
-
+    public APIHubScript APIHub;
     public loginScript LoginScript;
     public Animator transition;
     public float transitionTime = 1f;
     private bool menuLoaded = false;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        LoginScript = GameObject.Find("LoginScript").GetComponent<loginScript>();
-    }
 
     // Update is called once per frame
     void Update()
@@ -25,7 +19,8 @@ public class menuLoaderScript : MonoBehaviour
     }
 
     private void change_scene() {
-        if (Input.GetKeyDown(KeyCode.Return) && !string.IsNullOrEmpty(LoginScript.JWT_TOKEN) && !menuLoaded) {
+        if (Input.GetKeyDown(KeyCode.Return) && !string.IsNullOrEmpty(APIHub.JWT_TOKEN) && !menuLoaded) {
+            Debug.Log("Enter key pressed");
             menuLoaded = true;
             LoginScript.textTMP.SetActive(false);
             StartCoroutine(play_animation());
@@ -36,7 +31,18 @@ public class menuLoaderScript : MonoBehaviour
         // Play the animation
         transition.SetTrigger("Start");
         yield return new WaitForSeconds(transitionTime);
+        yield return StartCoroutine(APIHub.check_quiz_completed());
         // Load the next scene
-        SceneManager.LoadScene("MenuScene");
+        Debug.Log(APIHub.quizResponse.quizCompleted);
+        load_next_scene(APIHub.quizResponse.quizCompleted);
+    }
+
+    private void load_next_scene(bool quizCompleted) {
+        if (quizCompleted) {
+            SceneManager.LoadScene("MenuScene");
+        }
+        else {
+            SceneManager.LoadScene("PlayerProfileScene");
+        }
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using SimpleJSON;
 using UnityEngine.Networking;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PlayerProfileScript : MonoBehaviour
 {
@@ -102,6 +103,20 @@ public class PlayerProfileScript : MonoBehaviour
         }
     }
 
+    // private void go_to_next_scene()
+    // {
+    //     if (is_quiz_completed())
+    //     {
+    //         Debug.Log("Quiz already completed");
+    //         SceneManager.LoadScene("MenuScene");
+    //     }
+    //     else
+    //     {
+    //         Debug.Log("Starting quiz");
+    //         StartCoroutine(APIHub.redirectQuiz());
+    //     }
+    // }
+
     [System.Serializable]
     public class PlayerData
     {
@@ -119,5 +134,11 @@ public class PlayerProfileScript : MonoBehaviour
         public string email;
         // public string profilePictureUrl;
     }
+
+    // [System.Serializable]
+    // public class QuizResponse
+    // {
+    //     public bool quizCompleted;
+    // }
 
 }

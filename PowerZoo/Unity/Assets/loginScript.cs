@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 public class loginScript : MonoBehaviour
 {
-
+    public APIHubScript APIHub;
     public string API_KEY = "NjVjNjA0MGY0Njc3MGQ1YzY2MTcyMmM2OjY1YzYwNDBmNDY3NzBkNWM2NjE3MjJiYw";
     public string JWT_TOKEN;
     public GameObject loadingBG;
@@ -23,37 +23,13 @@ public class loginScript : MonoBehaviour
 
     public void Authenticate() => StartCoroutine(change_background());
 
-    public IEnumerator change_background(string url = Auth_API) {
+    public IEnumerator change_background() {
         background_select(true, false, false, false);
-        yield return StartCoroutine(player_authenticate(url));
-        if (!string.IsNullOrEmpty(JWT_TOKEN)) {
+        yield return StartCoroutine(APIHub.player_authenticate());
+        if (!string.IsNullOrEmpty(APIHub.JWT_TOKEN)) {
             background_select(false, true, false, true);
         } else {
             background_select(false, false, true, false);
-        }
-    }
-
-    public IEnumerator player_authenticate(string url = Auth_API) {
-
-        // Create a JSON object representing your data
-        string jsonData = "{\"apiKey\": \"" + API_KEY + "\"}";
-
-        // Set the content type header to indicate JSON data
-        byte[] postData = System.Text.Encoding.UTF8.GetBytes(jsonData);
-        using (UnityWebRequest request = new UnityWebRequest(url, "POST")) {
-            request.uploadHandler = new UploadHandlerRaw(postData);
-            request.downloadHandler = new DownloadHandlerBuffer();
-            request.SetRequestHeader("Content-Type", "application/json");
-
-            yield return request.SendWebRequest();
-
-            if (request.isNetworkError || request.isHttpError) {
-                Debug.Log(request.error);
-            } else {
-                string jsonResponse = request.downloadHandler.text;
-                TokenResponse tokenResponse = JsonUtility.FromJson<TokenResponse>(jsonResponse);
-                JWT_TOKEN = tokenResponse.token;
-            }
         }
     }
 

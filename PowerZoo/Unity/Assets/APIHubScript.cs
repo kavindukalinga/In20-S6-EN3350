@@ -9,6 +9,7 @@ public class APIHubScript : MonoBehaviour
     public string API_KEY = "NjVjNjA0MGY0Njc3MGQ1YzY2MTcyMmM2OjY1YzYwNDBmNDY3NzBkNWM2NjE3MjJiYw";
     public string JWT_TOKEN;
     public string Response;
+    public QuizResponse quizResponse;
     private string Auth_API = "http://20.15.114.131:8080/api/login";
     private string ViewProfile_API = "http://20.15.114.131:8080/api/user/profile/view";
     private string ViewPlayerList_API = "http://20.15.114.131:8080/api/user/profile/list";
@@ -17,6 +18,7 @@ public class APIHubScript : MonoBehaviour
     private string ViewCurrentMonthConsumption_API = "http://20.15.114.131:8080/api/power-consumption/current-month/view";
     private string ViewDailyConsumptionSpecificMonth_API = "http://20.15.114.131:8080/api/power-consumption/month/daily/view";
     private string ViewDailyConsumptionCurrentMonth_API = "http://20.15.114.131:8080/api/power-consumption/current-month/daily/view";
+    private string isQuizCompleted_API = "http://localhost:9000/api/quiz/iscompleted";
 
     public void Authenticate() => StartCoroutine(player_authenticate());
     public void ViewProfile() => StartCoroutine(get_request(ViewProfile_API));
@@ -26,6 +28,16 @@ public class APIHubScript : MonoBehaviour
     public void ViewCurrentMonthConsumption() => StartCoroutine(get_request(ViewCurrentMonthConsumption_API));
     public void ViewDailyConsumptionSpecificMonth() => StartCoroutine(get_request(ViewDailyConsumptionSpecificMonth_API));
     public void ViewDailyConsumptionCurrentMonth() => StartCoroutine(get_request(ViewDailyConsumptionCurrentMonth_API));
+    public void CheckQuizCompleted() => StartCoroutine(check_quiz_completed());
+    // public void RedirectQuiz() => StartCoroutine(redirectQuiz());
+
+    public IEnumerator check_quiz_completed()
+    {
+        yield return StartCoroutine(get_request(ViewDailyConsumptionCurrentMonth_API));
+        // quizResponse = JsonUtility.FromJson<QuizResponse>(APIHub.Response);
+        // return (QuizResponse.quizCompleted)
+        quizResponse.quizCompleted = false;
+    }
 
     public IEnumerator player_authenticate() { // POST request
         string url = Auth_API;
@@ -78,10 +90,20 @@ public class APIHubScript : MonoBehaviour
         }
     }
 
+    // public IEnumerator redirectQuiz() {
+    //     Application.OpenURL("http://localhost:9000/quiz");
+    // }
+
 }
 
 [System.Serializable]
 public class TokenResponse
 {
     public string token;
+}
+
+[System.Serializable]
+public class QuizResponse
+{
+    public bool quizCompleted;
 }
