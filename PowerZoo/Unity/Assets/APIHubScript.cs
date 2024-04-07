@@ -29,7 +29,7 @@ public class APIHubScript : MonoBehaviour
     public void ViewDailyConsumptionSpecificMonth() => StartCoroutine(get_request(ViewDailyConsumptionSpecificMonth_API));
     public void ViewDailyConsumptionCurrentMonth() => StartCoroutine(get_request(ViewDailyConsumptionCurrentMonth_API));
     public void CheckQuizCompleted() => StartCoroutine(check_quiz_completed());
-    // public void RedirectQuiz() => StartCoroutine(redirectQuiz());
+    public void RedirectQuiz() => StartCoroutine(redirectQuiz());
 
     public IEnumerator check_quiz_completed()
     {
@@ -90,9 +90,10 @@ public class APIHubScript : MonoBehaviour
         }
     }
 
-    // public IEnumerator redirectQuiz() {
-    //     Application.OpenURL("http://localhost:9000/quiz");
-    // }
+    public IEnumerator redirectQuiz() {
+        Application.OpenURL("http://localhost:9000/quiz");
+        yield return null;
+    }
 
 }
 

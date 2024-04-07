@@ -22,7 +22,7 @@ public class sceneLoaderScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return) && !string.IsNullOrEmpty(APIHub.JWT_TOKEN) && !menuLoaded) {
             Debug.Log("Enter key pressed");
             menuLoaded = true;
-            LoginScript.textTMP.SetActive(false);
+            // LoginScript.textTMP.SetActive(false);
             StartCoroutine(play_animation());
         }
     }
