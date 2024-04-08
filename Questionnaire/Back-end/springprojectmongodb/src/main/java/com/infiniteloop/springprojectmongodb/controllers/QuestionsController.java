@@ -38,7 +38,7 @@ public class QuestionsController {
          return question;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/getall-questions/{id}")
     public ResponseEntity<?> getAllQuestions(@PathVariable String id) {
         try {
@@ -74,7 +74,7 @@ public class QuestionsController {
 
 
     // Endpoint to get correct answer by question id
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping(value = "/get-answer/{id}/{answer}", produces = "application/json")
     public ResponseEntity<?> getCorrectAnswerById(@PathVariable String id, @PathVariable String answer) {
                 try {
@@ -122,11 +122,14 @@ public class QuestionsController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping(value = "/get-score", produces = "application/json")
     public ResponseEntity<?> getScore()  {
         try {
             Questions maxCompletedQuestion = questionRepo.findFirstByIsCompletedOrderBySortKeyDesc(true);
+            if (maxCompletedQuestion == null) {
+                return ResponseEntity.ok("{\"score\": 0}");
+            }else{
             Integer maxCompltedQuestionId = Integer.parseInt(maxCompletedQuestion.getQuestionId());
             int score = 0;
             for (int i = 1; i <= maxCompltedQuestionId; i++) {
@@ -136,13 +139,14 @@ public class QuestionsController {
                 }
             }
             return ResponseEntity.ok("{\"score\": " + score + "}");
+        }
         } catch (Exception e) {
             String errorMessage = "{\"error\": \"Error occurred while retrieving score\"}";
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
         }
     }
     
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping(value = "/get-question/{id}", produces = "application/json")
     public ResponseEntity<?> getQuestionById(@PathVariable String id) {
                 try {
@@ -165,7 +169,7 @@ public class QuestionsController {
                                 Map<String, String> answers = question.getAnswers();
                                 ObjectMapper objectMapper = new ObjectMapper();
                                 String jsonString = objectMapper.writeValueAsString(answers);
-                                return ResponseEntity.ok("{\"question\": \"" + Question + "\", \"answers\": " + jsonString +"\"}");
+                                return ResponseEntity.ok("{\"question\": \"" + Question + "\", \"answers\": " + jsonString +"}");
                             }
                         }
                     } else {
@@ -179,7 +183,7 @@ public class QuestionsController {
     }
 
     // Endpoint to get maximum completed question id
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/get-current-question")
     ResponseEntity<String> getMaxCompletedQuestionId() {
         try {

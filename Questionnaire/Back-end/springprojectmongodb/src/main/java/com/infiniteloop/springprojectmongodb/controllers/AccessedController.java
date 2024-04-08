@@ -32,7 +32,7 @@ public class AccessedController {
     }
 
     // Endpoint to check if Accessed record is answered
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping(value = "/{id}/isAnswered", produces = "application/json")
     public ResponseEntity<String> isAnswered(@PathVariable String id) {
         try {
