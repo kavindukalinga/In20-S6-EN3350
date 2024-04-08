@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './Quiz.css'
-import { data } from '../../assets/data';
+import { data, summaryData } from '../../assets/data';
 import { useNavigate } from 'react-router-dom';
 
 const Quiz = () => {
@@ -16,14 +16,14 @@ const Quiz = () => {
 
     const isAuth = async () => {
         try {
-                const response = await fetch(`http://127.0.0.1:9000/auth/accessToken`, {
-                    method: 'GET'
-                });
-                const response_in_json = await response.json();
-                console.log("response_in_json", response_in_json);
-                const accessTokenStore = response_in_json?.accessToken;
-                setAccessToken(accessTokenStore);
-                // localStorage.setItem('accesstoken', accessTokenStore);
+            const response = await fetch(`http://127.0.0.1:9000/auth/accessToken`, {
+                method: 'GET'
+            });
+            const response_in_json = await response.json();
+            console.log("response_in_json", response_in_json);
+            const accessTokenStore = response_in_json?.accessToken;
+            setAccessToken(accessTokenStore);
+            // localStorage.setItem('accesstoken', accessTokenStore);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -38,7 +38,7 @@ const Quiz = () => {
     // console.log("Hello World");
 
     const currentQuestion = async () => {
-        isAuth();
+        // isAuth();
         try {
             const response = await fetch(`http://127.0.0.1:9000/get-current-question`, {
                 method: 'GET',
@@ -95,7 +95,7 @@ const Quiz = () => {
             await new Promise(resolve => setTimeout(resolve, 1000)); // Adding a delay of 2000 milliseconds (2 seconds)
             currentQuestion();
         };
-    
+
         fetchDataWithDelay();
     }, [accessToken]);
 
@@ -174,37 +174,57 @@ const Quiz = () => {
 
     return (
         <div className='container'>
-            <h1>Questionnaire</h1>
-            <hr />
-            {result ? <></> : <>
-                <h2>{index}. {question?.question}</h2>
-                <ul>
-                    <li ref={Option1} onClick={(e) => { checkAns(e, 'A', index) }}>{question?.answers?.A}</li>
-                    <li ref={Option2} onClick={(e) => { checkAns(e, 'B', index) }}>{question?.answers?.B}</li>
-                    <li ref={Option3} onClick={(e) => { checkAns(e, 'C', index) }}>{question?.answers?.C}</li>
-                    <li ref={Option4} onClick={(e) => { checkAns(e, 'D', index) }}>{question?.answers?.D}</li>
-                </ul>
-                <button onClick={next} className={lock ? "lock" : ""}>Next</button>
-                <div className="index">{index} of {10} questions</div>
-                <div className="currentscore">{score} of {index} answers are Correct</div>
 
-                {lock ? <>
+            {result ? <></> : <>
+                <div className='box'>
+                    <h1>Questionnaire</h1>
                     <hr />
-                    <h2>Feedback </h2>
-                    <li>{feedback?.generalFeedback}</li>
-                    <li>{feedback?.specificFeedback}</li>
-                </> : <></>}
+                    <h2>{index}. {question?.question}</h2>
+                    <ul>
+                        <li ref={Option1} onClick={(e) => { checkAns(e, 'A', index) }}>{question?.answers?.A}</li>
+                        <li ref={Option2} onClick={(e) => { checkAns(e, 'B', index) }}>{question?.answers?.B}</li>
+                        <li ref={Option3} onClick={(e) => { checkAns(e, 'C', index) }}>{question?.answers?.C}</li>
+                        <li ref={Option4} onClick={(e) => { checkAns(e, 'D', index) }}>{question?.answers?.D}</li>
+                    </ul>
+                    <button onClick={next} className={lock ? "lock" : ""}>Next</button>
+                    <div className="index">{index} of {10} questions</div>
+                    <div className="currentscore">{score} of {index} answers are Correct</div>
+
+                    {lock ? <>
+                        <hr />
+                        <h2>Feedback </h2>
+                        <li>{feedback?.generalFeedback}</li>
+                        <li>{feedback?.specificFeedback}</li>
+                    </> : <></>}
+                </div>
             </>}
 
-
             {result ? <>
-                <h2>You got {score} answers correct out of {10} questions</h2>
-                <button onClick={toGame}> Go to the Game! </button>
-                <hr />
-                <h2>Summary </h2>
-                summary will be there.
-                {/* <li>{feedback?.generalFeedback}</li>
-                <li>{feedback?.specificFeedback}</li> */}
+                <div className='lastbox'>
+                    <h2>You got {score} answers correct out of {10} questions</h2>
+                    <button onClick={toGame}> Go to the Game! </button>
+                    <hr />
+
+                    <div className='summary'>
+                        <h2>Summary</h2>
+                        <ul>
+                            {summaryData.map((item, index) => (
+                                <li key={index} className="question">
+                                    <div className="feedback">
+                                        <li className="question-text">Question {item.questionid} : {item.question}</li>
+                                        <li className="answer">Your Answer: {item.playerAnswer}</li>
+                                        <li className="correct-answer">Correct Answer: {item.correctAnswer}</li>
+                                        <li className="correctness">{item.isCorrect ? 'Your answer is correct' : 'Your answer is wrong'}</li>
+
+                                        <li className="specific-feedback">Specific Feedback: {item.specificFeedback}</li>
+                                        <li className="general-feedback">General Feedback: {item.generalFeedback}</li>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+
+                    </div>
+                </div>
             </> : <></>}
 
         </div>

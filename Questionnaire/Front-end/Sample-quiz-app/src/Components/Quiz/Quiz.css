@@ -1,4 +1,4 @@
-.container{
+.box{
     width: 640px;
     margin: auto;
     margin-top: 150px;
@@ -10,16 +10,16 @@
     border-radius: 10px;
     padding: 40px 50px;
 }
-.container hr{
+.box hr{
     height: 2px;
     border: none;
     background-color: #707070;
 }
-.container h2{
+.box h2{
     font-size: 27px;
     font-weight: 500;
 }
-.container ul li{
+.box ul li{
     display: flex;
     align-items: center;
     height: 70px;
@@ -31,13 +31,13 @@
     cursor: pointer;
     transition: background-color 0.3s, border-color 0.3s;
 }
-.container ul li:hover {
+.box ul li:hover {
     /* background: #b9ddff; */
     /* font-size: 21px; */
     border: 2px solid #686868;
 }
 
-.container button{
+.box button{
     margin: auto;
     width: 250px;
     height: 65px;
@@ -48,7 +48,7 @@
     border-radius: 8px;
 }
 
-.container button.lock{
+.box button.lock{
     margin: auto;
     width: 250px;
     height: 65px;
@@ -60,38 +60,138 @@
     cursor: pointer;
 }
 
-.container button.lock:hover {
+.box button.lock:hover {
     background: #3a296b;
   }
 
-.container .index{
+.box .index{
     margin: auto;
     font-size: 18px;
     font-weight: 500;
     color: #262626;
 }
-.container .currentscore{
+.box .currentscore{
     margin: auto;
     font-size: 18px;
     font-weight: 500;
     color: #262626;
 }
 
-.container .correct{
+.box .correct{
     background: #dffff2;
     border-color: #00d397;
 }
 
-.container .correct:hover{
+.box .correct:hover{
     background: #74ffc7;
     border-color: #008861;
 }
-.container .wrong{
+.box .wrong{
     background: #ffebeb;
     border-color: #ff4a4a;
 }
 
-.container .wrong:hover{
+.box .wrong:hover{
     background: #ffb3b3;
     border-color: #f82828;
+}
+
+
+/* Summary */
+
+.lastbox{
+    width: 640px;
+    margin: auto;
+    margin-top: 150px;
+    background: linear-gradient(120deg, #faebb0 0%, #f5c9be 100%);
+    color: #262626;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-radius: 10px;
+    padding: 40px 50px;
+}
+.lastbox hr{
+    height: 2px;
+    border: none;
+    background-color: #707070;
+}
+
+.lastbox button{
+    margin: auto;
+    width: 250px;
+    height: 65px;
+    background: #553f9a;
+    color: white;
+    font-size: 25px;
+    font-weight: 500;
+    border-radius: 8px;
+}
+.lastbox h2{
+    font-size: 27px;
+    font-weight: 500;
+}
+
+.lastbox ul li{
+    display: flex;
+    align-items: center;
+    height: auto;
+    padding-left: 15px;
+    border: 0px solid #686868;
+    border-radius: 8px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.lastbox ul .question{
+    display: flex;
+    align-items: center;
+    height: auto;
+    background: rgba(92, 219, 98, 0.2);
+    padding-left: 8px;
+    padding-right: 8px;
+    border: 0px solid #686868;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.lastbox .question-text{
+    font-size: 22px;
+    font-weight: 520;
+    color: #06173d;
+}
+
+.lastbox .answer{
+    font-size: 20px;
+    font-weight: 500;
+    color: #182ce2;
+}
+
+.lastbox .correct-answer{
+    font-size: 20px;
+    font-weight: 500;
+    color: #05b381;
+}
+
+.lastbox .correctness{
+    font-size: 20px;
+    font-weight: 500;
+    color: #940505;
+}
+
+.lastbox .specific-feedback{
+    font-size: 18px;
+    font-weight: 500;
+    color: #000000;
+}
+.lastbox .general-feedback{
+    font-size: 18px;
+    font-weight: 500;
+    color: #000000;
 }
