@@ -32,6 +32,7 @@ public class AuthConfig {
         .authorizeHttpRequests(authorize -> authorize
             .requestMatchers(HttpMethod.POST, "/auth/*").permitAll()
             .requestMatchers(HttpMethod.GET, "/auth/*").permitAll()
+            .requestMatchers(HttpMethod.GET, "/accessed/*").permitAll()
             .anyRequest().authenticated())
         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
         .build();

@@ -92,7 +92,7 @@ const Quiz = () => {
 
     useEffect(() => {
         const fetchDataWithDelay = async () => {
-            await new Promise(resolve => setTimeout(resolve, 1)); // Adding a delay of 2000 milliseconds (2 seconds)
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Adding a delay of 2000 milliseconds (2 seconds)
             currentQuestion();
         };
     

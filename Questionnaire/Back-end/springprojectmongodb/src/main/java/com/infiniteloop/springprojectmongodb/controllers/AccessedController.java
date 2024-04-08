@@ -33,10 +33,10 @@ public class AccessedController {
 
     // Endpoint to check if Accessed record is answered
     @CrossOrigin(origins = "http://localhost:5173")
-    @GetMapping(value = "/{id}/isAnswered", produces = "application/json")
-    public ResponseEntity<String> isAnswered(@PathVariable String id) {
+    @GetMapping(value = "/isAnswered", produces = "application/json")
+    public ResponseEntity<String> isAnswered() {
         try {
-            Accessed accessed = accessedRepo.findById(id).orElse(null);
+            Accessed accessed = accessedRepo.findById("1").orElse(null);
 
             if (accessed != null) {
                 boolean result = accessed.getIsAnswered();
