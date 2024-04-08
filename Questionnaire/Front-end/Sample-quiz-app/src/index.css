@@ -5,7 +5,7 @@
 }
 
 body {
-  height: 100vh; /* Ensure body takes up the full viewport height */
+  height: auto; /* Ensure body takes up the full viewport height */
   background-image: url("../src/assets/background-zoo-img.png");
   background-size: cover; /* Scale the background image to cover the entire background area */
   background-attachment: fixed; /* Ensure the background image remains fixed while content scrolls */
