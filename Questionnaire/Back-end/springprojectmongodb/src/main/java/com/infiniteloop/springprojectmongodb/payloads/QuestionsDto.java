@@ -1,6 +1,5 @@
 package com.infiniteloop.springprojectmongodb.payloads;
 
-import java.util.Map;
 
 public class QuestionsDto {
     private String questionId; // Change the type to String for MongoDB ObjectId
@@ -9,13 +8,13 @@ public class QuestionsDto {
 
     private String question; // Corrected the field name
 
-    private Map<String, String> answers;
-
     private String generalFeedback;
 
     private String specificFeedback;
 
     private String playerAnswer;
+
+    private Boolean isCorrect;
     
     // Add other fields as needed
     
@@ -44,13 +43,6 @@ public class QuestionsDto {
         this.correctAnswer = correctAnswer;
     }
 
-    public Map<String, String> getAnswers() {
-        return answers;
-    }
-
-    public void setAnswers(Map<String, String> answers) {
-        this.answers = answers;
-    }
 
     public String getGeneralFeedback() {
         return generalFeedback;
@@ -74,5 +66,13 @@ public class QuestionsDto {
 
     public void setPlayerAnswer(String playerAnswer) {
         this.playerAnswer = playerAnswer;
+    }
+
+    public Boolean getIsCorrect() {
+        return isCorrect;
+    }
+
+    public void setIsCorrect(Boolean isCorrect) {
+        this.isCorrect = isCorrect;
     }
 }

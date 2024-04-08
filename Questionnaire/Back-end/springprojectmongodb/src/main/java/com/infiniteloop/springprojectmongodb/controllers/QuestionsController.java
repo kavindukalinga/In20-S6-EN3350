@@ -39,8 +39,8 @@ public class QuestionsController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173")
-    @GetMapping("/getall-questions/{id}")
-    public ResponseEntity<?> getAllQuestions(@PathVariable String id) {
+    @GetMapping("/getall-questions")
+    public ResponseEntity<?> getAllQuestions() {
         try {
             Questions maxCompletedQuestion = questionRepo.findFirstByIsCompletedOrderBySortKeyDesc(true);
             if (Integer.parseInt(maxCompletedQuestion.getQuestionId()) == 10) {
@@ -49,15 +49,19 @@ public class QuestionsController {
                     QuestionsDto dto = new QuestionsDto();
                     dto.setQuestionId(question.getQuestionId());
                     dto.setQuestion(question.getQuestion());
-                    dto.setCorrectAnswer(question.getCorrectAnswer());
-                    dto.setAnswers(question.getAnswers());
+                    dto.setCorrectAnswer(question.getAnswers().get(question.getCorrectAnswer()));
                     dto.setGeneralFeedback(question.getGeneralFeedback());
                     String playerSpecificFeedback = question.getSpecificFeedback().get(question.getPlayerAnswer());
                     dto.setSpecificFeedback(playerSpecificFeedback);
-                    dto.setPlayerAnswer(question.getPlayerAnswer());
+                    dto.setPlayerAnswer(question.getAnswers().get(question.getPlayerAnswer()));
+                    if(question.getCorrectAnswer().equals(question.getPlayerAnswer())){
+                        dto.setIsCorrect(true);
+                    }else{
+                        dto.setIsCorrect(false);
+                    }
                     return dto;
                 }).collect(Collectors.toList());
-                Accessed accessed = accessedRepo.findById(id).orElse(null);
+                Accessed accessed = accessedRepo.findById("1").orElse(null);
                 if (accessed != null) {
                     accessed.setIsAnswered(true);
                     accessedRepo.save(accessed);
