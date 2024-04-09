@@ -3,8 +3,33 @@ import './Quiz.css'
 import { data, summaryData } from '../../assets/data';
 import { useNavigate } from 'react-router-dom';
 
-const Quiz = () => {
+async function signIn(username, password) {
+    try {
+        const response = await fetch('http://127.0.0.1:9000/auth/signin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ "login": username, "password": password })
+        });
 
+        if (!response.ok) {
+            throw new Error('Sign in failed');
+        }
+
+        const data = await response.json();
+        const accessToken = data.accessToken;
+
+        localStorage.setItem('access_token', accessToken);
+
+        return accessToken;
+    } catch (error) {
+        console.error('Error signing in:', error.message);
+        return null;
+    }
+}
+
+const Quiz = () => {
     const navigate = useNavigate();
     let [index, setIndex] = React.useState(1);
     let [question, setQuestion] = React.useState(data[0]);
@@ -12,33 +37,22 @@ const Quiz = () => {
     let [score, setScore] = React.useState(0);
     let [result, setResult] = React.useState(false);
     let [feedback, setFeedback] = React.useState(data[0]);
-    let [accessToken, setAccessToken] = React.useState("token");
+    let [accessToken, setAccessToken] = React.useState(null);
 
     const isAuth = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:9000/auth/accessToken`, {
-                method: 'GET'
-            });
-            const response_in_json = await response.json();
-            console.log("response_in_json", response_in_json);
-            const accessTokenStore = response_in_json?.accessToken;
-            setAccessToken(accessTokenStore);
-            // localStorage.setItem('accesstoken', accessTokenStore);
+            let accessToken = localStorage.getItem('access_token');
+            if (!accessToken) {
+                accessToken = await signIn('nuwan', '1234');
+            }
+            // console.log("accessToken", accessToken);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
 
-    // if (localStorage.getItem('accesstoken') === null) {
-    //     const accessTokenStore = "your_access_token_here"; // Example data
-    //     localStorage.setItem('accesstoken', accessTokenStore);
-    // }
-
-    // const accessToken = localStorage.getItem('accesstoken');
-    // console.log("Hello World");
-
     const currentQuestion = async () => {
-        // isAuth();
+        const accessToken = localStorage.getItem('access_token');
         try {
             const response = await fetch(`http://127.0.0.1:9000/get-current-question`, {
                 method: 'GET',
@@ -49,19 +63,16 @@ const Quiz = () => {
             });
             const response_in_json = await response.json();
             const currentQuestionId = response_in_json['available_question']
-            console.log("currentQuestionId", currentQuestionId);
+            // console.log("currentQuestionId", currentQuestionId);
             setIndex(currentQuestionId);
-            // console.log("index", index);
-            //console.log("data", data[currentQuestionId]);
 
-            // Getting score:
             const response3 = await fetch(`http://127.0.0.1:9000/get-score`, {
                 headers: {
                     "Authorization": `Bearer ${accessToken}`
                 }
             });
             const response3_in_json = await response3.json();
-            console.log("response3_in_json", response3_in_json['score']);
+            // console.log("response3_in_json", response3_in_json['score']);
             setScore(response3_in_json['score']);
 
             if (currentQuestionId <= 10) {
@@ -71,15 +82,11 @@ const Quiz = () => {
                     }
                 });
                 const response2_in_json = await response2.json();
-                // console.log("response2_in_json", response2_in_json["question"]);
                 setQuestion(response2_in_json);
             }
             else {
                 setResult(true);
             }
-            // setQuestion(data[currentQuestionId]);
-            // return currentQuestionId;
-
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -87,12 +94,11 @@ const Quiz = () => {
 
     useEffect(() => {
         isAuth();
-
     }, []);
 
     useEffect(() => {
         const fetchDataWithDelay = async () => {
-            await new Promise(resolve => setTimeout(resolve, 1000)); // Adding a delay of 2000 milliseconds (2 seconds)
+            await new Promise(resolve => setTimeout(resolve, 500)); // Adding a delay of 2000 milliseconds (2 seconds)
             currentQuestion();
         };
 
@@ -107,6 +113,7 @@ const Quiz = () => {
     let option_array = [Option1, Option2, Option3, Option4];
 
     const checkAns = async (e, ans, question_id) => {
+        const accessToken = localStorage.getItem('access_token');
         if (!lock) {
             try {
                 const response = await fetch(`http://127.0.0.1:9000/get-answer/${question_id}/${ans}`, {
@@ -115,26 +122,20 @@ const Quiz = () => {
                     }
                 });
                 const data5 = await response.json();
-                console.log("data5", data5);
                 const fetchedAnswer = data5?.correctAnswer;
-                console.log("fetchedAnswer", fetchedAnswer);
 
-                setFeedback(data5);
+                // Adding new ft
 
-                // const userAnswers = await fetch(`http://127.0.0.1:9000/api/data`, {
-                //     method: 'POST',
-                //     headers: {
-                //         'Content-Type': 'application/json',
-                //         "Authorization": `Bearer ${accessToken}`
-                //     },
-                //     body: JSON.stringify({ ans, question_id }),
-                // });
                 const letterToNumber = {
                     'A': 1,
                     'B': 2,
                     'C': 3,
                     'D': 4
                 };
+                // End new ft
+
+                setFeedback(data5);
+
                 if (fetchedAnswer === ans) {
                     e.target.classList.add('correct');
                     setLock(true);
@@ -159,7 +160,6 @@ const Quiz = () => {
             }
             setIndex(++index);
             currentQuestion();
-            // setQuestion(data[index]);
             setLock(false);
             option_array.map((option) => {
                 option.current.classList.remove('wrong');
@@ -180,7 +180,6 @@ const Quiz = () => {
 
     return (
         <div className='container'>
-
             {result ? <></> : <>
                 <div className='box'>
                     <h1>Questionnaire</h1>
@@ -232,7 +231,6 @@ const Quiz = () => {
                     </div>
                 </div>
             </> : <></>}
-
         </div>
     )
 }
