@@ -129,7 +129,12 @@ const Quiz = () => {
                 //     },
                 //     body: JSON.stringify({ ans, question_id }),
                 // });
-
+                const letterToNumber = {
+                    'A': 1,
+                    'B': 2,
+                    'C': 3,
+                    'D': 4
+                };
                 if (fetchedAnswer === ans) {
                     e.target.classList.add('correct');
                     setLock(true);
@@ -137,7 +142,8 @@ const Quiz = () => {
                 } else {
                     e.target.classList.add('wrong');
                     setLock(true);
-                    // option_array[fetchedAnswer - 1].current.classList.add('correct');
+                    const answerNumber = letterToNumber[fetchedAnswer];
+                    option_array[answerNumber - 1].current.classList.add('correct');
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
