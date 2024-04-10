@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './Quiz.css'
-import { data, summaryData } from '../../assets/data';
+import { data } from '../../assets/data';
 import { useNavigate } from 'react-router-dom';
 
 async function signIn(username, password) {
@@ -38,6 +38,7 @@ const Quiz = () => {
     let [result, setResult] = React.useState(false);
     let [feedback, setFeedback] = React.useState(data[0]);
     let [accessToken, setAccessToken] = React.useState(null);
+    let [summaryData, setSummaryData] = React.useState(null);
 
     const isAuth = async () => {
         try {
@@ -85,6 +86,13 @@ const Quiz = () => {
                 setQuestion(response2_in_json);
             }
             else {
+                const response4 = await fetch(`http://127.0.0.1:9000/getall-questions`, {
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`
+                    }
+                });
+                const response4_in_json = await response4.json();
+                setSummaryData(response4_in_json);
                 setResult(true);
             }
         } catch (error) {
