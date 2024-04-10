@@ -23,3 +23,10 @@ npm install
 npm install react-router-dom
 npm run dev
 ```
+
+## Run using Docker:
+
+```bash
+docker build -t infiniteloop/powerzoofrontend .
+docker container run -p 9000:9000 infiniteloop/powerzoofrontend 
+```
