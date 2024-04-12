@@ -859,7 +859,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 961777609815664801, guid: 513b56cb3b4b2914bbe77e9a97f86502, type: 3}
       propertyPath: m_Name
-      value: MenuLoader
+      value: SceneLoader
       objectReference: {fileID: 0}
     - target: {fileID: 961777609815664801, guid: 513b56cb3b4b2914bbe77e9a97f86502, type: 3}
       propertyPath: m_IsActive
@@ -869,6 +869,14 @@ PrefabInstance:
       propertyPath: APIHub
       value: 
       objectReference: {fileID: 1541915273}
+    - target: {fileID: 2260702052729666144, guid: 513b56cb3b4b2914bbe77e9a97f86502, type: 3}
+      propertyPath: sceneA
+      value: MenuScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 2260702052729666144, guid: 513b56cb3b4b2914bbe77e9a97f86502, type: 3}
+      propertyPath: sceneB
+      value: PlayerProfileScene
+      objectReference: {fileID: 0}
     - target: {fileID: 2260702052729666144, guid: 513b56cb3b4b2914bbe77e9a97f86502, type: 3}
       propertyPath: LoginScript
       value: 

@@ -15,10 +15,4 @@ public class playerProfileMainScript : MonoBehaviour
         playerProfileScript.GetPlayerProfile();
         saveButton.onClick.AddListener(() => playerProfileScript.UpdateProfile());
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

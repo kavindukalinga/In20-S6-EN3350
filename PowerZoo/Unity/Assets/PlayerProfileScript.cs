@@ -10,6 +10,7 @@ using UnityEngine.SceneManagement;
 public class PlayerProfileScript : MonoBehaviour
 {
     public APIHubScript APIHub;
+    public sceneLoaderScript SceneLoader;
     private PlayerData playerData;
     public TMP_InputField firstName;
     public TMP_InputField lastName;
@@ -25,6 +26,7 @@ public class PlayerProfileScript : MonoBehaviour
     public void UpdateProfile() {
         update_profile();
         StartCoroutine(put_request(UpdateProfile_API, playerData));
+        StartCoroutine(SceneLoader.play_animation());
     } 
 
     private IEnumerator get_player_profile()
