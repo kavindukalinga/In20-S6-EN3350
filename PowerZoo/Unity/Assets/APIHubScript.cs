@@ -36,7 +36,7 @@ public class APIHubScript : MonoBehaviour
         yield return StartCoroutine(get_request(ViewDailyConsumptionCurrentMonth_API));
         // quizResponse = JsonUtility.FromJson<QuizResponse>(APIHub.Response);
         // return (QuizResponse.quizCompleted)
-        quizResponse.quizCompleted = true;
+        quizResponse.quizCompleted = false;
     }
 
     public IEnumerator player_authenticate() { // POST request
