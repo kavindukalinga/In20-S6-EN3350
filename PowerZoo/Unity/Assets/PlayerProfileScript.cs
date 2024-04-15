@@ -11,23 +11,28 @@ public class PlayerProfileScript : MonoBehaviour
 {
     public APIHubScript APIHub;
     public sceneLoaderScript SceneLoader;
-    private PlayerData playerData;
+    public PlayerData playerData;
     public TMP_InputField firstName;
     public TMP_InputField lastName;
     public TMP_InputField userName;
     public TMP_InputField nic;
     public TMP_InputField phoneNumber;
     public TMP_InputField email;
+    public TMP_Text playerWarning;
     // public TMP_InputField profilePictureURL;
     private string ViewProfile_API = "http://20.15.114.131:8080/api/user/profile/view";
     private string UpdateProfile_API = "http://20.15.114.131:8080/api/user/profile/update";
 
     public void GetPlayerProfile() => StartCoroutine(get_player_profile());
     public void UpdateProfile() {
-        update_profile();
-        StartCoroutine(put_request(UpdateProfile_API, playerData));
-        StartCoroutine(SceneLoader.play_animation());
-    } 
+        if (are_fields_empty()) {
+            return;
+        } else {
+            update_profile();
+            StartCoroutine(APIHub.put_request(UpdateProfile_API, playerData));
+            StartCoroutine(SceneLoader.play_animation());
+        }
+    }
 
     private IEnumerator get_player_profile()
     {
@@ -37,7 +42,6 @@ public class PlayerProfileScript : MonoBehaviour
         {
             playerData = JsonUtility.FromJson<PlayerData>(APIHub.Response);
             Debug.Log(playerData);
-            Debug.Log("Player details: " + playerData.user.firstname + " " + playerData.user.lastname);
             load_data_to_UI();
         }
         else
@@ -80,29 +84,21 @@ public class PlayerProfileScript : MonoBehaviour
         // playerData.user.profilePictureUrl = profilePictureURL.text;
     }
 
-    private IEnumerator put_request(string url, PlayerData playerData) {
-        if (string.IsNullOrEmpty(APIHub.JWT_TOKEN))
+    private bool are_fields_empty()
+    {
+        bool are_empty = false;
+        TMP_InputField[] fields_array = {firstName, lastName, nic, phoneNumber, email};
+        foreach (var field in fields_array)
         {
-            yield return StartCoroutine(APIHub.player_authenticate());
-        }
-        APIHub.Response = "";
-        using (UnityWebRequest request = new UnityWebRequest(url, "PUT")) {
-            request.uploadHandler = new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(playerData.user)));
-            request.downloadHandler = new DownloadHandlerBuffer();
-            request.SetRequestHeader("Content-Type", "application/json");
-            request.SetRequestHeader("Authorization", "Bearer " + APIHub.JWT_TOKEN);
-            yield return request.SendWebRequest();
-            if (request.result != UnityWebRequest.Result.Success)
+            if (string.IsNullOrEmpty(field.text))
             {
-                firstName.text = request.error;
-            }
-            else
-            {
-                string jsonResponse = request.downloadHandler.text;
-                APIHub.Response = jsonResponse;
-                Debug.Log("Response: " + APIHub.Response);
+                playerWarning.text = "Please fill all the fields";
+                are_empty = true;
+                break;
             }
         }
+        return are_empty;
+        
     }
 
     // private void go_to_next_scene()
@@ -119,23 +115,7 @@ public class PlayerProfileScript : MonoBehaviour
     //     }
     // }
 
-    [System.Serializable]
-    public class PlayerData
-    {
-        public UserDataFromServer user;
-    }
 
-    [System.Serializable]
-    public class UserDataFromServer
-    {
-        public string firstname;
-        public string lastname;
-        public string username;
-        public string nic;
-        public string phoneNumber;
-        public string email;
-        // public string profilePictureUrl;
-    }
 
     // [System.Serializable]
     // public class QuizResponse
@@ -144,3 +124,5 @@ public class PlayerProfileScript : MonoBehaviour
     // }
 
 }
+
+

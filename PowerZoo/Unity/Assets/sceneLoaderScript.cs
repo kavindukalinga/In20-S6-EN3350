@@ -11,21 +11,7 @@ public class sceneLoaderScript : MonoBehaviour
     public float transitionTime = 1f;
     public string sceneA;
     public string sceneB;
-    private bool menuLoaded = false;
-
-    // Update is called once per frame
-    void Update()
-    {
-        change_scene();
-    }
-
-    private void change_scene() {
-        if (Input.GetKeyDown(KeyCode.Return) && !string.IsNullOrEmpty(APIHub.JWT_TOKEN) && !menuLoaded) {
-            Debug.Log("Enter key pressed");
-            menuLoaded = true;
-            StartCoroutine(play_animation());
-        }
-    }
+    
 
     public IEnumerator play_animation() {
         // Play the animation
@@ -33,12 +19,12 @@ public class sceneLoaderScript : MonoBehaviour
         yield return new WaitForSeconds(transitionTime);
         yield return StartCoroutine(APIHub.check_quiz_completed());
         // Load the next scene
-        Debug.Log(APIHub.quizResponse.quizCompleted);
-        load_next_scene(APIHub.quizResponse.quizCompleted, sceneA, sceneB);
+        Debug.Log(APIHub.quizResponse.isAnswered);
+        load_next_scene(APIHub.quizResponse.isAnswered, sceneA, sceneB);
     }
 
-    private void load_next_scene(bool quizCompleted, string sceneA, string sceneB) {
-        if (quizCompleted) {
+    private void load_next_scene(bool isAnswered, string sceneA, string sceneB) {
+        if (isAnswered) {
             SceneManager.LoadScene(sceneA);
         }
         else {
