@@ -11,6 +11,7 @@ public class APIHubScript : MonoBehaviour
     public string Response;
     public QuizResponse quizResponse;
     private string Auth_API = "http://20.15.114.131:8080/api/login";
+    private string spring_Auth_API = "http://localhost:9000/auth/signup";
     private string ViewProfile_API = "http://20.15.114.131:8080/api/user/profile/view";
     private string ViewPlayerList_API = "http://20.15.114.131:8080/api/user/profile/list";
     private string ViewYearlyPowerConsumption_API = "http://20.15.114.131:8080/api/power-consumption/yearly/view";
@@ -18,7 +19,7 @@ public class APIHubScript : MonoBehaviour
     private string ViewCurrentMonthConsumption_API = "http://20.15.114.131:8080/api/power-consumption/current-month/view";
     private string ViewDailyConsumptionSpecificMonth_API = "http://20.15.114.131:8080/api/power-consumption/month/daily/view";
     private string ViewDailyConsumptionCurrentMonth_API = "http://20.15.114.131:8080/api/power-consumption/current-month/daily/view";
-    private string isQuizCompleted_API = "http://localhost:9000/api/quiz/iscompleted";
+    private string isQuizCompleted_API = "http://localhost:9000/accessed/isAnswered";
 
     public void Authenticate() => StartCoroutine(player_authenticate());
     public void ViewProfile() => StartCoroutine(get_request(ViewProfile_API));
@@ -33,15 +34,13 @@ public class APIHubScript : MonoBehaviour
 
     public IEnumerator check_quiz_completed()
     {
-        yield return StartCoroutine(get_request(ViewDailyConsumptionCurrentMonth_API));
-        // quizResponse = JsonUtility.FromJson<QuizResponse>(APIHub.Response);
-        // return (QuizResponse.quizCompleted)
-        quizResponse.quizCompleted = false;
+        yield return StartCoroutine(get_request(isQuizCompleted_API));
+        quizResponse = JsonUtility.FromJson<QuizResponse>(Response);
     }
 
     public IEnumerator player_authenticate() { // POST request
         string url = Auth_API;
-
+        
         // Create a JSON object representing your data
         string jsonData = "{\"apiKey\": \"" + API_KEY + "\"}";
 
@@ -55,7 +54,7 @@ public class APIHubScript : MonoBehaviour
             yield return request.SendWebRequest();
 
             if (request.isNetworkError || request.isHttpError) {
-                Debug.LogError(request.error);
+                Debug.LogError("Can not Authenticate.");
             } else {
                 string jsonResponse = request.downloadHandler.text;
                 TokenResponse tokenResponse = JsonUtility.FromJson<TokenResponse>(jsonResponse);
@@ -64,6 +63,38 @@ public class APIHubScript : MonoBehaviour
         }
     }
 
+    public IEnumerator player_authenticate_spring() { // POST request
+        string url = spring_Auth_API;
+        
+        yield return StartCoroutine(get_request(ViewProfile_API));
+        if (Response != null) {
+            PlayerData playerData = JsonUtility.FromJson<PlayerData>(Response);
+            string username = playerData.user.username;
+        
+            // Create a JSON object representing your data
+            string jsonData = "{\"login\": \"" + username + "\", \"password\": \"" + API_KEY + "\"}";
+
+            // Set the content type header to indicate JSON data
+            byte[] postData = System.Text.Encoding.UTF8.GetBytes(jsonData);
+            using (UnityWebRequest request = new UnityWebRequest(url, "POST")) {
+                request.uploadHandler = new UploadHandlerRaw(postData);
+                request.downloadHandler = new DownloadHandlerBuffer();
+                request.SetRequestHeader("Content-Type", "application/json");
+
+                yield return request.SendWebRequest();
+
+                if (request.isNetworkError || request.isHttpError) {
+                    Debug.LogError("Can not Authenticate with springBoot Backend");
+                } else {
+                    string jsonResponse = request.downloadHandler.text;
+                    TokenResponse tokenResponse = JsonUtility.FromJson<TokenResponse>(jsonResponse);
+                    Debug.Log("Spring response: " + tokenResponse.token);
+                }
+            }
+        } else {
+            Debug.LogError("Token response is null.");
+        }
+    }
 
     public IEnumerator get_request(string url)
     {
@@ -90,6 +121,31 @@ public class APIHubScript : MonoBehaviour
         }
     }
 
+    public IEnumerator put_request(string url, PlayerData playerData) {
+        if (string.IsNullOrEmpty(JWT_TOKEN))
+        {
+            yield return StartCoroutine(player_authenticate());
+        }
+        Response = "";
+        using (UnityWebRequest request = new UnityWebRequest(url, "PUT")) {
+            request.uploadHandler = new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(playerData.user)));
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+            request.SetRequestHeader("Authorization", "Bearer " + JWT_TOKEN);
+            yield return request.SendWebRequest();
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError(request.error);
+            }
+            else
+            {
+                string jsonResponse = request.downloadHandler.text;
+                Response = jsonResponse;
+                Debug.Log("Response: " + Response);
+            }
+        }
+    }
+
     public IEnumerator redirectQuiz() {
         Application.OpenURL("http://localhost:9000/quiz");
         yield return null;
@@ -106,5 +162,23 @@ public class TokenResponse
 [System.Serializable]
 public class QuizResponse
 {
-    public bool quizCompleted;
+    public bool isAnswered;
+}
+
+[System.Serializable]
+public class PlayerData
+{
+    public UserDataFromServer user;
+}
+
+[System.Serializable]
+public class UserDataFromServer
+{
+    public string firstname;
+    public string lastname;
+    public string username;
+    public string nic;
+    public string phoneNumber;
+    public string email;
+    // public string profilePictureUrl;
 }
