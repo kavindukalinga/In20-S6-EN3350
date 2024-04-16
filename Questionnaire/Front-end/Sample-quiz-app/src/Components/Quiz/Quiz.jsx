@@ -44,7 +44,7 @@ const Quiz = () => {
         try {
             let accessToken = localStorage.getItem('access_token');
             if (!accessToken) {
-                accessToken = await signIn('nuwan', '1234');
+                accessToken = await signIn('ask', '1234');
             }
             // console.log("accessToken", accessToken);
         } catch (error) {
