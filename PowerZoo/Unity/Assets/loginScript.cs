@@ -13,7 +13,6 @@ public class loginScript : MonoBehaviour
     public GameObject textTMP;
     public sceneLoaderScript sceneLoader;
 
-    // Start is called before the first frame update
     void Start()
     {
         Authenticate();
