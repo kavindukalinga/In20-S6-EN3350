@@ -87,10 +87,8 @@ public class QuestionsController {
                     if(accessed.getIsAnswered() == false){
                         accessed.setIsAnswered(true);
                         accessedRepo.save(accessed);
-                    }else{
-                        return ResponseEntity.ok("{\"error\": \"Already Answered\"}");
-                    }  
-                }
+                  
+                }}
                 return ResponseEntity.ok(questionDTOs);
             } else {
                 return ResponseEntity.ok("{\"error\": \"complete the questionnaire first!!!\"}");
