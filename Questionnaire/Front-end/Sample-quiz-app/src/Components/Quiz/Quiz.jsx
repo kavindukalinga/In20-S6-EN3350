@@ -192,7 +192,7 @@ const Quiz = () => {
                 <div className='box'>
                     <h1>Questionnaire</h1>
                     <hr />
-                    <h2>{index}. {question?.question}</h2>
+                    <h2>{index === 11 ? 10 : index}. {question?.question}</h2>
                     <ul>
                         <li ref={Option1} onClick={(e) => { checkAns(e, 'A', index) }}>{question?.answers?.A}</li>
                         <li ref={Option2} onClick={(e) => { checkAns(e, 'B', index) }}>{question?.answers?.B}</li>
@@ -200,8 +200,18 @@ const Quiz = () => {
                         <li ref={Option4} onClick={(e) => { checkAns(e, 'D', index) }}>{question?.answers?.D}</li>
                     </ul>
                     <button onClick={next} className={lock ? "lock" : ""}>Next</button>
-                    <div className="index">{index} of {10} questions</div>
-                    <div className="currentscore">{score} of {index} answers are Correct</div>
+
+                    {index <= 10 ? (
+                            <>
+                                <div className="index">{index} of {10} questions</div>
+                                <div className="currentscore">{score} of {index} answers are Correct</div>
+                            </>
+                        ) : (
+                            <>
+                            <div className="index">{10} of {10} questions</div>
+                            <div className="currentscore">Final Score: {score} of 10 answers are Correct</div>
+                        </>
+                    )}
 
                     {lock ? <>
                         <hr />
@@ -211,6 +221,7 @@ const Quiz = () => {
                     </> : <></>}
                 </div>
             </>}
+
 
             {result ? <>
                 <div className='lastbox'>

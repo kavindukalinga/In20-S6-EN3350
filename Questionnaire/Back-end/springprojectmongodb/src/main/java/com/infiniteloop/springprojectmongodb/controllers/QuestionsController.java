@@ -130,7 +130,7 @@ public class QuestionsController {
 
 
     // Endpoint to get score
-    @CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins = {"http://localhost:5173","http://localhost:5500"})
     @GetMapping(value = "/get-score", produces = "application/json")
     public ResponseEntity<?> getScore()  {
         try {
