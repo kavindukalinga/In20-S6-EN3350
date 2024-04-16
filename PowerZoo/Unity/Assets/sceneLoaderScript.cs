@@ -19,7 +19,7 @@ public class sceneLoaderScript : MonoBehaviour
         yield return new WaitForSeconds(transitionTime);
         yield return StartCoroutine(APIHub.check_quiz_completed());
         // Load the next scene
-        Debug.Log(APIHub.quizResponse.isAnswered);
+        Debug.Log(APIHub.quizResponse);
         load_next_scene(APIHub.quizResponse.isAnswered, sceneA, sceneB);
     }
 

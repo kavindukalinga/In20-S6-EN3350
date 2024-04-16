@@ -11,6 +11,7 @@ public class playerProfileMainScript : MonoBehaviour
 
     void Start()
     {
+        playerProfileScript = GameObject.Find("PlayerProfileScript").GetComponent<PlayerProfileScript>();
         playerProfileScript.GetPlayerProfile();
         saveButton.onClick.AddListener(() => playerProfileScript.UpdateProfile());
     }
