@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 async function signIn(username, password) {
     try {
+
         const response = await fetch('http://127.0.0.1:9000/auth/signin', {
             method: 'POST',
             headers: {
@@ -39,18 +40,20 @@ const Quiz = () => {
     let [feedback, setFeedback] = React.useState(data[0]);
     let [accessToken, setAccessToken] = React.useState(null);
     let [summaryData, setSummaryData] = React.useState(null);
+    let [username, setUsername] = React.useState(localStorage.getItem('username'));
+    let [password, setPassword] = React.useState(localStorage.getItem('password'));
 
-    const isAuth = async () => {
+    async function isAuth() {
         try {
             let accessToken = localStorage.getItem('access_token');
             if (!accessToken) {
-                accessToken = await signIn('ask', '1234');
+                accessToken = await signIn(username, password);
             }
             // console.log("accessToken", accessToken);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
-    };
+    }
 
     const currentQuestion = async () => {
         const accessToken = localStorage.getItem('access_token');
@@ -179,7 +182,8 @@ const Quiz = () => {
 
     const toGame = () => {
         setTimeout(() => {
-            window.location.href = `http://127.0.0.1:9000/game?score=${score}`;
+            localStorage.clear();
+            window.location.href = `http://127.0.0.1:9000/get-score`;
         }, 2000);
 
         return null;
@@ -202,12 +206,12 @@ const Quiz = () => {
                     <button onClick={next} className={lock ? "lock" : ""}>Next</button>
 
                     {index <= 10 ? (
-                            <>
-                                <div className="index">{index} of {10} questions</div>
-                                <div className="currentscore">{score} of {index} answers are Correct</div>
-                            </>
-                        ) : (
-                            <>
+                        <>
+                            <div className="index">{index} of {10} questions</div>
+                            <div className="currentscore">{score} of {index} answers are Correct</div>
+                        </>
+                    ) : (
+                        <>
                             <div className="index">{10} of {10} questions</div>
                             <div className="currentscore">Final Score: {score} of 10 answers are Correct</div>
                         </>
