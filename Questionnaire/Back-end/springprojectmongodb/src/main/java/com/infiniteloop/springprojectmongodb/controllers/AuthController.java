@@ -1,6 +1,10 @@
 package com.infiniteloop.springprojectmongodb.controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+
+import java.util.Base64;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infiniteloop.springprojectmongodb.config.auth.TokenProvider;
 import com.infiniteloop.springprojectmongodb.payloads.SignInDto;
 import com.infiniteloop.springprojectmongodb.payloads.SignUpDto;
@@ -55,7 +61,7 @@ public class AuthController {
     var accessToken = tokenService.generateAccessToken((User) authUser.getPrincipal());
 
     // Save access token in MongoDB
-    var accessed = accessedRepo.findById("1").orElseThrow();
+    var accessed = accessedRepo.findByLogin(data.login()).orElseThrow();
     accessed.setAccessToken(accessToken);
     accessedRepo.save(accessed);
 
@@ -80,7 +86,46 @@ public class AuthController {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\": \"An error occurred while processing the request\"}");
     }
   }
+
+  private static String decode(String encodedString) {
+    return new String(Base64.getUrlDecoder().decode(encodedString));
 }
+
+    @GetMapping(value = "/jwtdecoder")
+    public ResponseEntity<String> jwtDecoder(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        String token = authHeader.substring(7);
+        String[] parts = token.split("\\.");
+        String payload = decode(parts[1]);
+
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode payloadNode = mapper.readTree(payload);
+            String username = payloadNode.get("username").asText();
+            return ResponseEntity.ok("{\"login\": \"" + username + "\"}");
+        } catch (Exception e) {
+            // Handle JSON parsing exception
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\": \"Error parsing JWT payload\"}");
+        }
+    }
+
+    // private String recoverToken(HttpServletRequest request) {
+    //   String authHeader = request.getHeader("Authorization");
+    //   if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+    //       return null;
+    //   }
+    //   return authHeader.substring(7); // Remove "Bearer " prefix
+  
+
+  @PostMapping("/example")
+  public ResponseEntity<String> exampleEndpoint(@RequestBody String requestBody, HttpServletRequest request) {
+      // Recover JWT token from the request
+      String authHeader = request.getHeader("Authorization");
+
+      
+      return ResponseEntity.ok(authHeader.substring(7));
+      
+}}
 
 
   
