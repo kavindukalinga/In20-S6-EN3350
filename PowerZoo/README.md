@@ -7,4 +7,4 @@ Install the [Live-Server](https://ritwickdey.github.io/vscode-live-server/) Exte
 ### Step 2: Clone the Repository
 Clone the repository and navigate to the WebGL directory using Visual Studio Code.
 ### Step 3: Turn On Live Server
-Activate the Live Server extension.
+Activate the Live Server extension (http://127.0.0.1:5500/).
