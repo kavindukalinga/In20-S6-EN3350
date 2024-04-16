@@ -5,7 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import com.infiniteloop.springprojectmongodb.repositories.QuestionsRepo;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import com.infiniteloop.springprojectmongodb.repositories.AccessedRepo;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infiniteloop.springprojectmongodb.payloads.QuestionsDto;
 import com.infiniteloop.springprojectmongodb.models.Accessed;
@@ -17,6 +21,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -38,12 +44,25 @@ public class QuestionsController {
          questionRepo.save(question);
          return question;
     }
+    
+
+    private static String decode(String encodedString) {
+        return new String(Base64.getUrlDecoder().decode(encodedString));
+    }
 
     // Endpoint to get all questions with answers
     @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/getall-questions")
-    public ResponseEntity<?> getAllQuestions() {
+    public ResponseEntity<?> getAllQuestions(HttpServletRequest request) {
         try {
+            String authHeader = request.getHeader("Authorization");
+            String token = authHeader.substring(7);
+            String[] parts = token.split("\\.");
+            String payload = decode(parts[1]);
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode payloadNode = mapper.readTree(payload);
+            String login = payloadNode.get("username").asText();
+
             Questions maxCompletedQuestion = questionRepo.findFirstByIsCompletedOrderBySortKeyDesc(true);
             if (Integer.parseInt(maxCompletedQuestion.getQuestionId()) == 10) {
                 List<Questions> questions = questionRepo.findAll();
@@ -63,11 +82,13 @@ public class QuestionsController {
                     }
                     return dto;
                 }).collect(Collectors.toList());
-                Accessed accessed = accessedRepo.findById("1").orElse(null);
+                Accessed accessed = accessedRepo.findByLogin(login).orElse(null);
                 if (accessed != null) {
-                    accessed.setIsAnswered(true);
-                    accessedRepo.save(accessed);
-                }
+                    if(accessed.getIsAnswered() == false){
+                        accessed.setIsAnswered(true);
+                        accessedRepo.save(accessed);
+                  
+                }}
                 return ResponseEntity.ok(questionDTOs);
             } else {
                 return ResponseEntity.ok("{\"error\": \"complete the questionnaire first!!!\"}");
@@ -76,8 +97,6 @@ public class QuestionsController {
             return ResponseEntity.ok("{\"error\": \"complete the questionnaire first!!!\"}");
         }
     }
-
-
 
     // Endpoint to get correct answer by question id
     @CrossOrigin(origins = "http://localhost:5173")
@@ -132,8 +151,15 @@ public class QuestionsController {
     // Endpoint to get score
     @CrossOrigin(origins = {"http://localhost:5173","http://localhost:5500"})
     @GetMapping(value = "/get-score", produces = "application/json")
-    public ResponseEntity<?> getScore()  {
+    public ResponseEntity<?> getScore(HttpServletRequest request)  {
         try {
+            String authHeader = request.getHeader("Authorization");
+            String token = authHeader.substring(7);
+            String[] parts = token.split("\\.");
+            String payload = decode(parts[1]);
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode payloadNode = mapper.readTree(payload);
+            String login = payloadNode.get("username").asText();
             Questions maxCompletedQuestion = questionRepo.findFirstByIsCompletedOrderBySortKeyDesc(true);
             if (maxCompletedQuestion == null) {
                 return ResponseEntity.ok("{\"score\": 0}");
@@ -145,7 +171,7 @@ public class QuestionsController {
                         score += question.getScore();
                     }
                 }
-                Accessed accessed = accessedRepo.findById("1").orElse(null);
+                Accessed accessed = accessedRepo.findByLogin(login).orElse(null);
                 if (accessed != null) {
                     accessed.setScore(score);
                     accessedRepo.save(accessed);
@@ -228,6 +254,8 @@ public class QuestionsController {
         }
     }
 
+    // Endpoint to reset the questionnaire
+    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/reset")
     public ResponseEntity<String> reset() {
         try {
@@ -238,7 +266,23 @@ public class QuestionsController {
                 question.setScore(0);
                 questionRepo.save(question);
             }
-            Accessed accessed = accessedRepo.findById("1").orElse(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\": \"An error occurred while processing the request\"}");
+        }
+        return ResponseEntity.ok("{\"message\": \"Questionnaire reset successfully\"}");
+    }
+
+    @GetMapping("/reset/{login}")
+    public ResponseEntity<String> reset(@PathVariable String login) {
+        try {
+            List<Questions> questions = questionRepo.findAll();
+            for (Questions question : questions) {
+                question.setIsCompleted(false);
+                question.setPlayerAnswer(null);
+                question.setScore(0);
+                questionRepo.save(question);
+            }
+            Accessed accessed = accessedRepo.findByLogin(login).orElse(null);
             if (accessed != null) {
                 accessed.setIsAnswered(false);
                 accessed.setScore(0);

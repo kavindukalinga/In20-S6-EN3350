@@ -15,11 +15,16 @@ public class Accessed {
 
     String accessToken;
 
+    String login;
+
     // Constructors, getters, and setters
 
     // Constructor with isAnswered parameter
-    public Accessed(Boolean isAnswered, String score, String accessToken) {
+    public Accessed(Boolean isAnswered, Integer score, String accessToken, String login) {
         this.isAnswered = isAnswered;
+        this.accessToken = accessToken;
+        this.score = score;
+        this.login = login;
     }
 
     // No-argument constructor required by Spring Data MongoDB
@@ -59,5 +64,13 @@ public class Accessed {
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 }
