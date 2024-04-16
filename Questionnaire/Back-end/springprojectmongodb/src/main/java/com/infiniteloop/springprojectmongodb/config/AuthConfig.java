@@ -33,6 +33,7 @@ public class AuthConfig {
             .requestMatchers(HttpMethod.POST, "/auth/*").permitAll()
             .requestMatchers(HttpMethod.GET, "/auth/*").permitAll()
             .requestMatchers(HttpMethod.GET, "/accessed/*").permitAll()
+            .requestMatchers(HttpMethod.GET, "/get-score").permitAll()
             .anyRequest().authenticated())
         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
         .build();

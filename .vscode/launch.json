@@ -8,16 +8,6 @@
         },
         {
             "type": "java",
-            "name": "Spring Boot-SpringprojectApplication<springproject>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.infiniteloop.springproject.SpringprojectApplication",
-            "projectName": "springproject",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        },
-        {
-            "type": "java",
             "name": "Spring Boot-SpringprojectApplication<springprojectmongodb>",
             "request": "launch",
             "cwd": "${workspaceFolder}",

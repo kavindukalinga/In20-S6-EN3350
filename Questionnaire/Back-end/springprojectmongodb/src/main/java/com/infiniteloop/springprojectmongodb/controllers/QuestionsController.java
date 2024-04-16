@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 
 
+
 @RestController
 public class QuestionsController {
     @Autowired
@@ -38,6 +39,7 @@ public class QuestionsController {
          return question;
     }
 
+    // Endpoint to get all questions with answers
     @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/getall-questions")
     public ResponseEntity<?> getAllQuestions() {
@@ -126,6 +128,8 @@ public class QuestionsController {
         }
     }
 
+
+    // Endpoint to get score
     @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping(value = "/get-score", produces = "application/json")
     public ResponseEntity<?> getScore()  {
@@ -133,7 +137,23 @@ public class QuestionsController {
             Questions maxCompletedQuestion = questionRepo.findFirstByIsCompletedOrderBySortKeyDesc(true);
             if (maxCompletedQuestion == null) {
                 return ResponseEntity.ok("{\"score\": 0}");
-            }else{
+            }else if (Integer.parseInt(maxCompletedQuestion.getQuestionId()) == 10) {
+                int score = 0;
+                for (int i = 1; i <= 10; i++) {
+                    Questions question = questionRepo.findById(String.valueOf(i)).orElse(null);
+                    if (question != null) {
+                        score += question.getScore();
+                    }
+                }
+                Accessed accessed = accessedRepo.findById("1").orElse(null);
+                if (accessed != null) {
+                    accessed.setScore(score);
+                    accessedRepo.save(accessed);
+                }
+                return ResponseEntity.ok("{\"score\": " + score + "}");
+                
+            }
+            else{
             Integer maxCompltedQuestionId = Integer.parseInt(maxCompletedQuestion.getQuestionId());
             int score = 0;
             for (int i = 1; i <= maxCompltedQuestionId; i++) {
@@ -149,7 +169,9 @@ public class QuestionsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
         }
     }
-    
+
+
+    // Endpoint to get question by id
     @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping(value = "/get-question/{id}", produces = "application/json")
     public ResponseEntity<?> getQuestionById(@PathVariable String id) {
@@ -186,7 +208,8 @@ public class QuestionsController {
         }
     }
 
-    // Endpoint to get maximum completed question id
+
+    // Endpoint to get available question id
     @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/get-current-question")
     ResponseEntity<String> getMaxCompletedQuestionId() {
@@ -195,6 +218,7 @@ public class QuestionsController {
             if (maxCompletedQuestion != null) {
                 String jsonResponse = "{\"available_question\": " + (Integer.parseInt(maxCompletedQuestion.getQuestionId()) + 1) + "}";
                 return ResponseEntity.ok(jsonResponse);
+                
             } else {
                 return ResponseEntity.ok("{\"available_question\": 1}");
             }
@@ -203,6 +227,30 @@ public class QuestionsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
         }
     }
+
+    @GetMapping("/reset")
+    public ResponseEntity<String> reset() {
+        try {
+            List<Questions> questions = questionRepo.findAll();
+            for (Questions question : questions) {
+                question.setIsCompleted(false);
+                question.setPlayerAnswer(null);
+                question.setScore(0);
+                questionRepo.save(question);
+            }
+            Accessed accessed = accessedRepo.findById("1").orElse(null);
+            if (accessed != null) {
+                accessed.setIsAnswered(false);
+                accessed.setScore(0);
+                accessed.setAccessToken(null);
+                accessedRepo.save(accessed);
+            }}
+        catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\": \"An error occurred while processing the request\"}");
+            }
+            return ResponseEntity.ok("{\"message\": \"Questionnaire reset successfully\"}");
+        }
+    
 
     // Exception handler for handling all exceptions
     @ExceptionHandler(Exception.class)
