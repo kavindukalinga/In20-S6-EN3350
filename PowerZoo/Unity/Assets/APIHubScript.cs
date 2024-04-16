@@ -11,7 +11,7 @@ public class APIHubScript : MonoBehaviour
     public string Response;
     public QuizResponse quizResponse;
     private string Auth_API = "http://20.15.114.131:8080/api/login";
-    private string spring_Auth_API = "http://localhost:9000/auth/signup";
+    private string spring_Auth_API = "http://127.0.0.1:5000/auth/signup";
     private string ViewProfile_API = "http://20.15.114.131:8080/api/user/profile/view";
     private string ViewPlayerList_API = "http://20.15.114.131:8080/api/user/profile/list";
     private string ViewYearlyPowerConsumption_API = "http://20.15.114.131:8080/api/power-consumption/yearly/view";
@@ -19,7 +19,7 @@ public class APIHubScript : MonoBehaviour
     private string ViewCurrentMonthConsumption_API = "http://20.15.114.131:8080/api/power-consumption/current-month/view";
     private string ViewDailyConsumptionSpecificMonth_API = "http://20.15.114.131:8080/api/power-consumption/month/daily/view";
     private string ViewDailyConsumptionCurrentMonth_API = "http://20.15.114.131:8080/api/power-consumption/current-month/daily/view";
-    private string isQuizCompleted_API = "http://localhost:9000/accessed/isAnswered";
+    private string isQuizCompleted_API = "http://127.0.0.1:5000/accessed/isAnswered";
 
     public void Authenticate() => StartCoroutine(player_authenticate());
     public void ViewProfile() => StartCoroutine(get_request(ViewProfile_API));
