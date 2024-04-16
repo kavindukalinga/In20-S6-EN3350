@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using SimpleJSON;
 using UnityEngine.Networking;
 using TMPro;
 using UnityEngine.SceneManagement;
@@ -94,7 +93,6 @@ public class PlayerProfileScript : MonoBehaviour
     private bool are_fields_invalid()
     {
         bool are_empty = false;
-        bool empty = false;
 
         if (string.IsNullOrEmpty(playerData.user.firstname)) {
             playerWarning.text = "*Required feild or feilds are empty";
