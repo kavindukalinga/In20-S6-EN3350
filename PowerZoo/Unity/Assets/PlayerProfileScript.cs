@@ -34,9 +34,11 @@ public class PlayerProfileScript : MonoBehaviour
         }
     }
 
-    private IEnumerator get_player_profile()
+    private IEnumerator get_player_profile() 
     {
+        Debug.Log("Getting player profile");
         yield return StartCoroutine(APIHub.get_request(ViewProfile_API));
+        Debug.Log(APIHub.Response);
 
         if (APIHub.Response != null)
         {

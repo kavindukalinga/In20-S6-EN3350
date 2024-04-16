@@ -733,12 +733,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   APIHub: {fileID: 1541915273}
-  API_KEY: NjVjNjA0MGY0Njc3MGQ1YzY2MTcyMmM2OjY1YzYwNDBmNDY3NzBkNWM2NjE3MjJiYw
-  JWT_TOKEN: 
   loadingBG: {fileID: 788143220}
   loginSuccessBG: {fileID: 1750992893}
   loginErrorBG: {fileID: 661306518}
   textTMP: {fileID: 504719707}
+  sceneLoader: {fileID: 1462287511}
 --- !u!4 &1422242931
 Transform:
   m_ObjectHideFlags: 0
@@ -754,6 +753,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1462287511 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2260702052729666144, guid: 513b56cb3b4b2914bbe77e9a97f86502, type: 3}
+  m_PrefabInstance: {fileID: 8702729106164773680}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f141808279e230f46be8ded9cf9fa292, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1541915273 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 994320000570089682, guid: 86545b4f76399c5478bded31b8d379c9, type: 3}

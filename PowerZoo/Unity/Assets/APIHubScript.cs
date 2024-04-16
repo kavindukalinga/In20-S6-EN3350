@@ -35,7 +35,14 @@ public class APIHubScript : MonoBehaviour
     public IEnumerator check_quiz_completed()
     {
         yield return StartCoroutine(get_request(isQuizCompleted_API));
-        quizResponse = JsonUtility.FromJson<QuizResponse>(Response);
+        if (string.IsNullOrEmpty(Response))
+        {
+            Debug.LogError("Response is null.");
+            quizResponse.isAnswered = false;
+        }
+        else {
+            quizResponse = JsonUtility.FromJson<QuizResponse>(Response);
+        }
     }
 
     public IEnumerator player_authenticate() { // POST request
