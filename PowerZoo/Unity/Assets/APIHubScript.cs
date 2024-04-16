@@ -11,6 +11,7 @@ public class APIHubScript : MonoBehaviour
     public string Response;
     public QuizResponse quizResponse;
     public ScoreResponse scoreResponse;
+    public string username;
     private string Auth_API = "http://20.15.114.131:8080/api/login";
     private string spring_Auth_API = "http://localhost:9000/auth/signup";
     private string ViewProfile_API = "http://20.15.114.131:8080/api/user/profile/view";
@@ -20,9 +21,9 @@ public class APIHubScript : MonoBehaviour
     private string ViewCurrentMonthConsumption_API = "http://20.15.114.131:8080/api/power-consumption/current-month/view";
     private string ViewDailyConsumptionSpecificMonth_API = "http://20.15.114.131:8080/api/power-consumption/month/daily/view";
     private string ViewDailyConsumptionCurrentMonth_API = "http://20.15.114.131:8080/api/power-consumption/current-month/daily/view";
-    private string isQuizCompleted_API = "http://localhost:9000/accessed/isAnswered";
-    private string redirectQuiz_API = "http://localhost:5173";
-    private string getScore_API = "http://localhost:9000/get-score";
+    private string isQuizCompleted_API = "http://localhost:9000/accessed/isAnswered/";
+    private string redirectQuiz_API = "http://localhost:5173/user/";
+    private string getScore_API = "http://localhost:9000/finalscore/";
 
     public void Authenticate() => StartCoroutine(player_authenticate());
     public void ViewProfile() => StartCoroutine(get_request(ViewProfile_API));
@@ -37,7 +38,12 @@ public class APIHubScript : MonoBehaviour
 
     public IEnumerator check_quiz_completed()
     {
-        yield return StartCoroutine(get_request(isQuizCompleted_API));
+        if (string.IsNullOrEmpty(username))
+        {
+            yield return StartCoroutine(get_username());
+        }
+        string url = isQuizCompleted_API + username;
+        yield return StartCoroutine(get_request(url));
         if (string.IsNullOrEmpty(Response))
         {
             Debug.LogError("Response is null.");
@@ -79,10 +85,10 @@ public class APIHubScript : MonoBehaviour
         yield return StartCoroutine(get_request(ViewProfile_API));
         if (Response != null) {
             PlayerData playerData = JsonUtility.FromJson<PlayerData>(Response);
-            string username = playerData.user.username;
+            username = playerData.user.username;
         
             // Create a JSON object representing your data
-            string jsonData = "{\"login\": \"" + username + "\", \"password\": " + "1234" + "}";
+            string jsonData = "{\"login\": \"" + username + "\", \"password\": \"" + API_KEY + "\"}";
 
             // Set the content type header to indicate JSON data
             byte[] postData = System.Text.Encoding.UTF8.GetBytes(jsonData);
@@ -157,7 +163,13 @@ public class APIHubScript : MonoBehaviour
     }
 
     public IEnumerator get_score() {
-        yield return StartCoroutine(get_request(getScore_API));
+        if (string.IsNullOrEmpty(username))
+        {
+            yield return StartCoroutine(get_username());
+        }
+        string url = getScore_API + username;
+
+        yield return StartCoroutine(get_request(url));
         if (string.IsNullOrEmpty(Response))
         {
             scoreResponse.score = 0;
@@ -167,14 +179,26 @@ public class APIHubScript : MonoBehaviour
             scoreResponse = JsonUtility.FromJson<ScoreResponse>(Response);
             Debug.Log("Score: " + scoreResponse.score);
         }
-        
     }
 
     public IEnumerator redirectQuiz() {
-        Application.OpenURL(redirectQuiz_API);
+        string url = redirectQuiz_API + username + "/" + API_KEY;
+        Application.OpenURL(url);
         yield return null;
     }
 
+    private IEnumerator get_username() {
+        yield return StartCoroutine(get_request(ViewProfile_API));
+        if (string.IsNullOrEmpty(Response))
+        {
+            Debug.LogError("Response is null.");
+        }
+        else {
+            PlayerData playerData = JsonUtility.FromJson<PlayerData>(Response);
+            username = playerData.user.username;
+        }
+    
+    }
 }
 
 [System.Serializable]

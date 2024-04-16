@@ -58,14 +58,6 @@ public class PlayerProfileScript : MonoBehaviour
 
     private void load_data_to_UI()
     {
-        // firstName = GameObject.Find("FirstName").GetComponent<TMP_InputField>();
-        // lastName = GameObject.Find("LastName").GetComponent<TMP_InputField>();
-        // userName = GameObject.Find("UserName").GetComponent<TMP_InputField>();
-        // nic = GameObject.Find("NIC").GetComponent<TMP_InputField>();
-        // phoneNumber = GameObject.Find("PhoneNumber").GetComponent<TMP_InputField>();
-        // email = GameObject.Find("Email").GetComponent<TMP_InputField>();
-        // profilePictureURL = GameObject.Find("ProfilePictureURL").GetComponent<TMP_InputField>();
-
         Debug.Log("Player details: " + playerData.user.firstname + " " + playerData.user.lastname);
         firstName.text = playerData.user.firstname;
         lastName.text = playerData.user.lastname;
@@ -73,10 +65,6 @@ public class PlayerProfileScript : MonoBehaviour
         nic.text = playerData.user.nic;
         phoneNumber.text = playerData.user.phoneNumber;
         email.text = playerData.user.email;
-        // if (playerData.user.ProfilePictureUrl != null) {
-        //     profilePictureUrl.text = playerData.user.ProfilePictureUrl;
-        // }
-        // profilePictureURL.text = playerData.user.profilePictureUrl;
     }
 
     private void update_profile()
@@ -147,28 +135,6 @@ public class PlayerProfileScript : MonoBehaviour
         else if (are_empty == false) { playerWarning.text = ""; }
         return are_empty;
     }
-
-    // private void go_to_next_scene()
-    // {
-    //     if (is_quiz_completed())
-    //     {
-    //         Debug.Log("Quiz already completed");
-    //         SceneManager.LoadScene("MenuScene");
-    //     }
-    //     else
-    //     {
-    //         Debug.Log("Starting quiz");
-    //         StartCoroutine(APIHub.redirectQuiz());
-    //     }
-    // }
-
-
-
-    // [System.Serializable]
-    // public class QuizResponse
-    // {
-    //     public bool quizCompleted;
-    // }
 
     private bool isvalidMobileNo()
     {

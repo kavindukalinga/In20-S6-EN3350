@@ -12,7 +12,7 @@ public class menuScript : MonoBehaviour
     public APIHubScript APIHub;
     public TMP_Text coinsText;
     private int coins;
-    // Start is called before the first frame update
+    
     void Start()
     {
         playerProfileButton.onClick.AddListener(load_player_profile);

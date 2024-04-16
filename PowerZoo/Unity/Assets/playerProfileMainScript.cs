@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class playerProfileMainScript : MonoBehaviour
 {
-    // Start is called before the first frame update
     public Button saveButton;
     private PlayerProfileScript playerProfileScript;
 
