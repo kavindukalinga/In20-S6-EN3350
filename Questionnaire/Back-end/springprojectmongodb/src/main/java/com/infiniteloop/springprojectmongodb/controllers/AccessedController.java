@@ -22,7 +22,7 @@ public class AccessedController {
     QuestionsRepo questionsRepo;
 
     // Endpoint to check if Accessed record is answered
-    @CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins = {"http://localhost:5173","http://localhost:5500"})
     @GetMapping(value = "/isAnswered", produces = "application/json")
     public ResponseEntity<String> isAnswered() {
         try {
