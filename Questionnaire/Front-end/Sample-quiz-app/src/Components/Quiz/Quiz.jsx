@@ -22,6 +22,8 @@ async function signIn(username, password) {
         const accessToken = data.accessToken;
 
         localStorage.setItem('access_token', accessToken);
+        localStorage.removeItem('username');
+        localStorage.removeItem('password');
 
         return accessToken;
     } catch (error) {
@@ -181,9 +183,15 @@ const Quiz = () => {
     }
 
     const toGame = () => {
-        setTimeout(() => {
+        setTimeout (() => {
+            const accessToken = localStorage.getItem('access_token');
+            fetch(`http://127.0.0.1:9000/reset`, {
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`
+                    }
+                });
             localStorage.clear();
-            window.location.href = `http://127.0.0.1:9000/get-score`;
+            
         }, 2000);
 
         return null;

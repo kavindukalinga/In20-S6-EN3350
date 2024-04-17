@@ -89,6 +89,6 @@ To obtain the access token, use the following endpoint:
 To reset, use the following endpoint:
 
 - **Type**: GET
-- **Endpoint**: [http://localhost:9000/reset](http://localhost:9000/reset)
+- **Endpoint**: [http://localhost:9000/reset/{login}](http://localhost:9000/reset)
 
 
