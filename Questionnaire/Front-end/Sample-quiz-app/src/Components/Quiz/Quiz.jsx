@@ -183,18 +183,20 @@ const Quiz = () => {
     }
 
     const toGame = () => {
-        setTimeout (() => {
+        setTimeout(() => {
             const accessToken = localStorage.getItem('access_token');
             fetch(`http://127.0.0.1:9000/reset`, {
-                    headers: {
-                        "Authorization": `Bearer ${accessToken}`
-                    }
-                });
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`
+                }
+            });
             localStorage.clear();
-            
+
         }, 2000);
 
-        return null;
+        return (
+            window.location.href = `http://localhost:5173/gotogame`
+        );
     }
 
 
