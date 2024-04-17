@@ -173,8 +173,10 @@ public class QuestionsController {
                 }
                 Accessed accessed = accessedRepo.findByLogin(login).orElse(null);
                 if (accessed != null) {
+                    if (accessed.getIsAnswered() == false){
                     accessed.setScore(score);
                     accessedRepo.save(accessed);
+                    }
                 }
                 return ResponseEntity.ok("{\"score\": " + score + "}");
                 
