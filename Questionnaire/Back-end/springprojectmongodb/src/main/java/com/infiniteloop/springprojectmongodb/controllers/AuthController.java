@@ -40,7 +40,7 @@ public class AuthController {
   @CrossOrigin(origins = {"http://localhost:5173","http://localhost:5500"})
   @PostMapping("/signup")
   public ResponseEntity<?> signUp(@RequestBody @Valid SignUpDto data) {
-    service.signUp(data);
+        service.signUp(data);
     return ResponseEntity.status(HttpStatus.CREATED).body("{\"message\": \"User created\"}");
   }
 
@@ -64,7 +64,7 @@ public class AuthController {
 
 
 
-  @CrossOrigin(origins = {"http://localhost:5173","http://localhost:5500"})
+  @CrossOrigin(origins = {"http://localhost:5173","http://127.0.0.1:5500"})
   @GetMapping(value = "/accessToken", produces = "application/json")
   public ResponseEntity<String> getAccessToken() {
     try {
