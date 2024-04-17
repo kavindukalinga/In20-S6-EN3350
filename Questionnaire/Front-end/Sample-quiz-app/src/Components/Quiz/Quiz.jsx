@@ -192,7 +192,7 @@ const Quiz = () => {
             });
             console.log("access_token", localStorage.getItem("access_token"));
             localStorage.clear();
-            window.location.href = `http://localhost:5173/gotogame`
+            window.location.href = `http://localhost:5173/gotogame`;
 
         }, 2000);
         
