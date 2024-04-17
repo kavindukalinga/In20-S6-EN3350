@@ -1,9 +1,8 @@
 # Questionnaire Backend
 
-This backend is developed using Java Spring Boot, where the Spring Boot application is connected with a Mongodb-atlas database to store data related to players and questionnaires. In the database, the name is `player_db`, which consists of four collections: `questions`, `player`, `users` and `accessed`. 
+This backend is developed using Java Spring Boot, where the Spring Boot application is connected with a Mongodb-atlas database to store data related to players and questionnaires. In the database, the name is `player_db`, which consists of three collections: `questions`, `users` and `accessed`. 
 
 - `questions` table is used to store the correct answers to the questionnaire.
-- `player` table is used to store player information.
 - `user` table is used to store logging information of the user for authentification.
 - `accessed` table is used to store the flag of the questionnaire to verify whether the player has attempted the questionnaire or not.
 
@@ -48,5 +47,48 @@ docker build -t spring_mongo_image .
 ```bash
 docker run -p 9000:9000 --name spring_mongo_container spring_mongo_image
 ```
+
+## Reset the Questionnaire
+
+### Step 1: Create an Account
+
+To create an account, use the following endpoint:
+
+- **Type**: POST
+- **Endpoint**: [http://localhost:9000/auth/signup](http://localhost:9000/auth/signup)
+- **Body**:
+    ```json
+    {
+        "login": "xxxxxx",
+        "password": "xxxx"
+    }
+    ```
+
+### Step 2: Get the Access Token
+
+To obtain the access token, use the following endpoint:
+
+- **Type**: POST
+- **Endpoint**: [http://localhost:9000/auth/signin](http://localhost:9000/auth/signin)
+- **Request Body**:
+    ```json
+    {
+        "login": "xxxxxx",
+        "password": "xxxx"
+    }
+    ```
+- **Response**:
+    ```json
+    {
+        "accessToken": "xxxxxxx"
+    }
+    ```
+
+### Step 3: Reset
+
+To reset, use the following endpoint:
+
+- **Type**: GET
+- **Endpoint**: [http://localhost:9000/reset/{username}](http://localhost:9000/reset)
 
 

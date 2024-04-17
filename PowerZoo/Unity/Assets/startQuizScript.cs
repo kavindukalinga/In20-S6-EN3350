@@ -11,6 +11,10 @@ public class startQuizScript : MonoBehaviour
     public APIHubScript APIHub;
     public Button startQuizButton;
     public Button continueQuizButton;
+    public Button aboveButton;
+    public Button belowButton;
+    public Button leftButton;
+    public Button rightButton;
     public GameObject popup;
     public TextMeshProUGUI startQuizButtonText;
     public bool quizStarted = false;
@@ -19,6 +23,10 @@ public class startQuizScript : MonoBehaviour
     {
         startQuizButton.onClick.AddListener(startQuiz);
         continueQuizButton.onClick.AddListener(continueQuiz);
+        aboveButton.onClick.AddListener(hidePopup);
+        belowButton.onClick.AddListener(hidePopup);
+        leftButton.onClick.AddListener(hidePopup);
+        rightButton.onClick.AddListener(hidePopup);
     }
 
     private void startQuiz()
@@ -38,9 +46,9 @@ public class startQuizScript : MonoBehaviour
         popup.SetActive(false);
     }
 
-    private void sceneControler(bool quizCompleted)
+    private void sceneControler(bool isAnswered)
     {
-        if (!quizCompleted)
+        if (!isAnswered)
         {
             showPopup();
         } else {
@@ -51,12 +59,17 @@ public class startQuizScript : MonoBehaviour
     private IEnumerator checkQuizCompleted()
     {
         yield return StartCoroutine(APIHub.check_quiz_completed());
-        sceneControler(APIHub.quizResponse.quizCompleted);
+        sceneControler(APIHub.quizResponse.isAnswered);
     }
     
     private void showPopup()
     {
         popup.SetActive(true);
+    }
+
+    private void hidePopup()
+    {
+        popup.SetActive(false);
     }
 }
 

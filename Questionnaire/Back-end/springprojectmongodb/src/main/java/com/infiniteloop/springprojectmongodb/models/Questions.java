@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "questionnaire") // Specify the MongoDB collection name
 public class Questions {
     @Id
-    private String questionId; // Change the type to String for MongoDB ObjectId
+    private String questionId; 
 
     private String correctAnswer;
     

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import './Quiz.css'
-import { data, summaryData } from '../../assets/data';
+import { data } from '../../assets/data';
 import { useNavigate } from 'react-router-dom';
 
 async function signIn(username, password) {
     try {
+
         const response = await fetch('http://127.0.0.1:9000/auth/signin', {
             method: 'POST',
             headers: {
@@ -21,6 +22,8 @@ async function signIn(username, password) {
         const accessToken = data.accessToken;
 
         localStorage.setItem('access_token', accessToken);
+        localStorage.removeItem('username');
+        localStorage.removeItem('password');
 
         return accessToken;
     } catch (error) {
@@ -38,18 +41,21 @@ const Quiz = () => {
     let [result, setResult] = React.useState(false);
     let [feedback, setFeedback] = React.useState(data[0]);
     let [accessToken, setAccessToken] = React.useState(null);
+    let [summaryData, setSummaryData] = React.useState(null);
+    let [username, setUsername] = React.useState(localStorage.getItem('username'));
+    let [password, setPassword] = React.useState(localStorage.getItem('password'));
 
-    const isAuth = async () => {
+    async function isAuth() {
         try {
             let accessToken = localStorage.getItem('access_token');
             if (!accessToken) {
-                accessToken = await signIn('nuwan', '1234');
+                accessToken = await signIn(username, password);
             }
             // console.log("accessToken", accessToken);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
-    };
+    }
 
     const currentQuestion = async () => {
         const accessToken = localStorage.getItem('access_token');
@@ -85,6 +91,13 @@ const Quiz = () => {
                 setQuestion(response2_in_json);
             }
             else {
+                const response4 = await fetch(`http://127.0.0.1:9000/getall-questions`, {
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`
+                    }
+                });
+                const response4_in_json = await response4.json();
+                setSummaryData(response4_in_json);
                 setResult(true);
             }
         } catch (error) {
@@ -171,8 +184,18 @@ const Quiz = () => {
 
     const toGame = () => {
         setTimeout(() => {
-            window.location.href = `http://127.0.0.1:9000/game?score=${score}`;
+            const accessToken = localStorage.getItem('access_token');
+            fetch(`http://127.0.0.1:9000/reset`, {
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`
+                }
+            });
+            console.log("access_token", localStorage.getItem("access_token"));
+            localStorage.clear();
+            window.location.href = `http://localhost:5173/gotogame`;
+
         }, 2000);
+        
 
         return null;
     }
@@ -184,7 +207,7 @@ const Quiz = () => {
                 <div className='box'>
                     <h1>Questionnaire</h1>
                     <hr />
-                    <h2>{index}. {question?.question}</h2>
+                    <h2>{index === 11 ? 10 : index}. {question?.question}</h2>
                     <ul>
                         <li ref={Option1} onClick={(e) => { checkAns(e, 'A', index) }}>{question?.answers?.A}</li>
                         <li ref={Option2} onClick={(e) => { checkAns(e, 'B', index) }}>{question?.answers?.B}</li>
@@ -192,8 +215,18 @@ const Quiz = () => {
                         <li ref={Option4} onClick={(e) => { checkAns(e, 'D', index) }}>{question?.answers?.D}</li>
                     </ul>
                     <button onClick={next} className={lock ? "lock" : ""}>Next</button>
-                    <div className="index">{index} of {10} questions</div>
-                    <div className="currentscore">{score} of {index} answers are Correct</div>
+
+                    {index <= 10 ? (
+                        <>
+                            <div className="index">{index} of {10} questions</div>
+                            <div className="currentscore">{score} of {index} answers are Correct</div>
+                        </>
+                    ) : (
+                        <>
+                            <div className="index">{10} of {10} questions</div>
+                            <div className="currentscore">Final Score: {score} of 10 answers are Correct</div>
+                        </>
+                    )}
 
                     {lock ? <>
                         <hr />
@@ -203,6 +236,7 @@ const Quiz = () => {
                     </> : <></>}
                 </div>
             </>}
+
 
             {result ? <>
                 <div className='lastbox'>
