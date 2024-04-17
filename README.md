@@ -3,6 +3,48 @@ This repository contains the work done for In20-S6-EN3350
 
 <!--<p align="left"> <img src="https://img.shields.io/github/languages/count/kavindukalinga/In20-S6-EN3350" alt="kavindukalinga" /> <img src="https://img.shields.io/github/languages/top/kavindukalinga/In20-S6-EN3350" alt="kavindukalinga" /> <img src="https://img.shields.io/github/last-commit/kavindukalinga/In20-S6-EN3350" alt="kavindukalinga" /></a> </p>-->
 
+## How to Run the Game
+
+
+These are the Docker images available on Docker Hub: [kavindukalinga](https://hub.docker.com/u/kavindukalinga)
+
+- `kavindukalinga/powerzooapi`
+- `kavindukalinga/powerzoofrontend`
+
+### Step 1
+
+1. Clone the GitHub repository:
+   ```bash
+   git clone https://github.com/kavindukalinga/In20-S6-EN3350.git
+   cd In20-S6-EN3350
+   git checkout phase2
+   ```
+
+### Step 2
+
+2. Start Docker Engine using Docker Desktop or Docker Daemon.
+
+### Step 3
+
+3. Pull Docker images:
+   ```bash
+   docker pull kavindukalinga/powerzooapi
+   docker pull kavindukalinga/powerzoofrontend
+   ```
+
+### Step 4
+
+4. Run Docker containers:
+   ```bash
+   docker container run -p 9000:9000 kavindukalinga/powerzooapi
+   docker container run -p 5173:5173 kavindukalinga/powerzoofrontend
+   ```
+
+### Step 5
+
+5. RUN WebGL at `PowerZoo/WebGL`.
+
+
 ## Contributors
 
 <p align="left"> <b>Team Member : Kalinga Chandrasiri</b>
