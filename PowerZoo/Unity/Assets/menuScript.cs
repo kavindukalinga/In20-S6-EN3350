@@ -21,7 +21,7 @@ public class menuScript : MonoBehaviour
     }
 
     private void load_player_profile() {
-        SceneManager.LoadScene("PlayerProfile");
+        SceneManager.LoadScene("PlayerProfileScene");
     }
 
     private void update_coins() {

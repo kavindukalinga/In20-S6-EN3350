@@ -12,6 +12,7 @@ public class APIHubScript : MonoBehaviour
     public QuizResponse quizResponse;
     public ScoreResponse scoreResponse;
     public string username;
+    public PlayerData playerData;
     private string Auth_API = "http://20.15.114.131:8080/api/login";
     private string spring_Auth_API = "http://localhost:9000/auth/signup";
     private string ViewProfile_API = "http://20.15.114.131:8080/api/user/profile/view";
@@ -23,7 +24,8 @@ public class APIHubScript : MonoBehaviour
     private string ViewDailyConsumptionCurrentMonth_API = "http://20.15.114.131:8080/api/power-consumption/current-month/daily/view";
     private string isQuizCompleted_API = "http://localhost:9000/accessed/isAnswered/";
     private string redirectQuiz_API = "http://localhost:5173/user/";
-    private string getScore_API = "http://localhost:9000/finalscore/";
+    private string getScore_API = "http://localhost:9000/accessed/finalscore/";
+    // private string getScore_API = "http://127.0.0.1:5000/get-score";
 
     public void Authenticate() => StartCoroutine(player_authenticate());
     public void ViewProfile() => StartCoroutine(get_request(ViewProfile_API));
@@ -43,6 +45,7 @@ public class APIHubScript : MonoBehaviour
             yield return StartCoroutine(get_username());
         }
         string url = isQuizCompleted_API + username;
+        Debug.Log("Check quiz URL: " + url);
         yield return StartCoroutine(get_request(url));
         if (string.IsNullOrEmpty(Response))
         {
@@ -81,14 +84,16 @@ public class APIHubScript : MonoBehaviour
 
     public IEnumerator player_authenticate_spring() { // POST request
         string url = spring_Auth_API;
+        Debug.Log("Spring BackEnd URL: " + url);
         
         yield return StartCoroutine(get_request(ViewProfile_API));
         if (Response != null) {
-            PlayerData playerData = JsonUtility.FromJson<PlayerData>(Response);
+            playerData = JsonUtility.FromJson<PlayerData>(Response);
             username = playerData.user.username;
         
             // Create a JSON object representing your data
             string jsonData = "{\"login\": \"" + username + "\", \"password\": \"" + API_KEY + "\"}";
+            Debug.Log("JSON Body for Spring: " + jsonData);
 
             // Set the content type header to indicate JSON data
             byte[] postData = System.Text.Encoding.UTF8.GetBytes(jsonData);
@@ -123,7 +128,7 @@ public class APIHubScript : MonoBehaviour
         using (UnityWebRequest request = new UnityWebRequest(url, "GET"))
         {
             request.downloadHandler = new DownloadHandlerBuffer();
-            request.SetRequestHeader("Authorization", "Bearer " + JWT_TOKEN);
+            if (!url.Contains("localhost")) {request.SetRequestHeader("Authorization", "Bearer " + JWT_TOKEN);}
             yield return request.SendWebRequest();
             if (request.result != UnityWebRequest.Result.Success)
             {
@@ -168,7 +173,7 @@ public class APIHubScript : MonoBehaviour
             yield return StartCoroutine(get_username());
         }
         string url = getScore_API + username;
-
+        Debug.Log("Score URL: " + url);
         yield return StartCoroutine(get_request(url));
         if (string.IsNullOrEmpty(Response))
         {
@@ -182,6 +187,10 @@ public class APIHubScript : MonoBehaviour
     }
 
     public IEnumerator redirectQuiz() {
+        if (string.IsNullOrEmpty(username))
+        {
+            yield return StartCoroutine(get_username());
+        }
         string url = redirectQuiz_API + username + "/" + API_KEY;
         Application.OpenURL(url);
         yield return null;
@@ -194,7 +203,7 @@ public class APIHubScript : MonoBehaviour
             Debug.LogError("Response is null.");
         }
         else {
-            PlayerData playerData = JsonUtility.FromJson<PlayerData>(Response);
+            playerData = JsonUtility.FromJson<PlayerData>(Response);
             username = playerData.user.username;
         }
     
