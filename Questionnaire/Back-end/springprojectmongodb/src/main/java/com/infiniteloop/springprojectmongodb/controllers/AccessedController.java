@@ -27,6 +27,7 @@ public class AccessedController {
     @CrossOrigin(origins = {"http://localhost:5173","http://localhost:5500"})
     @GetMapping(value = "/isAnswered/{login}", produces = "application/json")
     public ResponseEntity<String> isAnswered(@PathVariable String login) {
+        
         try {
             Accessed accessed = accessedRepo.findByLogin(login).orElse(null);
 

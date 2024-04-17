@@ -190,13 +190,14 @@ const Quiz = () => {
                     "Authorization": `Bearer ${accessToken}`
                 }
             });
+            console.log("access_token", localStorage.getItem("access_token"));
             localStorage.clear();
+            window.location.href = `http://localhost:5173/gotogame`;
 
         }, 2000);
+        
 
-        return (
-            window.location.href = `http://localhost:5173/gotogame`
-        );
+        return null;
     }
 
 
