@@ -23,6 +23,7 @@ public class foodShopScript : MonoBehaviour
     // private Button magicSpellButton;
     public TextMeshProUGUI foodName;
     public TextMeshProUGUI foodPrice;
+    public TextMeshProUGUI balance;
     private int hayPrize = 2;
     private int grassPrize = 2;
     private int meatPrize = 5;
