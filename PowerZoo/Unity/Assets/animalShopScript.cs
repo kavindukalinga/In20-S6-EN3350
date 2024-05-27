@@ -89,7 +89,7 @@ public class animalShopScript : MonoBehaviour
     }
     private void showInsufficientCoinsPopup()
     {
-        int currentCoins = coinManager.getCoins();
+        float currentCoins = coinManager.getCoins();
         TextMeshProUGUI coinsText = insufficientCoinsPopup.transform.Find("CurrentAmount").Find("NumCoins").GetComponent<TextMeshProUGUI>();
         coinsText.text = currentCoins.ToString();
         insufficientCoinsPopup.SetActive(true);

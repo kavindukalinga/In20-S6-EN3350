@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using Newtonsoft.Json;
 
 public class APIHubScript : MonoBehaviour
 {
     public string API_KEY = "NjVjNjA0MGY0Njc3MGQ1YzY2MTcyMmM2OjY1YzYwNDBmNDY3NzBkNWM2NjE3MjJiYw";
     public string JWT_TOKEN;
     public string Response;
+    public string username;
     public QuizResponse quizResponse;
     public ScoreResponse scoreResponse;
     public CoinResponse coinResponse;
-    public string username;
+    public DailyPower dailyPower;
     public PlayerData playerData;
+    public CurrentUnits currentUnits;
     private string Auth_API = "http://20.15.114.131:8080/api/login";
     private string spring_Auth_API = "http://localhost:9000/auth/signup";
     private string ViewProfile_API = "http://20.15.114.131:8080/api/user/profile/view";
@@ -23,6 +26,7 @@ public class APIHubScript : MonoBehaviour
     private string ViewCurrentMonthConsumption_API = "http://20.15.114.131:8080/api/power-consumption/current-month/view";
     private string ViewDailyConsumptionSpecificMonth_API = "http://20.15.114.131:8080/api/power-consumption/month/daily/view";
     private string ViewDailyConsumptionCurrentMonth_API = "http://20.15.114.131:8080/api/power-consumption/current-month/daily/view";
+    private string ViewCurrentUnits_API = "http://20.15.114.131:8080/api/power-consumption/current/view";
     private string isQuizCompleted_API = "http://localhost:9000/accessed/isAnswered/";
     private string redirectQuiz_API = "http://localhost:5173/user/";
     private string getScore_API = "http://localhost:9000/accessed/finalscore/";
@@ -226,7 +230,30 @@ public class APIHubScript : MonoBehaviour
             playerData = JsonUtility.FromJson<PlayerData>(Response);
             username = playerData.user.username;
         }
-    
+    }
+
+    public IEnumerator get_daily_power() {
+        yield return StartCoroutine(get_request(ViewDailyConsumptionCurrentMonth_API));
+        if (string.IsNullOrEmpty(Response))
+        {
+            Debug.LogError("Response is null.");
+        }
+        else {
+            dailyPower = JsonConvert.DeserializeObject<DailyPower>(Response);
+            Debug.Log("Daily Power: " + dailyPower.dailyPowerConsumptionView.dailyUnits);
+        }
+    }
+
+    public IEnumerator get_current_units() {
+        yield return StartCoroutine(get_request(ViewCurrentUnits_API));
+        if (string.IsNullOrEmpty(Response))
+        {
+            Debug.LogError("Response is null.");
+        }
+        else {
+            currentUnits = JsonConvert.DeserializeObject<CurrentUnits>(Response);
+            Debug.Log("Current Units: " + currentUnits.currentConsumption);
+        }
     }
 }
 
@@ -284,4 +311,10 @@ public class DailyPowerConsumptionView
 public class DailyPower
 {
     public DailyPowerConsumptionView dailyPowerConsumptionView;
+}
+
+[System.Serializable]
+public class CurrentUnits
+{
+    public float currentConsumption;
 }

@@ -19,7 +19,7 @@ public class coinUpdaterScript : MonoBehaviour
     {
         if (isSceneNeedUpdateCoins)
         {
-            int coins = coinManager.getCoins();
+            float coins = coinManager.getCoins();
             balance.text = coins.ToString();
         }
     }
