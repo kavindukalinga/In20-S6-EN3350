@@ -11,6 +11,7 @@ public class APIHubScript : MonoBehaviour
     public string Response;
     public QuizResponse quizResponse;
     public ScoreResponse scoreResponse;
+    public CoinResponse coinResponse;
     public string username;
     public PlayerData playerData;
     private string Auth_API = "http://20.15.114.131:8080/api/login";
@@ -25,6 +26,7 @@ public class APIHubScript : MonoBehaviour
     private string isQuizCompleted_API = "http://localhost:9000/accessed/isAnswered/";
     private string redirectQuiz_API = "http://localhost:5173/user/";
     private string getScore_API = "http://localhost:9000/accessed/finalscore/";
+    private string getCoins_API = "http://localhost:9000/accessed/coins/";
     // private string getScore_API = "http://127.0.0.1:5000/get-score";
 
     public void Authenticate() => StartCoroutine(player_authenticate());
@@ -186,6 +188,24 @@ public class APIHubScript : MonoBehaviour
         }
     }
 
+    public IEnumerator get_coins() {
+        if (string.IsNullOrEmpty(username))
+        {
+            yield return StartCoroutine(get_username());
+        }
+        string url = getCoins_API + username;
+        Debug.Log("Coins URL: " + url);
+        yield return StartCoroutine(get_request(url));
+        if (string.IsNullOrEmpty(Response))
+        {
+            Debug.LogError("Response is null.");
+        }
+        else {
+            coinResponse = JsonUtility.FromJson<CoinResponse>(Response);
+            Debug.Log("Coins: " + coinResponse.coins);
+        }
+    }
+
     public IEnumerator redirectQuiz() {
         if (string.IsNullOrEmpty(username))
         {
@@ -229,6 +249,12 @@ public class ScoreResponse
 }
 
 [System.Serializable]
+public class CoinResponse
+{
+    public int coins;
+}
+
+[System.Serializable]
 public class PlayerData
 {
     public UserDataFromServer user;
@@ -244,4 +270,18 @@ public class UserDataFromServer
     public string phoneNumber;
     public string email;
     // public string profilePictureUrl;
+}
+
+[System.Serializable]
+public class DailyPowerConsumptionView
+{
+    public int year;
+    public int month;
+    public Dictionary<string, float> dailyUnits;
+}
+
+[System.Serializable]
+public class DailyPower
+{
+    public DailyPowerConsumptionView dailyPowerConsumptionView;
 }

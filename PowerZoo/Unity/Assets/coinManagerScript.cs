@@ -5,6 +5,7 @@ using UnityEngine;
 public class coinManagerScript : MonoBehaviour
 {
     private int coins = 500;
+    public APIHubScript APIHub;
 
     public int getCoins()
     {
@@ -19,5 +20,12 @@ public class coinManagerScript : MonoBehaviour
     public void removeCoins(int amount)
     {
         coins -= amount;
+    }
+
+    public void incrementCoins()
+    {
+        yield return StartCoroutine(APIHub.get_coins());
+        yield return StartCoroutine(APIHub.get_coins());
+        APIHub.coins += 1;
     }
 }
