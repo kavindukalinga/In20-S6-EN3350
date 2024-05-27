@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using Newtonsoft.Json;
 
 public class APIHubScript : MonoBehaviour
 {
     public string API_KEY = "NjVjNjA0MGY0Njc3MGQ1YzY2MTcyMmM2OjY1YzYwNDBmNDY3NzBkNWM2NjE3MjJiYw";
     public string JWT_TOKEN;
     public string Response;
+    public string username;
     public QuizResponse quizResponse;
     public ScoreResponse scoreResponse;
-    public string username;
+    public CoinResponse coinResponse;
+    public DailyPower dailyPower;
     public PlayerData playerData;
+    public CurrentUnits currentUnits;
     private string Auth_API = "http://20.15.114.131:8080/api/login";
     private string spring_Auth_API = "http://localhost:9000/auth/signup";
     private string ViewProfile_API = "http://20.15.114.131:8080/api/user/profile/view";
@@ -22,9 +26,11 @@ public class APIHubScript : MonoBehaviour
     private string ViewCurrentMonthConsumption_API = "http://20.15.114.131:8080/api/power-consumption/current-month/view";
     private string ViewDailyConsumptionSpecificMonth_API = "http://20.15.114.131:8080/api/power-consumption/month/daily/view";
     private string ViewDailyConsumptionCurrentMonth_API = "http://20.15.114.131:8080/api/power-consumption/current-month/daily/view";
+    private string ViewCurrentUnits_API = "http://20.15.114.131:8080/api/power-consumption/current/view";
     private string isQuizCompleted_API = "http://localhost:9000/accessed/isAnswered/";
     private string redirectQuiz_API = "http://localhost:5173/user/";
     private string getScore_API = "http://localhost:9000/accessed/finalscore/";
+    private string getCoins_API = "http://localhost:9000/accessed/coins/";
     // private string getScore_API = "http://127.0.0.1:5000/get-score";
 
     public void Authenticate() => StartCoroutine(player_authenticate());
@@ -186,6 +192,24 @@ public class APIHubScript : MonoBehaviour
         }
     }
 
+    public IEnumerator get_coins() {
+        if (string.IsNullOrEmpty(username))
+        {
+            yield return StartCoroutine(get_username());
+        }
+        string url = getCoins_API + username;
+        Debug.Log("Coins URL: " + url);
+        yield return StartCoroutine(get_request(url));
+        if (string.IsNullOrEmpty(Response))
+        {
+            Debug.LogError("Response is null.");
+        }
+        else {
+            coinResponse = JsonUtility.FromJson<CoinResponse>(Response);
+            Debug.Log("Coins: " + coinResponse.coins);
+        }
+    }
+
     public IEnumerator redirectQuiz() {
         if (string.IsNullOrEmpty(username))
         {
@@ -206,7 +230,30 @@ public class APIHubScript : MonoBehaviour
             playerData = JsonUtility.FromJson<PlayerData>(Response);
             username = playerData.user.username;
         }
-    
+    }
+
+    public IEnumerator get_daily_power() {
+        yield return StartCoroutine(get_request(ViewDailyConsumptionCurrentMonth_API));
+        if (string.IsNullOrEmpty(Response))
+        {
+            Debug.LogError("Response is null.");
+        }
+        else {
+            dailyPower = JsonConvert.DeserializeObject<DailyPower>(Response);
+            Debug.Log("Daily Power: " + dailyPower.dailyPowerConsumptionView.dailyUnits);
+        }
+    }
+
+    public IEnumerator get_current_units() {
+        yield return StartCoroutine(get_request(ViewCurrentUnits_API));
+        if (string.IsNullOrEmpty(Response))
+        {
+            Debug.LogError("Response is null.");
+        }
+        else {
+            currentUnits = JsonConvert.DeserializeObject<CurrentUnits>(Response);
+            Debug.Log("Current Units: " + currentUnits.currentConsumption);
+        }
     }
 }
 
@@ -229,6 +276,12 @@ public class ScoreResponse
 }
 
 [System.Serializable]
+public class CoinResponse
+{
+    public int coins;
+}
+
+[System.Serializable]
 public class PlayerData
 {
     public UserDataFromServer user;
@@ -244,4 +297,24 @@ public class UserDataFromServer
     public string phoneNumber;
     public string email;
     // public string profilePictureUrl;
+}
+
+[System.Serializable]
+public class DailyPowerConsumptionView
+{
+    public int year;
+    public int month;
+    public Dictionary<string, float> dailyUnits;
+}
+
+[System.Serializable]
+public class DailyPower
+{
+    public DailyPowerConsumptionView dailyPowerConsumptionView;
+}
+
+[System.Serializable]
+public class CurrentUnits
+{
+    public float currentConsumption;
 }
