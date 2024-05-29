@@ -8,6 +8,7 @@ public class coinManagerScript : MonoBehaviour
     public float coins = 500;
     public float previousCurrentUnits = 0.0f;
     public float avg_units = 0.0f;
+    private float avg_rate = 0.0f;
     // public APIHubScript APIHub;
     public static coinManagerScript Instance { get; private set; }
 
@@ -48,13 +49,15 @@ public class coinManagerScript : MonoBehaviour
         if (previousCurrentUnits != 0.0f) {
             float current_rate = currentUnits - previousCurrentUnits;
             // float avg_units = take_avg_from_dict(dailyConsumed);
-            float normal_rate = take_avg_rate_for_10secs(avg_units);
-            if (current_rate > normal_rate) {
-                coins -= (float)Math.Pow(10.0, (current_rate - normal_rate));
+            // float normal_rate = take_avg_rate_for_10secs(avg_units);
+            if (current_rate > avg_rate) {
+                coins -= ((float)Math.Pow(10.0, (current_rate - avg_rate))-1);
             } else {
-                coins += (float)Math.Pow(20.0, (current_rate - normal_rate));
+                coins += ((float)Math.Pow(20.0, (avg_rate - current_rate))-1);
             }
             Debug.Log("Coins: " + coins);
+            float temp = current_rate - avg_rate;
+            Debug.Log("Rate: " + temp);
         }
         previousCurrentUnits = currentUnits;
     }
@@ -67,11 +70,12 @@ public class coinManagerScript : MonoBehaviour
             sum += entry.Value;
         }
         avg_units =  sum / dailyConsumed.Count;
+        take_avg_rate_for_10secs(avg_units);
     }
 
-    private float take_avg_rate_for_10secs(float avg_units) {
+    private void take_avg_rate_for_10secs(float avg_units) {
         float avg_units_wh = avg_units * 1000;
-        float avg_rate = avg_units_wh / (360*24);
-        return avg_rate;
+        avg_rate = avg_units_wh / (360*24);
+        // return avg_rate;
     }
 }
