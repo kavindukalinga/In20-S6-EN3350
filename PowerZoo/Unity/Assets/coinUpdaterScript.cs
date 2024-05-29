@@ -8,19 +8,19 @@ public class coinUpdaterScript : MonoBehaviour
 {
     public TextMeshProUGUI balance;
     public bool isSceneNeedUpdateCoins = true;
-    private coinManagerScript coinManager;
+    // private coinManagerScript coinManager;
 
     void Start()
     {
-        coinManager = GameObject.Find("CoinManagerScript").GetComponent<coinManagerScript>();
+        // coinManager = GameObject.Find("CoinManagerScript").GetComponent<coinManagerScript>();
     }
 
     void Update()
     {
         if (isSceneNeedUpdateCoins)
         {
-            float coins = coinManager.getCoins();
-            balance.text = coins.ToString();
+            float coins = coinManagerScript.Instance.getCoins();
+            balance.text = coins.ToString("F2");
         }
     }
 }

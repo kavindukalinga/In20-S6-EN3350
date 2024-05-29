@@ -240,7 +240,7 @@ public class APIHubScript : MonoBehaviour
         }
         else {
             dailyPower = JsonConvert.DeserializeObject<DailyPower>(Response);
-            Debug.Log("Daily Power: " + dailyPower.dailyPowerConsumptionView.dailyUnits);
+            // Debug.Log("Daily Power: " + dailyPower.dailyPowerConsumptionView.dailyUnits);
         }
     }
 
@@ -252,7 +252,7 @@ public class APIHubScript : MonoBehaviour
         }
         else {
             currentUnits = JsonConvert.DeserializeObject<CurrentUnits>(Response);
-            Debug.Log("Current Units: " + currentUnits.currentConsumption);
+            // Debug.Log("Current Units: " + currentUnits.currentConsumption);
         }
     }
 }

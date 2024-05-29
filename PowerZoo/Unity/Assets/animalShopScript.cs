@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class animalShopScript : MonoBehaviour
 {
@@ -93,5 +94,9 @@ public class animalShopScript : MonoBehaviour
         TextMeshProUGUI coinsText = insufficientCoinsPopup.transform.Find("CurrentAmount").Find("NumCoins").GetComponent<TextMeshProUGUI>();
         coinsText.text = currentCoins.ToString();
         insufficientCoinsPopup.SetActive(true);
+    }
+
+    public void changeSchene() {
+        SceneManager.LoadScene("FoodShopScene");
     }
 }
