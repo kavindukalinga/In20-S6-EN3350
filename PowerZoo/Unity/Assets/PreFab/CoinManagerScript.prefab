@@ -10,8 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7092074705155044937}
   - component: {fileID: 5971037011059547668}
-  - component: {fileID: 1361897686865570896}
-  - component: {fileID: 9038995164235228142}
   m_Layer: 0
   m_Name: CoinManagerScript
   m_TagString: Untagged
@@ -50,29 +48,3 @@ MonoBehaviour:
   previousCurrentUnits: 0
   avg_units: 0
   APIHub: {fileID: 0}
---- !u!114 &1361897686865570896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4031451802823803866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7407b81d504550b4fa93217a9d232d2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  balance: {fileID: 0}
-  isSceneNeedUpdateCoins: 1
---- !u!114 &9038995164235228142
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4031451802823803866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3d566d408ac2e645afeb5f8cdd4734c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

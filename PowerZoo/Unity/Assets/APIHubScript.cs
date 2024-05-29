@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 
 public class APIHubScript : MonoBehaviour
 {
+    public static APIHubScript Instance { get; private set; }
     public string API_KEY = "NjVjNjA0MGY0Njc3MGQ1YzY2MTcyMmM2OjY1YzYwNDBmNDY3NzBkNWM2NjE3MjJiYw";
     public string JWT_TOKEN;
     public string Response;
@@ -32,6 +33,19 @@ public class APIHubScript : MonoBehaviour
     private string getScore_API = "http://localhost:9000/accessed/finalscore/";
     private string getCoins_API = "http://localhost:9000/accessed/coins/";
     // private string getScore_API = "http://127.0.0.1:5000/get-score";
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     public void Authenticate() => StartCoroutine(player_authenticate());
     public void ViewProfile() => StartCoroutine(get_request(ViewProfile_API));

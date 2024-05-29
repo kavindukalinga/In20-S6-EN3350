@@ -6,13 +6,14 @@ using TMPro;
 
 public class coinUpdaterScript : MonoBehaviour
 {
-    public TextMeshProUGUI balance;
+    private TextMeshProUGUI balance;
     public bool isSceneNeedUpdateCoins = true;
     // private coinManagerScript coinManager;
 
     void Start()
     {
         // coinManager = GameObject.Find("CoinManagerScript").GetComponent<coinManagerScript>();
+        balance = GameObject.Find("Canvas/Coins/Balance").GetComponent<TextMeshProUGUI>();
     }
 
     void Update()
