@@ -13,7 +13,7 @@ public class coinUpdaterScript : MonoBehaviour
     void Start()
     {
         // coinManager = GameObject.Find("CoinManagerScript").GetComponent<coinManagerScript>();
-        balance = GameObject.Find("Canvas/Coins/Balance").GetComponent<TextMeshProUGUI>();
+        balance = GameObject.Find("CoinCanvas/Coins/Balance").GetComponent<TextMeshProUGUI>();
     }
 
     void Update()

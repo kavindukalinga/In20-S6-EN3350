@@ -25,6 +25,13 @@ public class coinManagerScript : MonoBehaviour
         }
     }
 
+
+    public IEnumerator initializeCoins()
+    {
+        yield return StartCoroutine(APIHubScript.Instance.get_coins());
+        coins = APIHubScript.Instance.coinResponse.coins;
+    }
+
     public float getCoins()
     {
         return coins;
