@@ -10,6 +10,8 @@ public class coinsWithPower : MonoBehaviour
     {
         // coinManager = GameObject.Find("CoinManagerScript").GetComponent<coinManagerScript>();
         yield return StartCoroutine(coinManagerScript.Instance.take_avg_units());
+        coinManagerScript.Instance.calculate_offline_coins();
+        Debug.Log("Offlinecoins calculated");
         yield return StartCoroutine(updateCoinsWithPower());
     }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class foodShopScript : MonoBehaviour
 {
@@ -36,6 +37,13 @@ public class foodShopScript : MonoBehaviour
     private int currentFoodId;
     private int currentFoodPrice;
 
+    // void Start() {
+    //     DateTime last_logging = new DateTime(2024, 5, 28);
+    //     DateTime current_logging = DateTime.Now;
+    //     TimeSpan diff = current_logging - last_logging;
+    //     int diff_in_days = diff.Days;
+    //     Debug.Log("Days: " + diff_in_days);
+    // }
 
     public void showPopup(int foodId)
     {

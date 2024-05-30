@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
@@ -18,6 +19,7 @@ public class APIHubScript : MonoBehaviour
     public DailyPower dailyPower;
     public PlayerData playerData;
     public CurrentUnits currentUnits;
+    public LastLogging lastLogging;
     private string Auth_API = "http://20.15.114.131:8080/api/login";
     private string spring_Auth_API = "http://localhost:9000/auth/signup";
     private string ViewProfile_API = "http://20.15.114.131:8080/api/user/profile/view";
@@ -32,6 +34,7 @@ public class APIHubScript : MonoBehaviour
     private string redirectQuiz_API = "http://localhost:5173/user/";
     private string getScore_API = "http://localhost:9000/accessed/finalscore/";
     private string getCoins_API = "http://localhost:9000/accessed/coins/";
+    private string getLastLogging_API = "http://localhost:9000/accessed/lastlogging/";
     // private string getScore_API = "http://127.0.0.1:5000/get-score";
 
     private void Awake()
@@ -269,6 +272,19 @@ public class APIHubScript : MonoBehaviour
             // Debug.Log("Current Units: " + currentUnits.currentConsumption);
         }
     }
+
+    public IEnumerator get_last_logging() {
+        yield return StartCoroutine(get_request(getLastLogging_API));
+        if (string.IsNullOrEmpty(Response))
+        {
+            Debug.LogError("Response is null.");
+        }
+        else {
+            lastLogging = JsonConvert.DeserializeObject<LastLogging>(Response);
+
+            // Debug.Log("Last Logging: " + lastLogging.lastLogging);
+        }
+    }
 }
 
 [System.Serializable]
@@ -331,4 +347,10 @@ public class DailyPower
 public class CurrentUnits
 {
     public float currentConsumption;
+}
+
+[System.Serializable]
+public class LastLogging
+{
+    public DateTime lastLoggingTime;
 }

@@ -9,6 +9,8 @@ public class coinManagerScript : MonoBehaviour
     public float previousCurrentUnits = 0.0f;
     public float avg_units = 0.0f;
     private float avg_rate = 0.0f;
+    private float increment_rate = 1.18f;
+    private float decrement_rate = 1.05f;
     // public APIHubScript APIHub;
     public static coinManagerScript Instance { get; private set; }
 
@@ -58,9 +60,9 @@ public class coinManagerScript : MonoBehaviour
             // float avg_units = take_avg_from_dict(dailyConsumed);
             // float normal_rate = take_avg_rate_for_10secs(avg_units);
             if (current_rate > avg_rate) {
-                coins -= ((float)Math.Pow(10.0, (current_rate - avg_rate))-1);
+                coins -= ((float)Math.Pow(decrement_rate, (current_rate - avg_rate))-1);
             } else {
-                coins += ((float)Math.Pow(20.0, (avg_rate - current_rate))-1);
+                coins += ((float)Math.Pow(increment_rate, (avg_rate - current_rate))-1);
             }
             Debug.Log("Coins: " + coins);
             float temp = current_rate - avg_rate;
@@ -84,5 +86,28 @@ public class coinManagerScript : MonoBehaviour
         float avg_units_wh = avg_units * 1000;
         avg_rate = avg_units_wh / (360*24);
         // return avg_rate;
+    }
+
+    public void calculate_offline_coins() {
+        // yield return StartCoroutine(APIHubScript.Instance.get_last_logging())
+        // DateTime last_logging = APIHubScript.Instance.lastLogging.lastLoggingTime;
+        DateTime last_logging = new DateTime(2024, 5, 28);
+        DateTime current_logging = DateTime.Now;
+        TimeSpan diff = current_logging - last_logging;
+        int diff_in_days = diff.Days;
+        for (DateTime date = last_logging; date <= current_logging; date = date.AddDays(1))
+        {
+            // yield return StartCoroutine(APIHubScript.Instance.get_daily_power(date));
+            Dictionary<string, float> dailyConsumed = APIHubScript.Instance.dailyPower.dailyPowerConsumptionView.dailyUnits;
+            int day = date.Day;
+            
+            float power_of_day = dailyConsumed[day.ToString()];
+            if (power_of_day > avg_units) {
+                coins -= ((float)Math.Pow(decrement_rate, (power_of_day - avg_units)*0.11574)-1)*8640; // 0.11574 = 1000/8640; (8640 is number of 10secs in a day)
+            } else {
+                coins += ((float)Math.Pow(increment_rate, (avg_units - power_of_day)*0.11574)-1)*8640;
+            }
+            Debug.Log("Day: " + coins);
+        }
     }
 }
