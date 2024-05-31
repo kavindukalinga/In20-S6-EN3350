@@ -8,6 +8,7 @@ public class coinManagerScript : MonoBehaviour
     public float coins = 500;
     public float previousCurrentUnits = 0.0f;
     public float avg_units = 0.0f;
+    public float stall_coins;
     private float avg_rate = 0.0f;
     private float increment_rate = 1.18f;
     private float decrement_rate = 1.05f;
@@ -39,12 +40,12 @@ public class coinManagerScript : MonoBehaviour
         return coins;
     }
 
-    public void addCoins(int amount)
+    public void addCoins(float amount)
     {
         coins += amount;
     }
 
-    public void removeCoins(int amount)
+    public void removeCoins(float amount)
     {
         coins -= amount;
     }
@@ -109,5 +110,15 @@ public class coinManagerScript : MonoBehaviour
             }
             Debug.Log("Day: " + coins);
         }
+    }
+
+    public void calculate_stall_coins(float coins_per_hour) {
+        // yield return StartCoroutine(APIHubScript.Instance.get_last_logging())
+        // DateTime last_logging = APIHubScript.Instance.lastLogging.lastLoggingTime;
+        DateTime last_logging = new DateTime(2024, 5, 28);
+        DateTime current_logging = DateTime.Now;
+        TimeSpan diff = current_logging - last_logging;
+        int diff_in_hours = diff.Hours;
+        stall_coins = coins_per_hour * diff_in_hours;
     }
 }

@@ -69,4 +69,12 @@ public class inventoryScript : MonoBehaviour
         public int GiraffeHealth = 100;
         public int ZebraHealth = 100;
     }
+
+    public class StallLevel {
+        public int level = 0;
+
+        public void addLevel(int levelId) {
+            level = levelId;
+        }
+    }
 }
