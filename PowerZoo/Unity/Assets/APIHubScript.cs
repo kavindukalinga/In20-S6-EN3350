@@ -39,7 +39,10 @@ public class APIHubScript : MonoBehaviour
     private string getAnimals_API = "http://localhost:9000/accessed/animals/";
     private string lastLogging_API = "http://localhost:9000/accessed/lastlogging/";
     private string putCoins_API = "http://localhost:9000/api/players/coins?coins=";
-    private string getStall_API = ""
+    private string getStall_API = "http://localhost:9000/api/stalls/stall";
+    private string addFood_API = "http://localhost:9000/api/foods/";
+    private string addAnimal_API = "http://localhost:9000/api/animals/add/";
+    // private string updateStall_API = "http://localhost:9000/api/stalls/stall";
     // private string getScore_API = "http://127.0.0.1:5000/get-score";
 
     private void Awake()
@@ -328,8 +331,8 @@ public class APIHubScript : MonoBehaviour
         }
     }
 
-    public IEnumerator get_stall_level() {
-        string url = getStall_API + ((int)coins).ToString();
+    public IEnumerator get_stall_level(int stall_num) {
+        string url = getStall_API + stall_num.ToString();
         yield return StartCoroutine(get_request(url));
         if (string.IsNullOrEmpty(Response))
         {
@@ -337,6 +340,70 @@ public class APIHubScript : MonoBehaviour
         }
         else {
             stallLevel = JsonConvert.DeserializeObject<StallLevel>(Response);
+        }
+    }
+
+    public IEnumerator put_stall_level(int stall_num, int stall_level) {
+        string url = getStall_API + stall_num.ToString() + "?level=" + stall_level.ToString();
+        yield return StartCoroutine(put_request_string(url));
+        if (string.IsNullOrEmpty(Response))
+        {
+            Debug.LogError("Coins did not updated.");
+        }
+        else {
+            Debug.Log("Level Updated.");
+        }
+    }
+
+    public IEnumerator add_food(int foodID) {
+        string[] foods = new string[] {
+            "hay",
+            "grass",
+            "meat",
+            "fish",
+            "banana",
+            "milk",
+            "bamboo",
+            "honey",
+            "magic spell"
+        };
+        string food = foods[foodID];
+        string url = addFood_API + food  + "?value=1";
+        yield return StartCoroutine(put_request_string(url));
+        if (string.IsNullOrEmpty(Response))
+        {
+            Debug.LogError("Food did not added.");
+        }
+        else {
+            Debug.Log("Food Added.");
+        }
+    }
+
+    public IEnumerator add_animal(int animalID) {
+        string[] animals = new string[] {
+            "elephant",
+            "lion",
+            "tiger",
+            "giraffe",
+            "zebra"
+        };
+        string[] animals_health = new string[] {
+            "20000",
+            "12000",
+            "11000",
+            "14000",
+            "5000"
+        };
+        string animal = animals[animalID];
+        string health = animals_health[animalID];
+        string url = addAnimal_API + animal  + "?newHealthValue=" + health;
+        yield return StartCoroutine(put_request_string(url));
+        if (string.IsNullOrEmpty(Response))
+        {
+            Debug.LogError("Animal did not added.");
+        }
+        else {
+            Debug.Log("Animal Added.");
         }
     }
 }

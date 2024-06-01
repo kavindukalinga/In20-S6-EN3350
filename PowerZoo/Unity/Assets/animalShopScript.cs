@@ -28,7 +28,7 @@ public class animalShopScript : MonoBehaviour
     private int currentAnimalId;
     private int currentAnimalPrice;
 
-    void Start()
+    IEnumerator Start()
     {
         elephantButton = GameObject.Find("Buy0").GetComponent<Button>();
         lionButton = GameObject.Find("Buy1").GetComponent<Button>();
@@ -36,6 +36,8 @@ public class animalShopScript : MonoBehaviour
         giraffButton = GameObject.Find("Buy3").GetComponent<Button>();
         zebraButton = GameObject.Find("Buy4").GetComponent<Button>();
 
+        yield return StartCoroutine(APIHubScript.Instance.get_animals());
+        disable_buttons();
         buyButton.onClick.AddListener(buyAnimal);
         cancelButton.onClick.AddListener(cancelPurchase);
         elephantButton.onClick.AddListener(() => showPopup(0));
@@ -45,6 +47,24 @@ public class animalShopScript : MonoBehaviour
         zebraButton.onClick.AddListener(() => showPopup(4));
     }
 
+    private void disable_buttons() {
+        AnimalsCount animalsCount = APIHubScript.Instance.animalsCount;
+        if (animalsCount.elephant >= 3) {
+            elephantButton.interactable = false;
+        }
+        if (animalsCount.lion >= 3) {
+            lionButton.interactable = false;
+        }
+        if (animalsCount.tiger >= 3) {
+            tigerButton.interactable = false;
+        }
+        if (animalsCount.giraffe >= 3) {
+            giraffButton.interactable = false;
+        }
+        if (animalsCount.zebra >= 3) {
+            zebraButton.interactable = false;
+        }
+    }
 
     private void showPopup(int animalId)
     {
@@ -78,8 +98,9 @@ public class animalShopScript : MonoBehaviour
     {
         // dicrease the coin
         coinManagerScript.Instance.removeCoins(currentAnimalPrice);
+        StartCoroutine(APIHubScript.Instance.add_animal(currentAnimalId));
         // add the animal to the inventory
-        animals.addAnimal(currentAnimalId);
+        // animals.addAnimal(currentAnimalId);
         confirmPopup.SetActive(false);
     }
 
@@ -88,6 +109,7 @@ public class animalShopScript : MonoBehaviour
         confirmPopup.SetActive(false);
         insufficientCoinsPopup.SetActive(false);
     }
+    
     private void showInsufficientCoinsPopup()
     {
         float currentCoins = coinManagerScript.Instance.getCoins();

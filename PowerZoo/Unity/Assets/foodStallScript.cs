@@ -22,15 +22,13 @@ public class foodStallScript : MonoBehaviour
     private float currentLevelPrice;
     private int currentLevelId = 0;
 
-    void Start() {
-        stall_num = activeStallName.activeStall
+    IEnumerator Start() {
+        stall_num = activeStallName.activeStall;
         int coins_per_hour;
         int current_level;
-        // yield return StartCoroutine
-        if (stall_num == 1) {coins_per_hour = stallLevel.stall1Level + 2}
-        else if (stall_num == 2) {coins_per_hour = stallLevel.stall2Level + 2}
-        else if (stall_num == 3) {coins_per_hour = stallLevel.stall3Level + 2}
-        
+        yield return StartCoroutine(APIHubScript.Instance.get_stall_level(stall_num));
+        current_level = APIHubScript.Instance.stallLevel.level;
+        coins_per_hour = current_level + 2;
         // Debug.Log("Stall Level: ");
         show_collected_coins(coins_per_hour);
     }
@@ -74,10 +72,8 @@ public class foodStallScript : MonoBehaviour
         // dicrease the coin
         coinManagerScript.Instance.removeCoins(currentLevelPrice);
         // add the animal to the inventory
-        if (stall_num == 1) {stallLevel.stall1Level + 1}
-        else if (stall_num == 2) {stallLevel.stall2Level + 1}
-        else if (stall_num == 3) {stallLevel.stall3Level + 1}
-        stallLevel.addLevel(currentLevelId);
+        StartCoroutine(APIHubScript.Instance.put_stall_level(stall_num, currentLevelId));
+        // stallLevel.addLevel(currentLevelId);
         confirmPopup.SetActive(false);
     }
 

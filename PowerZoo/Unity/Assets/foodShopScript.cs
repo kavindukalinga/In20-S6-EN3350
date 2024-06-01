@@ -85,8 +85,8 @@ public class foodShopScript : MonoBehaviour
     {
         // dicrease the coin
         coinManagerScript.Instance.removeCoins(currentFoodPrice);
+        StartCoroutine(APIHubScript.Instance.add_food(currentFoodId));
         // add the animal to the inventory
-        foods.addFood(currentFoodId);
         confirmPopup.SetActive(false);
     }
 
@@ -99,7 +99,7 @@ public class foodShopScript : MonoBehaviour
     {
         float currentCoins = coinManagerScript.Instance.getCoins();
         TextMeshProUGUI coinsText = insufficientCoinsPopup.transform.Find("CurrentAmount").Find("NumCoins").GetComponent<TextMeshProUGUI>();
-        coinsText.text = currentCoins.ToString();
+        coinsText.text = currentCoins.ToString("F2");
         insufficientCoinsPopup.SetActive(true);
     }
 }
