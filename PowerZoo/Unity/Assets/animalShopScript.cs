@@ -9,7 +9,7 @@ public class animalShopScript : MonoBehaviour
 {
     public GameObject confirmPopup;
     public GameObject insufficientCoinsPopup;
-    public coinManagerScript coinManager;
+    // public coinManagerScript coinManager;
     public inventoryScript.Animals animals;
     public Button buyButton;
     public Button cancelButton;
@@ -57,7 +57,7 @@ public class animalShopScript : MonoBehaviour
         };
         currentAnimalPrice = popupPrices[animalId];
 
-        if (coinManager.getCoins() < currentAnimalPrice) { // check if the player has enough coins
+        if (coinManagerScript.Instance.getCoins() < currentAnimalPrice) { // check if the player has enough coins
             showInsufficientCoinsPopup();
         } else { // show the purchase confirmation popup
             string[] popupTexts = new string[] {
@@ -77,7 +77,7 @@ public class animalShopScript : MonoBehaviour
     private void buyAnimal()
     {
         // dicrease the coin
-        coinManager.removeCoins(currentAnimalPrice);
+        coinManagerScript.Instance.removeCoins(currentAnimalPrice);
         // add the animal to the inventory
         animals.addAnimal(currentAnimalId);
         confirmPopup.SetActive(false);
@@ -90,7 +90,7 @@ public class animalShopScript : MonoBehaviour
     }
     private void showInsufficientCoinsPopup()
     {
-        float currentCoins = coinManager.getCoins();
+        float currentCoins = coinManagerScript.Instance.getCoins();
         TextMeshProUGUI coinsText = insufficientCoinsPopup.transform.Find("CurrentAmount").Find("NumCoins").GetComponent<TextMeshProUGUI>();
         coinsText.text = currentCoins.ToString();
         insufficientCoinsPopup.SetActive(true);

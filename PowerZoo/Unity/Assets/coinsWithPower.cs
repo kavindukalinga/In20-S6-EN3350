@@ -9,25 +9,25 @@ public class coinsWithPower : MonoBehaviour
     IEnumerator Start()
     {
         // coinManager = GameObject.Find("CoinManagerScript").GetComponent<coinManagerScript>();
+        yield return new WaitForSeconds(10);
         yield return StartCoroutine(coinManagerScript.Instance.take_avg_units());
-        coinManagerScript.Instance.calculate_offline_coins();
-        Debug.Log("Offlinecoins calculated");
         yield return StartCoroutine(updateCoinsWithPower());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
     private IEnumerator updateCoinsWithPower()
     {
+        int count = 0;
         while (true)
         {
             yield return StartCoroutine(coinManagerScript.Instance.incrementCoins());
             yield return new WaitForSeconds(10);
+            count++;
+            if (count == 6)
+            {
+                yield return StartCoroutine(coinManagerScript.Instance.put_coins_to_backend());
+                yield return StartCoroutine(APIHubScript.Instance.put_last_logging());
+                count = 0;
+            }
         }
     }
 }

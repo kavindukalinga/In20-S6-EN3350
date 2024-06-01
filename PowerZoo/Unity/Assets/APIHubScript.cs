@@ -20,6 +20,8 @@ public class APIHubScript : MonoBehaviour
     public PlayerData playerData;
     public CurrentUnits currentUnits;
     public LastLogging lastLogging;
+    public AnimalsCount animalsCount;
+    public StallLevel stallLevel;
     private string Auth_API = "http://20.15.114.131:8080/api/login";
     private string spring_Auth_API = "http://localhost:9000/auth/signup";
     private string ViewProfile_API = "http://20.15.114.131:8080/api/user/profile/view";
@@ -34,7 +36,10 @@ public class APIHubScript : MonoBehaviour
     private string redirectQuiz_API = "http://localhost:5173/user/";
     private string getScore_API = "http://localhost:9000/accessed/finalscore/";
     private string getCoins_API = "http://localhost:9000/accessed/coins/";
-    private string getLastLogging_API = "http://localhost:9000/accessed/lastlogging/";
+    private string getAnimals_API = "http://localhost:9000/accessed/animals/";
+    private string lastLogging_API = "http://localhost:9000/accessed/lastlogging/";
+    private string putCoins_API = "http://localhost:9000/api/players/coins?coins=";
+    private string getStall_API = ""
     // private string getScore_API = "http://127.0.0.1:5000/get-score";
 
     private void Awake()
@@ -190,6 +195,25 @@ public class APIHubScript : MonoBehaviour
         }
     }
 
+    public IEnumerator put_request_string(string url) {
+        Response = "";
+        using (UnityWebRequest request = new UnityWebRequest(url, "PUT")) {
+            request.uploadHandler = new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(playerData.user)));
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+            yield return request.SendWebRequest();
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError(request.error);
+            }
+            else
+            {
+                string jsonResponse = request.downloadHandler.text;
+                Response = jsonResponse;
+            }
+        }
+    }
+
     public IEnumerator get_score() {
         if (string.IsNullOrEmpty(username))
         {
@@ -210,11 +234,7 @@ public class APIHubScript : MonoBehaviour
     }
 
     public IEnumerator get_coins() {
-        if (string.IsNullOrEmpty(username))
-        {
-            yield return StartCoroutine(get_username());
-        }
-        string url = getCoins_API + username;
+        string url = getCoins_API;
         Debug.Log("Coins URL: " + url);
         yield return StartCoroutine(get_request(url));
         if (string.IsNullOrEmpty(Response))
@@ -224,6 +244,17 @@ public class APIHubScript : MonoBehaviour
         else {
             coinResponse = JsonUtility.FromJson<CoinResponse>(Response);
             Debug.Log("Coins: " + coinResponse.coins);
+        }
+    }
+
+    public IEnumerator get_animals() {
+        yield return StartCoroutine(get_request(getAnimals_API));
+        if (string.IsNullOrEmpty(Response))
+        {
+            Debug.LogError("Response is null.");
+        }
+        else {
+            animalsCount = JsonConvert.DeserializeObject<AnimalsCount>(Response);
         }
     }
 
@@ -273,16 +304,39 @@ public class APIHubScript : MonoBehaviour
         }
     }
 
-    public IEnumerator get_last_logging() {
-        yield return StartCoroutine(get_request(getLastLogging_API));
+    public IEnumerator put_last_logging() {
+        yield return StartCoroutine(put_request_string(lastLogging_API));
         if (string.IsNullOrEmpty(Response))
         {
             Debug.LogError("Response is null.");
         }
         else {
             lastLogging = JsonConvert.DeserializeObject<LastLogging>(Response);
+            // Debug.Log("Last Logging: " + lastLogging.lastLoggingTime);
+        }
+    }
 
-            // Debug.Log("Last Logging: " + lastLogging.lastLogging);
+    public IEnumerator put_coins(float coins) {
+        string url = putCoins_API + ((int)coins).ToString();
+        yield return StartCoroutine(put_request_string(url));
+        if (string.IsNullOrEmpty(Response))
+        {
+            Debug.LogError("Coins did not updated.");
+        }
+        else {
+            Debug.Log("Coins updated");
+        }
+    }
+
+    public IEnumerator get_stall_level() {
+        string url = getStall_API + ((int)coins).ToString();
+        yield return StartCoroutine(get_request(url));
+        if (string.IsNullOrEmpty(Response))
+        {
+            Debug.LogError("Coins did not updated.");
+        }
+        else {
+            stallLevel = JsonConvert.DeserializeObject<StallLevel>(Response);
         }
     }
 }
@@ -350,7 +404,24 @@ public class CurrentUnits
 }
 
 [System.Serializable]
+public class AnimalsCount
+{
+    public int elephant;
+    public int lion;
+    public int tiger;
+    public int giraffe;
+    public int zebra;
+}
+
+[System.Serializable]
 public class LastLogging
 {
-    public DateTime lastLoggingTime;
+    public DateTime oldTime;
+    public DateTime newTime;
+}
+
+[System.Serializable]
+public class StallLevel
+{
+    public int level;
 }

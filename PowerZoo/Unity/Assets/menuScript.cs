@@ -13,11 +13,13 @@ public class menuScript : MonoBehaviour
     public TMP_Text coinsText;
     private int coins;
     
-    void Start()
+    IEnumerator Start()
     {
         // playerProfileButton.onClick.AddListener(load_player_profile);
         // playerProfile2Button.onClick.AddListener(load_player_profile);
-        initialize_coins();
+        // initialize_coins();
+        yield return StartCoroutine(coinManagerScript.Instance.initializeCoins());
+        yield return StartCoroutine(coinManagerScript.Instance.calculate_offline_coins());
     }
 
     public void load_player_profile() {

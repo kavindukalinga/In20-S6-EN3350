@@ -70,11 +70,14 @@ public class inventoryScript : MonoBehaviour
         public int ZebraHealth = 100;
     }
 
+    [System.Serializable]
     public class StallLevel {
-        public int level = 0;
+        public int stall1Level = 0;
+        public int stall2Level = 0;
+        public int stall3Level = 0;
 
-        public void addLevel(int levelId) {
-            level = levelId;
-        }
+        // public void addLevel(int levelId) {
+        //     level = levelId;
+        // }
     }
 }

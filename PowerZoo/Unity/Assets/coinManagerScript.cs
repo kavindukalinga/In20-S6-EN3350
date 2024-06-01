@@ -52,9 +52,7 @@ public class coinManagerScript : MonoBehaviour
 
     public IEnumerator incrementCoins()
     {
-        // yield return StartCoroutine(APIHub.get_coins());
         yield return StartCoroutine(APIHubScript.Instance.get_current_units());
-        // coins = APIHub.coinResponse.coins;
         float currentUnits = APIHubScript.Instance.currentUnits.currentConsumption;
         if (previousCurrentUnits != 0.0f) {
             float current_rate = currentUnits - previousCurrentUnits;
@@ -89,10 +87,10 @@ public class coinManagerScript : MonoBehaviour
         // return avg_rate;
     }
 
-    public void calculate_offline_coins() {
-        // yield return StartCoroutine(APIHubScript.Instance.get_last_logging())
-        // DateTime last_logging = APIHubScript.Instance.lastLogging.lastLoggingTime;
-        DateTime last_logging = new DateTime(2024, 5, 28);
+    public IEnumerator calculate_offline_coins() {
+        yield return StartCoroutine(APIHubScript.Instance.put_last_logging());
+        DateTime last_logging = APIHubScript.Instance.lastLogging.oldTime;
+        // DateTime last_logging = new DateTime(2024, 6, 1);
         DateTime current_logging = DateTime.Now;
         TimeSpan diff = current_logging - last_logging;
         int diff_in_days = diff.Days;
@@ -115,10 +113,15 @@ public class coinManagerScript : MonoBehaviour
     public void calculate_stall_coins(float coins_per_hour) {
         // yield return StartCoroutine(APIHubScript.Instance.get_last_logging())
         // DateTime last_logging = APIHubScript.Instance.lastLogging.lastLoggingTime;
-        DateTime last_logging = new DateTime(2024, 5, 28);
+        DateTime last_logging = APIHubScript.Instance.lastLogging.oldTime;
         DateTime current_logging = DateTime.Now;
         TimeSpan diff = current_logging - last_logging;
         int diff_in_hours = diff.Hours;
+        Debug.Log("Hours: " + diff_in_hours);
         stall_coins = coins_per_hour * diff_in_hours;
+    }
+
+    public IEnumerator put_coins_to_backend() {
+        yield return StartCoroutine(APIHubScript.Instance.put_coins(coins));
     }
 }
