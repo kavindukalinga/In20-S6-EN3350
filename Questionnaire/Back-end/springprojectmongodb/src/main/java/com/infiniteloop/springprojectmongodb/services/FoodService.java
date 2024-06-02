@@ -28,9 +28,11 @@ public class FoodService {
 public Food updateCountByConstant(String name, int constant) {
     Food food = foodRepository.findByName(name);
     if (food != null) {
+        if (food.getCount() + constant >= 0) {   
         int newCount = food.getCount() + constant;
         food.setCount(newCount);
         return foodRepository.save(food);
+        }
     }
     return null;
 }
