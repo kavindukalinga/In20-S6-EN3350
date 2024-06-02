@@ -25,16 +25,8 @@ public class PlayerService {
         Optional<Player> playerOpt = playerRepository.findById(id);
         if (playerOpt.isPresent()) {
             Player player = playerOpt.get();
-            int oldCoins = player.getCoins();
-            if (oldCoins + coins >= 0){
-                int newCoins = oldCoins + coins;
-                player.setCoins(newCoins);
-                return playerRepository.save(player);
-            }else{
-                player.setCoins(oldCoins);
-                return playerRepository.save(player);
-            }
-            
+            player.setCoins(coins);
+            return playerRepository.save(player);            
         }
         return null;
     }

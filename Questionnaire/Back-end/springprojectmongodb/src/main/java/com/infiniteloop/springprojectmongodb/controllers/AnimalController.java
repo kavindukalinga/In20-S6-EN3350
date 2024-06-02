@@ -9,6 +9,7 @@ import com.infiniteloop.springprojectmongodb.models.Animal;
 import com.infiniteloop.springprojectmongodb.services.AnimalService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/animals")
@@ -54,5 +55,19 @@ public class AnimalController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(updatedAnimal);
+    }
+
+    @GetMapping("/counts")
+    public ResponseEntity<Map<String, Long>> getAnimalCounts() {
+        Map<String, Long> animalCounts = animalService.getAnimalCounts();
+        return ResponseEntity.ok(animalCounts);
+    }
+
+    @PutMapping("/add/{name}")
+    public ResponseEntity<Boolean> updateHealthIfZeroExists(
+            @PathVariable String name,
+            @RequestParam int newHealthValue) {
+        boolean updated = animalService.updateHealthIfZeroExists(name, newHealthValue);
+        return ResponseEntity.ok(updated);
     }
 }

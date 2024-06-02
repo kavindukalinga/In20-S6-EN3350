@@ -47,6 +47,7 @@ public class AuthConfig {
             .requestMatchers(HttpMethod.GET, "/api/animals/healths/*").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/animals/healths/*").permitAll()
             .requestMatchers(HttpMethod.PUT, "/api/animals/healths/*").permitAll()
+            .requestMatchers(HttpMethod.PUT, "/api/animals/add/*").permitAll()
             .requestMatchers(HttpMethod.GET, "/accessed/isAnswered/*").permitAll()
             .requestMatchers(HttpMethod.GET, "/accessed/finalscore/*").permitAll()
             .anyRequest().authenticated())

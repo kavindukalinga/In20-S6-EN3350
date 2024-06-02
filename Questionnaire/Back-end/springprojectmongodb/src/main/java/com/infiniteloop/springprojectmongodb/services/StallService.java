@@ -33,6 +33,15 @@ public class StallService {
             return stallRepository.save(stall);
         }
         return null;
+
+    }
+
+    public Integer getStallLevelByName(String name) {
+        Stall stall = stallRepository.findByName(name);
+        if (stall != null) {
+            return stall.getLevel();
+        }
+        return null; // or throw an exception if preferred
     }
 
 

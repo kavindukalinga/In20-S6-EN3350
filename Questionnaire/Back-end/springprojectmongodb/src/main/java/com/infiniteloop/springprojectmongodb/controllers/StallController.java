@@ -36,5 +36,15 @@ public class StallController {
         }
         return ResponseEntity.ok(updatedStall);
     }
-    
+
+    @GetMapping("/{name}")
+    public ResponseEntity<Integer> getStallLevelByName(@PathVariable String name) {
+        Integer level = stallService.getStallLevelByName(name);
+        if (level != null) {
+            return ResponseEntity.ok(level);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

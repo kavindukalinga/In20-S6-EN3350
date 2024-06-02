@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import com.infiniteloop.springprojectmongodb.models.Animal;
 import com.infiniteloop.springprojectmongodb.repositories.AnimalRepo;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AnimalService {
@@ -36,6 +38,8 @@ public class AnimalService {
             animalRepository.save(animal);
         }
     }
+
+
     
 
     public List<Integer> getHealthsByAnimalType(String name) {
@@ -53,4 +57,36 @@ public class AnimalService {
         }
         return null;
     }
+
+
+     public Map<String, Long> getAnimalCounts() {
+        List<Animal> animals = animalRepository.findAll();
+        Map<String, Long> animalCounts = new HashMap<>();
+        
+        for (Animal animal : animals) {
+            long count = animal.getHealth().stream().filter(health -> health > 0).count();
+            animalCounts.put(animal.getName(), count);
+        }
+        
+        return animalCounts;
+    }
+
+    public boolean updateHealthIfZeroExists(String name, int newHealthValue) {
+        Animal animal = animalRepository.findByName(name);
+
+        
+        List<Integer> health = animal.getHealth();
+        for (int i = 0; i < health.size(); i++) {
+            if (health.get(i) == 0) {
+                health.set(i, newHealthValue);
+                animal.setHealth(health);
+                animalRepository.save(animal);
+                return true;  // Found and updated
+            }
+        }
+        
+
+        return false; // No zero health found
+    
+}
 }
