@@ -7,30 +7,36 @@ using TMPro;
 
 public class menuScript : MonoBehaviour
 {
-    public Button playerProfileButton;
-    public Button playerProfile2Button;
-    public APIHubScript APIHub;
+    // public Button playerProfileButton;
+    // public Button playerProfile2Button;
+    // public APIHubScript APIHub;
     public TMP_Text coinsText;
     private int coins;
     
-    void Start()
+    IEnumerator Start()
     {
-        playerProfileButton.onClick.AddListener(load_player_profile);
-        playerProfile2Button.onClick.AddListener(load_player_profile);
-        update_coins();
+        // playerProfileButton.onClick.AddListener(load_player_profile);
+        // playerProfile2Button.onClick.AddListener(load_player_profile);
+        // initialize_coins();
+        yield return StartCoroutine(coinManagerScript.Instance.initializeCoins());
+        yield return StartCoroutine(coinManagerScript.Instance.calculate_offline_coins());
     }
 
-    private void load_player_profile() {
+    public void load_player_profile() {
         SceneManager.LoadScene("PlayerProfileScene");
     }
 
-    private void update_coins() {
-        StartCoroutine(calculate_coins());
+    private void initialize_coins() {
+        StartCoroutine(coinManagerScript.Instance.initializeCoins());
     }
 
-    private IEnumerator calculate_coins() {
-        yield return StartCoroutine(APIHub.get_score());
-        coins = APIHub.scoreResponse.score * 20;
-        coinsText.text = coins.ToString();
+    public void load_game() {
+        SceneManager.LoadScene("animalShopScene");
     }
+
+    // private IEnumerator calculate_coins() {
+    //     yield return StartCoroutine(APIHub.get_score());
+    //     coins = APIHub.scoreResponse.score * 20;
+    //     coinsText.text = coins.ToString();
+    // }
 }

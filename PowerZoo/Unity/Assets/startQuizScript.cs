@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class startQuizScript : MonoBehaviour
 {
 
-    public APIHubScript APIHub;
+    // public APIHubScript APIHub;
     public Button startQuizButton;
     public Button continueQuizButton;
     public Button aboveButton;
@@ -33,7 +33,7 @@ public class startQuizScript : MonoBehaviour
     {
         if (!quizStarted)
         {
-            APIHub.RedirectQuiz();
+            APIHubScript.Instance.RedirectQuiz();
             startQuizButtonText.text = "Continue";
             quizStarted = true;
         } else {
@@ -42,7 +42,7 @@ public class startQuizScript : MonoBehaviour
     }
 
     private void continueQuiz() {
-        APIHub.RedirectQuiz();
+        APIHubScript.Instance.RedirectQuiz();
         popup.SetActive(false);
     }
 
@@ -58,8 +58,8 @@ public class startQuizScript : MonoBehaviour
 
     private IEnumerator checkQuizCompleted()
     {
-        yield return StartCoroutine(APIHub.check_quiz_completed());
-        sceneControler(APIHub.quizResponse.isAnswered);
+        yield return StartCoroutine(APIHubScript.Instance.check_quiz_completed());
+        sceneControler(APIHubScript.Instance.quizResponse.isAnswered);
     }
     
     private void showPopup()

@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerProfileScript : MonoBehaviour
 {
-    public APIHubScript APIHub;
+    // public APIHubScript APIHub;
     public sceneLoaderScript SceneLoader;
     public PlayerData playerData;
     public TMP_InputField firstName;
@@ -33,7 +33,7 @@ public class PlayerProfileScript : MonoBehaviour
             return;
         } else {
             update_profile();
-            StartCoroutine(APIHub.put_request(UpdateProfile_API, playerData));
+            StartCoroutine(APIHubScript.Instance.put_request(UpdateProfile_API, playerData));
             StartCoroutine(SceneLoader.play_animation());
         }
     }
@@ -41,12 +41,12 @@ public class PlayerProfileScript : MonoBehaviour
     private IEnumerator get_player_profile() 
     {
         Debug.Log("Getting player profile");
-        yield return StartCoroutine(APIHub.get_request(ViewProfile_API));
-        Debug.Log(APIHub.Response);
+        yield return StartCoroutine(APIHubScript.Instance.get_request(ViewProfile_API));
+        Debug.Log(APIHubScript.Instance.Response);
 
-        if (APIHub.Response != null)
+        if (APIHubScript.Instance.Response != null)
         {
-            playerData = JsonUtility.FromJson<PlayerData>(APIHub.Response);
+            playerData = JsonUtility.FromJson<PlayerData>(APIHubScript.Instance.Response);
             Debug.Log(playerData);
             load_data_to_UI();
         }
