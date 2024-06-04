@@ -133,8 +133,6 @@ dist
 */Library/*
 */Temp/*
 */Obj/*
-*/Build/*
-*/Builds/*
 */Logs/*
 
 *//IsoTools/*
@@ -146,8 +144,6 @@ dist
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
-[Bb]uild/
-[Bb]uilds/
 [Ll]ogs/
 UserSettings/
 
