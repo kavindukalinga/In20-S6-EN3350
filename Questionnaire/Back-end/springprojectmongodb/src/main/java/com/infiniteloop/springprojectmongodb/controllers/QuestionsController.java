@@ -9,11 +9,13 @@ import com.infiniteloop.springprojectmongodb.repositories.QuestionsRepo;
 import jakarta.servlet.http.HttpServletRequest;
 
 import com.infiniteloop.springprojectmongodb.repositories.AccessedRepo;
+import com.infiniteloop.springprojectmongodb.repositories.PlayerRepo;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infiniteloop.springprojectmongodb.payloads.QuestionsDto;
 import com.infiniteloop.springprojectmongodb.models.Accessed;
 import com.infiniteloop.springprojectmongodb.models.Questions;
+import com.infiniteloop.springprojectmongodb.models.Player;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,6 +39,9 @@ public class QuestionsController {
 
     @Autowired
     AccessedRepo accessedRepo;
+
+    @Autowired
+    PlayerRepo playerRepo;
 
     // Endpoint to add a question
     @PostMapping("/add-question")
@@ -177,6 +182,12 @@ public class QuestionsController {
                     accessed.setScore(score);
                     accessedRepo.save(accessed);
                     }
+                }
+                Player player = playerRepo.findById("1").orElse(null);
+                if (player != null) {
+                    int coins = 20 * score;
+                    player.setCoins(coins);
+                    playerRepo.save(player);
                 }
                 return ResponseEntity.ok("{\"score\": " + score + "}");
                 

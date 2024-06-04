@@ -4,11 +4,11 @@ This repository contains the work done for In20-S6-EN3350
 <!--<p align="left"> <img src="https://img.shields.io/github/languages/count/kavindukalinga/In20-S6-EN3350" alt="kavindukalinga" /> <img src="https://img.shields.io/github/languages/top/kavindukalinga/In20-S6-EN3350" alt="kavindukalinga" /> <img src="https://img.shields.io/github/last-commit/kavindukalinga/In20-S6-EN3350" alt="kavindukalinga" /></a> </p>-->
 
 ## How to Run the Game
-
+Latest Update : Phase 03
 
 These are the Docker images available on Docker Hub: [kavindukalinga](https://hub.docker.com/u/kavindukalinga)
 
-- `kavindukalinga/powerzooapi`
+- `kavindukalinga/zoobackend`
 - `kavindukalinga/powerzoofrontend`
 
 ### Step 1
@@ -17,7 +17,7 @@ These are the Docker images available on Docker Hub: [kavindukalinga](https://hu
    ```bash
    git clone https://github.com/kavindukalinga/In20-S6-EN3350.git
    cd In20-S6-EN3350
-   git checkout phase2
+   git checkout phase3
    ```
 
 ### Step 2
@@ -28,7 +28,7 @@ These are the Docker images available on Docker Hub: [kavindukalinga](https://hu
 
 3. Pull Docker images:
    ```bash
-   docker pull kavindukalinga/powerzooapi
+   docker pull kavindukalinga/zoobackend
    docker pull kavindukalinga/powerzoofrontend
    ```
 
@@ -36,13 +36,15 @@ These are the Docker images available on Docker Hub: [kavindukalinga](https://hu
 
 4. Run Docker containers:
    ```bash
-   docker container run -p 9000:9000 kavindukalinga/powerzooapi
+   docker container run -p 9000:9000 kavindukalinga/zoobackend
    docker container run -p 5173:5173 kavindukalinga/powerzoofrontend
    ```
 
 ### Step 5
 
-5. RUN WebGL at `PowerZoo/WebGL`.
+5. RUN WebGL at `PowerZoo/Unity/webgl`.
+
+Activate the Live Server extension (http://127.0.0.1:5500/) as we have set security to only allow 5500..
 
 
 ## Contributors
