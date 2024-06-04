@@ -42,7 +42,7 @@ These are the Docker images available on Docker Hub: [kavindukalinga](https://hu
 
 ### Step 5
 
-5. RUN WebGL at `PowerZooUnity/webgl`.
+5. RUN WebGL at `PowerZoo/Unity/webgl`.
 
 Activate the Live Server extension (http://127.0.0.1:5500/) as we have set security to only allow 5500..
 
