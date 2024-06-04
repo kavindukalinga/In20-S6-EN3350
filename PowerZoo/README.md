@@ -5,6 +5,6 @@ Before running the Unity front-end, ensure that you’ve already started the Web
 ### Step 1: Install the Live Server Extension
 Install the [Live-Server](https://ritwickdey.github.io/vscode-live-server/) Extension in VS Code.
 ### Step 2: Clone the Repository
-Clone the repository and navigate to the WebGL directory using Visual Studio Code.
+Clone the repository and navigate to the `webgl` directory using Visual Studio Code.
 ### Step 3: Turn On Live Server
 Activate the Live Server extension (http://127.0.0.1:5500/).
