@@ -63,6 +63,8 @@ public class buttons : MonoBehaviour
     {
         staticDataStore.index = index;
         string animalType = staticDataStore.staticData.ToLower();
+        feedButtons[index].interactable = false;
+        sellButtons[index].interactable = false;
 
         int coins = GetCoinsBasedOnAnimalType(animalType);
         StartCoroutine(SellAnimal(index, coins));
@@ -101,7 +103,7 @@ public class buttons : MonoBehaviour
 
         CoinsResponse coinsResponse = JsonUtility.FromJson<CoinsResponse>(coinsRequest.downloadHandler.text);
         int totalCoins = coinsResponse.coins + coins;
-        //coinManagerScript.Instance.addCoins((float)coins);
+        coinManagerScript.Instance.addCoins((float)coins);
         string url = $"http://localhost:9000/api/players/coins?coins={totalCoins}";
         UnityWebRequest request = UnityWebRequest.Put(url, "");
         yield return request.SendWebRequest();
