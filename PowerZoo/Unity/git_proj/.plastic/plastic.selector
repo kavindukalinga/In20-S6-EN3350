@@ -1,0 +1,4 @@
+repository "git_proj@universityofmoratuwa@cloud"
+  path "/"
+    br "/main"
+    co "/main"
