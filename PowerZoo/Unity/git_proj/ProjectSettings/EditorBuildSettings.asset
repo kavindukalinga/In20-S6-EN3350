@@ -33,9 +33,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Shelter.unity
     guid: deb70c0f749b9644bb0858893f2c910d
   - enabled: 1
+    path: Assets/Scenes/leaderboard.unity
+    guid: c8aef823c2f3bf44881d4783bcbba876
+  - enabled: 1
     path: Assets/Scenes/food.unity
     guid: e523fe5f901b700459198f74662e7380
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Zoo.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1

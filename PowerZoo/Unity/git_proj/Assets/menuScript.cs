@@ -34,6 +34,11 @@ public class menuScript : MonoBehaviour
         SceneManager.LoadScene("zooenv");
     }
 
+    public void go_to_leaderboard()
+    {
+        SceneManager.LoadScene("leaderboard");
+    }
+
     // private IEnumerator calculate_coins() {
     //     yield return StartCoroutine(APIHub.get_score());
     //     coins = APIHub.scoreResponse.score * 20;
