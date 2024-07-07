@@ -88,6 +88,12 @@ public class LeaderBoardScript : MonoBehaviour
 
             // Update UI with current coins and calculate scores
             currentCoins = coinManagerScript.Instance.getCoins();
+            // Check if Coins is null
+            if (Coins == null)
+            {
+                Debug.LogError("Coins is null");
+                yield break; // Exit the coroutine early if the UI element is null
+            }
             Coins.text = currentCoins.ToString("F1"); 
             calculate_Scores();
         }
