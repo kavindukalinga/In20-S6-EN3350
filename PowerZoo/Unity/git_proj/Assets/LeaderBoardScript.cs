@@ -88,7 +88,7 @@ public class LeaderBoardScript : MonoBehaviour
 
             // Update UI with current coins and calculate scores
             currentCoins = coinManagerScript.Instance.getCoins();
-            Coins.text = currentCoins.ToString();
+            Coins.text = currentCoins.ToString("F1"); 
             calculate_Scores();
         }
         else
